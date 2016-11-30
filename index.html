@@ -1,0 +1,100 @@
+<html lang="de">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Decrypt RPG-Maker-MV Images</title>
+		<script type="application/javascript" src="Decrypter.js"></script>
+		<script type="application/javascript">
+			function getCode(systemFileEl, codeTextEl) {
+				var reader = new FileReader();
+
+				if(systemFileEl.files.length < 1) {
+					alert('Please choose the System.json-File!');
+
+					return;
+				}
+
+				reader.addEventListener("load", function() {
+					var fileContent = JSON.parse('[' + this.result + ']');
+					var encryptionKey = fileContent[0].encryptionKey;
+
+					if(typeof encryptionKey === 'string') {
+						codeTextEl.value = encryptionKey;
+						codeTextEl.style.backgroundColor = '#B8FFAB';
+						alert('Key found^^! (' + encryptionKey + ')');
+					} else
+						alert('Encryption-Key not found - Make sure that you select the correct file!');
+				}, false);
+
+				reader.readAsText(systemFileEl.files[0]);
+			}
+
+			/**
+			 *
+			 * @param fileUrlEl
+			 * @param decryptCodeEl
+			 */
+			function decryptImage(fileUrlEl, decryptCodeEl) {
+				var decryptCode = decryptCodeEl.value;
+				var i = 0;
+
+				// Set Code
+				if(! decryptCode)
+					return;
+				Decrypter.plainDecryptionCode = decryptCode;
+
+				// Process every File
+				for(; i < fileUrlEl.files.length; i++) {
+					var reader = new FileReader();
+					console.log('Try to decrypt the File "' + fileUrlEl.files[i].name + '" with Decryption-Code "' + decryptCode + '"...');
+
+					reader.addEventListener("load", function() {
+						var fileUrl = Decrypter.createBlobUrl(this.result);
+						console.log('File read and loaded into "' + fileUrl + '".');
+
+						// Decrypt Image
+						Decrypter.decryptImg(fileUrl);
+						console.log('File decrypted with the given Key - Wrong keys will not give the expected output!');
+					}, false);
+
+					// Read File
+					console.log('Try to read the File...');
+					reader.readAsArrayBuffer(fileUrlEl.files[i]);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
+			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Images from any RPG-MV Project that are encrypted with the Build-In encryption. It seems that this works also with Audio-Files...</p>
+			<h2>How to use?</h2>
+			<ol>
+				<li>Check if the encrypted Files have the File-Extension ".rpgmvp", ".rpgmvm" or "rpgmvo" - If they have this extension(s) you can use this script</li>
+				<li>Get the Decrypt-Code</li>
+				<li>Upload the System.json File from the Game and lets detect the Code automatic</li>
+				<li>Select the File(s) to decrypt</li>
+				<li>Hit the Decrypt-Button</li>
+				<li>You can access your decrypted files if you click on the link(s)</li>
+				<li>
+					You can save them by right clicking and using your Browsers "save" option - Note that you have to add the file extension!!
+					<ul>
+						<li>Images as .png</li>
+						<li>Audio-Files as .ogg or .m4a</li>
+					</ul>
+				</li>
+			</ol>
+		</div>
+
+		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here:</p>
+		<hr>
+		<label>System(.json) <i>(For Decryption-Code)</i>:<br>
+			<input type="file" name="system.json" id="systemFile"></label>
+		<button onclick="getCode(document.getElementById('systemFile'), document.getElementById('decryptCode'));">Detect</button><br>
+		<label>Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" style="width: 300px; background-color: #FFABAB;" onchange="this.style.backgroundColor = '#FFE6AB';" required></label><br>
+		<label>Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label><br>
+		<button onclick="decryptImage(document.getElementById('encryptedImg'), document.getElementById('decryptCode'));">Decrypt</button>
+		<hr>
+		<span onclick="document.getElementById('blob').innerHTML = '';" style="border: 1px solid #000; color: blue; cursor: pointer;">Clear File-List</span><br><br>
+		<p id="blob"></p>
+</body>
+</html>
