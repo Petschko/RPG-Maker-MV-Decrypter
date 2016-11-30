@@ -13,6 +13,9 @@ function getCode(systemFileEl, codeTextEl) {
 		return;
 	}
 
+	/**
+	 * Try to extract the Encryption-Key if file is loaded
+	 */
 	reader.addEventListener("load", function() {
 		var fileContent = JSON.parse('[' + this.result + ']');
 		var encryptionKey = fileContent[0].encryptionKey;
@@ -25,21 +28,34 @@ function getCode(systemFileEl, codeTextEl) {
 			alert('Encryption-Key not found - Make sure that you select the correct file!');
 	}, false);
 
+	// Read the File
 	reader.readAsText(systemFileEl.files[0]);
 }
 
 /**
+ * Decrypt a bunch of MV-Encrypted-Files
  *
- * @param fileUrlEl
- * @param decryptCodeEl
+ * @param {Element} fileUrlEl - Element of the File(s)-Picker
+ * @param {Element} decryptCodeEl - Element of the Decryption-Code Input Field
  */
-function decryptFile(fileUrlEl, decryptCodeEl) {
+function decryptFiles(fileUrlEl, decryptCodeEl) {
 	var decryptCode = decryptCodeEl.value;
 	var i = 0;
 
-	// Set Code
-	if(! decryptCode)
+	// Check if all required stuff is given
+	if(! decryptCode) {
+		alert('Specify the Decryption-Code!');
+		decryptCodeEl.style.backgroundColor = '#FF0000';
+
 		return;
+	}
+	if(fileUrlEl.files.length < 1) {
+		alert('Specify at least 1 File to decrypt...');
+
+		return;
+	}
+
+	// Set Code
 	Decrypter.plainDecryptionCode = decryptCode;
 
 	// Process every File
@@ -47,6 +63,9 @@ function decryptFile(fileUrlEl, decryptCodeEl) {
 		var reader = new FileReader();
 		console.log('Try to decrypt the File "' + fileUrlEl.files[i].name + '" with Decryption-Code "' + decryptCode + '"...');
 
+		/**
+		 * Decrypt the File if its loaded
+		 */
 		reader.addEventListener("load", function() {
 			var fileUrl = Decrypter.createBlobUrl(this.result);
 			console.log('File read and loaded into "' + fileUrl + '".');

@@ -33,7 +33,7 @@
 		<button onclick="getCode(document.getElementById('systemFile'), document.getElementById('decryptCode'));">Detect</button><br>
 		<label>Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" style="width: 300px; background-color: #FFABAB;" onchange="this.style.backgroundColor = '#FFE6AB';" required></label><br>
 		<label>Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label><br>
-		<button onclick="decryptFile(document.getElementById('encryptedImg'), document.getElementById('decryptCode'));">Decrypt</button>
+		<button onclick="decryptFiles(document.getElementById('encryptedImg'), document.getElementById('decryptCode'));">Decrypt</button>
 		<hr>
 		<span onclick="document.getElementById('blob').innerHTML = '';" style="border: 1px solid #000; color: blue; cursor: pointer;">Clear File-List</span><br><br>
 		<p id="blob"></p>
