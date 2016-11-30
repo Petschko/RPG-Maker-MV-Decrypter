@@ -1,4 +1,66 @@
+/**
+ * Try to Reads the Encryption-Code and insert it to the given input element
+ *
+ * @param {Element} systemFileEl - File-Picker for the System.json-File
+ * @param {Element} codeTextEl - Text-Input for the Encryption-Key
+ */
+function getCode(systemFileEl, codeTextEl) {
+	var reader = new FileReader();
 
+	if(systemFileEl.files.length < 1) {
+		alert('Please choose the System.json-File!');
+
+		return;
+	}
+
+	reader.addEventListener("load", function() {
+		var fileContent = JSON.parse('[' + this.result + ']');
+		var encryptionKey = fileContent[0].encryptionKey;
+
+		if(typeof encryptionKey === 'string') {
+			codeTextEl.value = encryptionKey;
+			codeTextEl.style.backgroundColor = '#B8FFAB';
+			alert('Key found^^! (' + encryptionKey + ')');
+		} else
+			alert('Encryption-Key not found - Make sure that you select the correct file!');
+	}, false);
+
+	reader.readAsText(systemFileEl.files[0]);
+}
+
+/**
+ *
+ * @param fileUrlEl
+ * @param decryptCodeEl
+ */
+function decryptFile(fileUrlEl, decryptCodeEl) {
+	var decryptCode = decryptCodeEl.value;
+	var i = 0;
+
+	// Set Code
+	if(! decryptCode)
+		return;
+	Decrypter.plainDecryptionCode = decryptCode;
+
+	// Process every File
+	for(; i < fileUrlEl.files.length; i++) {
+		var reader = new FileReader();
+		console.log('Try to decrypt the File "' + fileUrlEl.files[i].name + '" with Decryption-Code "' + decryptCode + '"...');
+
+		reader.addEventListener("load", function() {
+			var fileUrl = Decrypter.createBlobUrl(this.result);
+			console.log('File read and loaded into "' + fileUrl + '".');
+
+			// Decrypt Image
+			Decrypter.decrypt(fileUrl);
+			console.log('File decrypted with the given Key - Wrong keys will not give the expected output!');
+		}, false);
+
+		// Read File
+		console.log('Try to read the File...');
+		reader.readAsArrayBuffer(fileUrlEl.files[i]);
+	}
+}
 
 function Decrypter() {
 	throw new Error('This is a static class');
@@ -12,7 +74,7 @@ Decrypter.SIGNATURE = "5250474d56000000";
 Decrypter.VER = "000301";
 Decrypter.REMAIN = "0000000000";
 
-Decrypter.decryptImg = function(url) {
+Decrypter.decrypt = function(url) {
 	var requestFile = new XMLHttpRequest();
 	requestFile.open("GET", url);
 	requestFile.responseType = "arraybuffer";
