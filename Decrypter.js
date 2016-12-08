@@ -20,7 +20,7 @@ function getCode(systemFileEl, codeTextEl) {
 		var fileContent = JSON.parse('[' + this.result + ']');
 		var encryptionKey = fileContent[0].encryptionKey;
 
-		if(typeof encryptionKey === 'string') {
+		if(typeof encryptionKey === 'string' && encryptionKey.length > 0) {
 			codeTextEl.value = encryptionKey;
 			codeTextEl.style.backgroundColor = '#B8FFAB';
 			alert('Key found^^! (' + encryptionKey + ')');
@@ -81,6 +81,9 @@ function decryptFiles(fileUrlEl, decryptCodeEl) {
 	}
 }
 
+/**
+ * @constructor - Disabled constructor
+ */
 function Decrypter() {
 	throw new Error('This is a static class');
 }
@@ -93,12 +96,20 @@ Decrypter.SIGNATURE = "5250474d56000000";
 Decrypter.VER = "000301";
 Decrypter.REMAIN = "0000000000";
 
+/**
+ * Decrypt file from url
+ *
+ * @param {String} url - Encrypted file-url
+ */
 Decrypter.decrypt = function(url) {
 	var requestFile = new XMLHttpRequest();
 	requestFile.open("GET", url);
 	requestFile.responseType = "arraybuffer";
 	requestFile.send();
 
+	/**
+	 * Decrypt the file if loaded and display the link of the decrypted file
+	 */
 	requestFile.onload = function () {
 		if(this.status < Decrypter._xhrOk) {
 			var arrayBuffer = Decrypter.decryptArrayBuffer(requestFile.response);
@@ -109,30 +120,46 @@ Decrypter.decrypt = function(url) {
 	};
 };
 
+/**
+ * Removes the header from the ArrayObject by specifying its length
+ *
+ * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object
+ * @param {int} length - length of the header
+ * @returns {ArrayBuffer} - ArrayBuffer Object without header
+ */
 Decrypter.cutArrayHeader = function(arrayBuffer, length) {
 	return arrayBuffer.slice(length);
 };
 
+/**
+ * Decrypts the Content of the ArrayBuffer-Object by using the decryption key
+ *
+ * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object with encrypted content
+ * @returns {ArrayBuffer} - ArrayBuffer Object with decrypted (original) content
+ */
 Decrypter.decryptArrayBuffer = function(arrayBuffer) {
-	if (!arrayBuffer) return null;
-	var header = new Uint8Array(arrayBuffer, 0, this._headerlength);
+	if(! arrayBuffer)
+		return null;
 
+	var header = new Uint8Array(arrayBuffer, 0, this._headerlength);
 	var i;
 	var ref = this.SIGNATURE + this.VER + this.REMAIN;
 	var refBytes = new Uint8Array(16);
-	for (i = 0; i < this._headerlength; i++) {
-		refBytes[i] = parseInt("0x" + ref.substr(i * 2, 2), 16);
+
+	for(i = 0; i < this._headerlength; i++) {
+		refBytes[i] = parseInt('0x' + ref.substr(i * 2, 2), 16);
 	}
-	for (i = 0; i < this._headerlength; i++) {
-		if (header[i] !== refBytes[i]) {
-			throw new Error("Header is wrong");
-		}
+
+	for(i = 0; i < this._headerlength; i++) {
+		if (header[i] !== refBytes[i])
+			throw new Error('Header is wrong');
 	}
 
 	arrayBuffer = this.cutArrayHeader(arrayBuffer, Decrypter._headerlength);
 	var view = new DataView(arrayBuffer);
 	this.readEncryptionkey();
-	if (arrayBuffer) {
+
+	if(arrayBuffer) {
 		var byteArray = new Uint8Array(arrayBuffer);
 		for (i = 0; i < this._headerlength; i++) {
 			byteArray[i] = byteArray[i] ^ parseInt(Decrypter._encryptionKey[i], 16);
@@ -143,11 +170,20 @@ Decrypter.decryptArrayBuffer = function(arrayBuffer) {
 	return arrayBuffer;
 };
 
-Decrypter.createBlobUrl = function(arrayBuffer){
-	var blob = new Blob([arrayBuffer]);
+/**
+ * Creates a BLOB-URL from a object
+ *
+ * @param {ArrayBuffer|Object} object
+ * @returns {String} - BLOB-URL of the array buffer
+ */
+Decrypter.createBlobUrl = function(object) {
+	var blob = new Blob([object]);
 	return window.URL.createObjectURL(blob);
 };
 
-Decrypter.readEncryptionkey = function(){
+/**
+ * Creates the real encryption key
+ */
+Decrypter.readEncryptionkey = function() {
 	this._encryptionKey = this.plainDecryptionCode.split(/(.{2})/).filter(Boolean);
 };
