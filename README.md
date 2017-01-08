@@ -25,7 +25,7 @@ You can save them for Private-Use only. If the origin Licence allow use you can 
 
 This is very easy:
 
-- Download/Clone the Project
+- Download/Clone the Project OR direct use [it on my site](http://tigercloud.lima-city.de/mv_decrypter/)
 - Extract/Put it where ever you want
 - Done :)
 
