@@ -4,6 +4,8 @@
 
 This Project is used to decrypt RPG-Maker-MV-Resource-Files that are encrypted with the Build-In-Encryption of the RPG-Maker.
 
+This Project is mostly used for Single-File decryption and is very annonying when try to save multiple files >.< Please try out the [Java-Decrypter](https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter)
+
 ### Motivation behind this
 As Art-Creator for the RPG-Maker by myself, it is sometimes hard to figure out, if somebody is using Resources from you (and may violate the licence like giving no credit or using a Non-Commercial-Resource in a Commercial Game for example).
 
