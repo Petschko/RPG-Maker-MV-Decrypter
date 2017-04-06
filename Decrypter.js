@@ -86,18 +86,17 @@ function Decrypter(encryptionKey) {
 	 */
 	Decrypter.prototype.modifyFile = function(rpgFile, modType, callback) {
 		var reader = new FileReader();
+		var that = this;
 
 		reader.addEventListener('load', function() {
-			var readerResult = this.result;
-			//rpgFile.fileUrl = RPGFile.createBlobUrl(readerResult);
 
 			switch(modType) {
 				case 'encrypt':
-					rpgFile.fileUrl = RPGFile.createBlobUrl(this.encrypt(readerResult));
+					rpgFile.fileUrl = RPGFile.createBlobUrl(that.encrypt(this.result));
 					break;
 				case 'decrypt':
 				default:
-					rpgFile.fileUrl = RPGFile.createBlobUrl(this.decrypt(readerResult));
+					rpgFile.fileUrl = RPGFile.createBlobUrl(that.decrypt(this.result));
 			}
 
 			callback(rpgFile);
@@ -139,7 +138,7 @@ function Decrypter(encryptionKey) {
 				var tmp = byteArray[i]; // todo remove
 				byteArray[i] = byteArray[i] ^ parseInt(this.encryptionCodeArray[i], 16);
 				console.log('XOR: Byte ' + (i + 1) +
-					' -> (FileByte) ' + tmp + ' ^ (KeyByte) ' + parseInt(this.encryptionCodeArray[i]) +
+					' -> (FileByte) ' + tmp + ' ^ (KeyByte) ' + parseInt(this.encryptionCodeArray[i], 16) +
 					' => ' + byteArray[i]); // todo remove line
 				view.setUint8(i, byteArray[i]);
 			}
@@ -219,7 +218,7 @@ Decrypter.prototype.getRemain = function() {
  * @param {RPGFile} rpgFile - RPGFile to Decrypt
  * @param {function} callback - Function if operation is done
  */
-Decrypter.prototype.decrypt = function(rpgFile, callback) {
+Decrypter.prototype.decryptFile = function(rpgFile, callback) {
 	this.modifyFile(rpgFile, 'decrypt', callback);
 };
 
@@ -229,7 +228,7 @@ Decrypter.prototype.decrypt = function(rpgFile, callback) {
  * @param {RPGFile} rpgFile - RPGFile to Decrypt
  * @param {function} callback - Function if operation is done
  */
-Decrypter.prototype.encrypt = function(rpgFile, callback) {
+Decrypter.prototype.encryptFile = function(rpgFile, callback) {
 	this.modifyFile(rpgFile, 'encrypt', callback)
 };
 
