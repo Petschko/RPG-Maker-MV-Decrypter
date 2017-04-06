@@ -76,6 +76,27 @@ function addCssClass(elementClasses, addClass) {
 }
 
 /**
+ * Get the Value of a Radio-Button-Group
+ *
+ * @param {string} radioButtonGroupName - Radio-Button-Group-Name
+ * @param {string} fallback - Fallback-Value
+ * @returns {string} - Current Value or Fallback-Value if group doesn't exists or nothing is selected
+ */
+function getRadioButtonValue(radioButtonGroupName, fallback) {
+	var radioButtons = document.getElementsByName(radioButtonGroupName);
+	var currentValue = fallback;
+
+	for(var i = 0; i < radioButtons.length; i++) {
+		if(radioButtons[i].checked) {
+			currentValue = radioButtons[i].value;
+			break;
+		}
+	}
+
+	return currentValue;
+}
+
+/**
  * Removes all Validation-Classes
  *
  * @param {string} currentClasses - Current Element CSS-Classes
@@ -109,10 +130,22 @@ function init() {
 	// Get Elements
 	var detectButton = document.getElementById('detectButton');
 	var inputCode = document.getElementById('decryptCode');
+	var decryptButton = document.getElementById('decrypt');
 
 	// Add Listener
 	detectButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		getCode('systemFile', 'decryptCode');
+	}, false);
+	decryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		decryptFiles(
+			'encryptedImg',
+			'decryptCode',
+			!! parseInt(getRadioButtonValue('checkFakeHeader', '0')),
+			'headerLen',
+			'signature',
+			'version',
+			'remain'
+		);
 	}, false);
 	inputCode[addMethod](window.addEventListener ? 'change' : 'onchange', function() {
 		manualChange('decryptCode');
