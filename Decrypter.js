@@ -89,7 +89,6 @@ function Decrypter(encryptionKey) {
 		var that = this;
 
 		reader.addEventListener('load', function() {
-
 			switch(modType) {
 				case 'encrypt':
 					rpgFile.fileUrl = RPGFile.createBlobUrl(that.encrypt(this.result));
@@ -117,7 +116,7 @@ function Decrypter(encryptionKey) {
 
 		var i;
 		if(! this.ignoreFakeHeader) {
-			var header = new Uint8Array(arrayBuffer, 0, this.headerLen);
+			var header = new Uint8Array(arrayBuffer, 0, this.getHeaderLen());
 			if(! this.verifyFakeHeader(header))
 				throw new ErrorException(
 					'Fake-Header don\'t matches the Template-Fake-Header. Make sure, that you use an Encrypted File.' +
@@ -127,13 +126,13 @@ function Decrypter(encryptionKey) {
 		}
 
 		// Remove the Fake-Header from File-arrayBuffer
-		arrayBuffer.slice(this.getHeaderLen(), arrayBuffer.byteLength);
+		arrayBuffer = arrayBuffer.slice(this.getHeaderLen(), arrayBuffer.byteLength);
 
 		// Decrypt File beginning
 		var view = new DataView(arrayBuffer);
 		if(arrayBuffer) {
 			var byteArray = new Uint8Array(arrayBuffer);
-			for (i = 0; i < this.headerLen; i++) {
+			for (i = 0; i < this.getHeaderLen(); i++) {
 				// XOR-Bytes
 				var tmp = byteArray[i]; // todo remove
 				byteArray[i] = byteArray[i] ^ parseInt(this.encryptionCodeArray[i], 16);
@@ -150,7 +149,7 @@ function Decrypter(encryptionKey) {
 	/**
 	 * todo implement
 	 *
-	 * @param arrayBuffer
+	 * @param {ArrayBuffer} arrayBuffer
 	 * @returns {*}
 	 */
 	Decrypter.prototype.encrypt = function(arrayBuffer) {
