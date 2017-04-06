@@ -1,0 +1,40 @@
+/**
+ * Author: Peter Dragicevic [peter-91@hotmail.de]
+ * Authors-Website: http://petschko.org/
+ * Date: 30.03.2017
+ * Time: 22:18
+ */
+
+.info {
+	border: 1px solid #000;
+	background-color: #FFF285;
+	padding: 15px 20px;
+	display: none;
+}
+
+#decryptCode {
+	width: 300px;
+	background-color: #FFABAB;
+}
+
+.fileList > span {
+	border: 1px solid #000;
+	color: blue;
+	cursor: pointer;
+}
+
+noscript {
+	background-color: #FFABAB;
+}
+
+.valid {
+	background-color: #B8FFAB !important;
+}
+
+.invalid {
+	background-color: #FF0000 !important;
+}
+
+.manualChange {
+	background-color: #FFE6AB !important;
+}
