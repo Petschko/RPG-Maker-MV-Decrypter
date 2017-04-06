@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- Head-Meta stuff -->
+		<meta name="author" content="Petschko" />
+		<meta name="description" content="Decrypt encrypted RPG-Maker-MV Files (.rpgmvp, .rpgmvm or .rpgmvo) here" />
+		<meta name="keywords" content="RPG-Maker-MV, RPG-Maker-Decrypter, rpg-maker, decrypt, decrypter, rpgmvp, rpgmvm, rpgmvo" />
+
+		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Decrypt RPG-Maker-MV Images</title>
-		<script src="Decrypter.js"></script>
+		<title>RPG-Maker-MV Decrypter by Petschko</title>
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		<noscript>
+			Warning: This Script requires JavaScript. Please enable JavaScript or switch to an newer Browser.
+		</noscript>
 		<div>
-			<div style="border: 1px solid black; background-color: #fff285; padding: 15px 20px; display: none;"><!-- Not show this by default -->
+			<div class="info">
 				<h2>Information:</h2>
-				I've <a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter/releases/tag/v0.1-alpha" target="_blank">released an Alpha-Version</a> of my Project "<a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter" target="_blank">Java-RPG-Maker-MV-Decrypter</a>", which works with whole Directories and save/renames Files by itself...<br>
-				May you try it out, it also have a GUI. If you just want to decrypt single-Files, I recommend this Version here, but for whole Directories you should try the Java-Version of the Decrypter! =)
+				<p>
+					I've <a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter/releases/tag/v0.1.3-alpha" title="See the Alpha on Github" target="_blank">released an Alpha-Version</a> of my Project "<a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter" title="Visit the Project on Github" target="_blank">Java-RPG-Maker-MV-Decrypter</a>", which works with whole Directories and save/renames Files by itself...<br>
+					May you try it out, it also have a GUI. If you just want to decrypt single-Files, I recommend this Version here <i>(Bec you don't need to download it)</i>. But for whole Directories you should try the Java-Version of the Decrypter! =)
+				</p>
 				<hr>
-				This Project here will not get any updates from me, but you can improve the Code by your own: <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter" target="_blank">Get the Code on Github.com</a>! - I'm tired of Webdev, so I don't wanna make much Webdev-Stuff in the future >.<<br>
-				Petschko
+				<p>
+					This Project here will not get much updates from me, but you can improve the Code by your own: <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter" title="Get the Code on Github (And may clone the Project)" target="_blank">Get the Code on Github.com</a>! - I'm tired of Webdev, so I don't wanna make much Webdev-Stuff in the future >.<<br>
+					Petschko
+				</p>
 			</div>
 			<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
-			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Images from any RPG-MV Project that are encrypted with the Build-In encryption. It seems that this works also with Audio-Files...</p>
+			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption.</p>
 			<h2>How to use?</h2>
 			<ol>
-				<li>Check if the encrypted Files have the File-Extension ".rpgmvp", ".rpgmvm" or "rpgmvo" - If they have this extension(s) you can use this script</li>
+				<li>Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script</li>
 				<li>
 					Get the Decrypt-Code
 					<ul>
@@ -39,16 +52,36 @@
 			</ol>
 		</div>
 
-		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here:</p>
+		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
 		<hr>
-		<label>System(.json) <i>(For Decryption-Code)</i>:<br>
-			<input type="file" name="system.json" id="systemFile"></label>
-		<button onclick="getCode(document.getElementById('systemFile'), document.getElementById('decryptCode'));">Detect</button><br>
-		<label>Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" style="width: 300px; background-color: #FFABAB;" onchange="this.style.backgroundColor = '#FFE6AB';" required></label><br>
-		<label>Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label><br>
+		<h2>Decrypt File-Info</h2>
+		<label>
+			System(.json) <i>(For Decryption-Code)</i>:<br>
+			<input type="file" name="system.json" id="systemFile">
+		</label>
+		<button id="detectButton">Detect</button>
+		<br>
+		<label>
+			En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
+		</label>
+		<br>
+		Verify Fake-Header?
+		<label><input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes</label>
+		<label><input type="radio" name="checkFakeHeader" value="0">No (Ignore it)</label>
+		<br>
+		<label>En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label>
+		<br>
 		<button onclick="decryptFiles(document.getElementById('encryptedImg'), document.getElementById('decryptCode'));">Decrypt</button>
 		<hr>
-		<span onclick="document.getElementById('blob').innerHTML = '';" style="border: 1px solid #000; color: blue; cursor: pointer;">Clear File-List</span><br><br>
-		<p id="blob"></p>
-</body>
+		<div class="fileList">
+			<span onclick="document.getElementById('blob').innerHTML = '';">Clear File-List</span><br><br>
+			<p id="blob"></p>
+		</div>
+
+		<!-- Add Scripts -->
+		<script src="functions.js"></script>
+		<script src="RPGFile.js"></script>
+		<script src="ErrorException.js"></script>
+		<script src="Decrypter.js"></script>
+	</body>
 </html>
