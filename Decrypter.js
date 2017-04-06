@@ -1,189 +1,270 @@
 /**
- * Try to Reads the Encryption-Code and insert it to the given input element
- *
- * @param {Element} systemFileEl - File-Picker for the System.json-File
- * @param {Element} codeTextEl - Text-Input for the Encryption-Key
+ * Author: Peter Dragicevic [peter-91@hotmail.de]
+ * Authors-Website: http://petschko.org/
+ * Date: 30.03.2017
+ * Time: 23:05
  */
-function getCode(systemFileEl, codeTextEl) {
-	var reader = new FileReader();
-
-	if(systemFileEl.files.length < 1) {
-		alert('Please choose the System.json-File!');
-
-		return;
-	}
-
-	/**
-	 * Try to extract the Encryption-Key if file is loaded
-	 */
-	reader.addEventListener("load", function() {
-		var fileContent = JSON.parse('[' + this.result + ']');
-		var encryptionKey = fileContent[0].encryptionKey;
-
-		if(typeof encryptionKey === 'string' && encryptionKey.length > 0) {
-			codeTextEl.value = encryptionKey;
-			codeTextEl.style.backgroundColor = '#B8FFAB';
-			alert('Key found^^! (' + encryptionKey + ')');
-		} else
-			alert('Encryption-Key not found - Make sure that you select the correct file!');
-	}, false);
-
-	// Read the File
-	reader.readAsText(systemFileEl.files[0]);
-}
 
 /**
- * Decrypt a bunch of MV-Encrypted-Files
+ * Creates a new instance of the Decrypter Object
  *
- * @param {Element} fileUrlEl - Element of the File(s)-Picker
- * @param {Element} decryptCodeEl - Element of the Decryption-Code Input Field
+ * @param {string} encryptionKey - Encryption-Key
+ * @constructor - Decrypter
  */
-function decryptFiles(fileUrlEl, decryptCodeEl) {
-	var decryptCode = decryptCodeEl.value;
-	var i = 0;
+function Decrypter(encryptionKey) {
+	// Encryption-Fields
+	this.encryptCode = encryptionKey;
 
-	// Check if all required stuff is given
-	if(! decryptCode) {
-		alert('Specify the Decryption-Code!');
-		decryptCodeEl.style.backgroundColor = '#FF0000';
+	// Option Fields
+	this.ignoreFakeHeader = false;
 
-		return;
-	}
-	if(fileUrlEl.files.length < 1) {
-		alert('Specify at least 1 File to decrypt...');
+	// Fake-Header Info-Fields
+	this.headerLen = null;
+	this.signature = null;
+	this.version = null;
+	this.remain = null;
 
-		return;
-	}
+	// Private Functions
+	/**
+	 * Splits the Encryption-Code into an Array
+	 *
+	 * @returns {Array} - Encryption-Array
+	 */
+	Decrypter.prototype.splitEncryptionCode = function() {
+		return this.encryptCode.split(/(.{2})/).filter(Boolean);
+	};
+	this.encryptionCodeArray = this.splitEncryptionCode();
 
-	// Set Code
-	Decrypter.plainDecryptionCode = decryptCode;
+	/**
+	 * Check if the current File-Header matches the Fake-Header
+	 *
+	 * @param {Uint8Array} fileHeader - Current-File-Header
+	 * @returns {boolean} - true if header matches fake header else false
+	 */
+	Decrypter.prototype.verifyFakeHeader = function(fileHeader) {
+		var fakeHeader = this.buildFakeHeader();
 
-	// Process every File
-	for(; i < fileUrlEl.files.length; i++) {
+		for(var i = 0; i < this.getHeaderLen(); i++)
+			if(fileHeader[i] !== fakeHeader[i])
+				return false;
+
+		return true;
+	};
+
+	/**
+	 * Builds the Fake-Header
+	 *
+	 * @returns {Uint8Array} - Fake-Header-Array
+	 */
+	Decrypter.prototype.buildFakeHeader = function() {
+		var fakeHeader = new Uint8Array(this.getHeaderLen());
+		var headerStructure = this.getSignature() + this.getVersion() + this.getRemain();
+
+		for(var i = 0; i < this.getHeaderLen(); i++)
+			fakeHeader[i] = parseInt('0x' + headerStructure.substr(i * 2, 2), 16);
+
+		return fakeHeader;
+	};
+
+	/**
+	 * Removes the header from the ArrayObject by specifying its length
+	 *
+	 * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object
+	 * @param {int} length - length of the header
+	 * @returns {ArrayBuffer} - ArrayBuffer Object without header
+	 */
+	Decrypter.prototype.removeFakeHeader = function(arrayBuffer, length) {
+		return arrayBuffer.slice(length, arrayBuffer.byteLength);
+	};
+
+	/**
+	 * Do something with a RPGFile
+	 *
+	 * @param {RPGFile} rpgFile - RPGFile Object
+	 * @param {string} modType - Specify what to do with that file
+	 * @param {function} callback - Function if operation is done
+	 */
+	Decrypter.prototype.modifyFile = function(rpgFile, modType, callback) {
 		var reader = new FileReader();
-		console.log('Try to decrypt the File "' + fileUrlEl.files[i].name + '" with Decryption-Code "' + decryptCode + '"...');
 
-		/**
-		 * Decrypt the File if its loaded
-		 */
-		reader.addEventListener("load", function() {
-			var fileUrl = Decrypter.createBlobUrl(this.result);
-			console.log('File read and loaded into "' + fileUrl + '".');
+		reader.addEventListener('load', function() {
+			var readerResult = this.result;
+			//rpgFile.fileUrl = RPGFile.createBlobUrl(readerResult);
 
-			// Decrypt Image
-			Decrypter.decrypt(fileUrl);
-			console.log('File decrypted with the given Key - Wrong keys will not give the expected output!');
+			switch(modType) {
+				case 'encrypt':
+					rpgFile.fileUrl = RPGFile.createBlobUrl(this.encrypt(readerResult));
+					break;
+				case 'decrypt':
+				default:
+					rpgFile.fileUrl = RPGFile.createBlobUrl(this.decrypt(readerResult));
+			}
+
+			callback(rpgFile);
 		}, false);
 
-		// Read File
-		console.log('Try to read the File...');
-		reader.readAsArrayBuffer(fileUrlEl.files[i]);
-	}
-}
-
-/**
- * @constructor - Disabled constructor
- */
-function Decrypter() {
-	throw new Error('This is a static class');
-}
-
-Decrypter.plainDecryptionCode = "";
-Decrypter._headerlength = 16;
-Decrypter._xhrOk = 400;
-Decrypter._encryptionKey = "";
-Decrypter.SIGNATURE = "5250474d56000000";
-Decrypter.VER = "000301";
-Decrypter.REMAIN = "0000000000";
-
-/**
- * Decrypt file from url
- *
- * @param {String} url - Encrypted file-url
- */
-Decrypter.decrypt = function(url) {
-	var requestFile = new XMLHttpRequest();
-	requestFile.open("GET", url);
-	requestFile.responseType = "arraybuffer";
-	requestFile.send();
+		reader.readAsArrayBuffer(rpgFile.file);
+	};
 
 	/**
-	 * Decrypt the file if loaded and display the link of the decrypted file
+	 * Decrypts a RPG-Make-File-ArrayBuffer & may check the header if turned on
+	 *
+	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer of the File
+	 * @returns {ArrayBuffer} - Decrypted Array-Buffer of the File without the Fake-Header
 	 */
-	requestFile.onload = function () {
-		if(this.status < Decrypter._xhrOk) {
-			var arrayBuffer = Decrypter.decryptArrayBuffer(requestFile.response);
-			var blobURL = Decrypter.createBlobUrl(arrayBuffer);
+	Decrypter.prototype.decrypt = function(arrayBuffer) {
+		if(! arrayBuffer)
+			throw new ErrorException('File is empty or can\'t be read by your Browser...', 1);
 
-			document.getElementById('blob').innerHTML += '<a href="' + blobURL + '" target="_blank">' + blobURL + '</a><br>';
+		var i;
+		if(! this.ignoreFakeHeader) {
+			var header = new Uint8Array(arrayBuffer, 0, this.headerLen);
+			if(! this.verifyFakeHeader(header))
+				throw new ErrorException(
+					'Fake-Header don\'t matches the Template-Fake-Header. Make sure, that you use an Encrypted File.' +
+					' - If you do, turn off "Fake-Header"-Check and try again.',
+					2
+				);
 		}
+
+		// Remove the Fake-Header from File-arrayBuffer
+		arrayBuffer.slice(this.getHeaderLen(), arrayBuffer.byteLength);
+
+		// Decrypt File beginning
+		var view = new DataView(arrayBuffer);
+		if(arrayBuffer) {
+			var byteArray = new Uint8Array(arrayBuffer);
+			for (i = 0; i < this.headerLen; i++) {
+				// XOR-Bytes
+				var tmp = byteArray[i]; // todo remove
+				byteArray[i] = byteArray[i] ^ parseInt(this.encryptionCodeArray[i], 16);
+				console.log('XOR: Byte ' + (i + 1) +
+					' -> (FileByte) ' + tmp + ' ^ (KeyByte) ' + parseInt(this.encryptionCodeArray[i]) +
+					' => ' + byteArray[i]); // todo remove line
+				view.setUint8(i, byteArray[i]);
+			}
+		}
+
+		return arrayBuffer;
 	};
+
+	/**
+	 * todo implement
+	 *
+	 * @param arrayBuffer
+	 * @returns {*}
+	 */
+	Decrypter.prototype.encrypt = function(arrayBuffer) {
+		return arrayBuffer;
+	};
+}
+// Class constants
+Decrypter.prototype.defaultHeaderLen = 16;
+Decrypter.prototype.defaultSignature = "5250474d56000000";
+Decrypter.prototype.defaultVersion = "000301";
+Decrypter.prototype.defaultRemain = "0000000000";
+
+/**
+ * Returns the Header Len
+ *
+ * @returns {int} - Header-Len
+ */
+Decrypter.prototype.getHeaderLen = function() {
+	if(this.headerLen === null || typeof this.headerLen !== 'number')
+		this.headerLen = this.defaultHeaderLen;
+
+	// Ensure int
+	return Math.floor(this.headerLen);
 };
 
 /**
- * Removes the header from the ArrayObject by specifying its length
+ * Returns the Signature
  *
- * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object
- * @param {int} length - length of the header
- * @returns {ArrayBuffer} - ArrayBuffer Object without header
+ * @returns {string} - Signature
  */
-Decrypter.cutArrayHeader = function(arrayBuffer, length) {
-	return arrayBuffer.slice(length);
+Decrypter.prototype.getSignature = function() {
+	if(this.signature === null)
+		this.signature = this.defaultSignature;
+
+	return this.signature;
 };
 
 /**
- * Decrypts the Content of the ArrayBuffer-Object by using the decryption key
+ * Returns the Version
  *
- * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object with encrypted content
- * @returns {ArrayBuffer} - ArrayBuffer Object with decrypted (original) content
+ * @returns {string} - Version
  */
-Decrypter.decryptArrayBuffer = function(arrayBuffer) {
-	if(! arrayBuffer)
-		return null;
+Decrypter.prototype.getVersion = function() {
+	if(this.version === null)
+		this.version = this.defaultVersion;
 
-	var header = new Uint8Array(arrayBuffer, 0, this._headerlength);
-	var i;
-	var ref = this.SIGNATURE + this.VER + this.REMAIN;
-	var refBytes = new Uint8Array(16);
+	return this.version;
+};
 
-	for(i = 0; i < this._headerlength; i++) {
-		refBytes[i] = parseInt('0x' + ref.substr(i * 2, 2), 16);
-	}
+/**
+ * Returns the Remain
+ *
+ * @returns {string} - Remain
+ */
+Decrypter.prototype.getRemain = function() {
+	if(this.remain === null)
+		this.remain = this.defaultRemain;
 
-	for(i = 0; i < this._headerlength; i++) {
-		if (header[i] !== refBytes[i])
-			throw new Error('Header is wrong');
-	}
+	return this.remain;
+};
 
-	arrayBuffer = this.cutArrayHeader(arrayBuffer, Decrypter._headerlength);
-	var view = new DataView(arrayBuffer);
-	this.readEncryptionkey();
+/**
+ * Decrypts a RPGFile
+ *
+ * @param {RPGFile} rpgFile - RPGFile to Decrypt
+ * @param {function} callback - Function if operation is done
+ */
+Decrypter.prototype.decrypt = function(rpgFile, callback) {
+	this.modifyFile(rpgFile, 'decrypt', callback);
+};
 
-	if(arrayBuffer) {
-		var byteArray = new Uint8Array(arrayBuffer);
-		for (i = 0; i < this._headerlength; i++) {
-			byteArray[i] = byteArray[i] ^ parseInt(Decrypter._encryptionKey[i], 16);
-			view.setUint8(i, byteArray[i]);
+/**
+ * Encrypts a RPGFile
+ *
+ * @param {RPGFile} rpgFile - RPGFile to Decrypt
+ * @param {function} callback - Function if operation is done
+ */
+Decrypter.prototype.encrypt = function(rpgFile, callback) {
+	this.modifyFile(rpgFile, 'encrypt', callback)
+};
+
+/**
+ * Detect the Encryption-Code from a RPGFile
+ *
+ * @param {RPGFile} rpgFile - RPGFile Object
+ * @param {function} callback - Function if operation is done
+ */
+Decrypter.detectEncryptionCode = function(rpgFile, callback) {
+	var reader = new FileReader();
+
+	reader.addEventListener('load', function() {
+		var key;
+
+		try {
+			var fileContent = JSON.parse('[' + this.result + ']');
+			key = fileContent[0].encryptionKey;
+		} catch(e) {
+			key = null;
 		}
-	}
 
-	return arrayBuffer;
+		callback(key);
+	}, false);
+
+	reader.readAsText(rpgFile.file);
 };
 
 /**
- * Creates a BLOB-URL from a object
+ * Check if the string only has HEX-Chars (0-9 & A-F)
  *
- * @param {ArrayBuffer|Object} object
- * @returns {String} - BLOB-URL of the array buffer
+ * @param {string} string - String to verify
+ * @returns {boolean} - true if string is valid else false
  */
-Decrypter.createBlobUrl = function(object) {
-	var blob = new Blob([object]);
-	return window.URL.createObjectURL(blob);
-};
-
-/**
- * Creates the real encryption key
- */
-Decrypter.readEncryptionkey = function() {
-	this._encryptionKey = this.plainDecryptionCode.split(/(.{2})/).filter(Boolean);
+Decrypter.checkHexChars = function(string) {
+	//todo
+	return true;
 };
