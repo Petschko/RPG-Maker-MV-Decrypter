@@ -266,3 +266,19 @@ Decrypter.checkHexChars = function(string) {
 	//todo
 	return true;
 };
+
+/**
+ * Converts a Byte to Bits
+ *
+ * @param {number} byte - Byte
+ * @returns {string} - Bits
+ */
+Decrypter.helperShowBits = function(byte) {
+	if(isNaN(byte))
+		byte = 0;
+
+	var bits = byte.toString(2);
+	var missingZeros = 8 - bits.length;
+
+	return new Array(missingZeros + 1).join('0') + bits;
+};
