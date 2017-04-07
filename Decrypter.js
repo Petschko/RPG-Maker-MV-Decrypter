@@ -276,6 +276,8 @@ Decrypter.checkHexChars = function(string) {
 Decrypter.helperShowBits = function(byte) {
 	if(isNaN(byte))
 		byte = 0;
+	if(byte > 255 || byte < 0)
+		throw 'Invalid Byte-Value (' + byte + ')';
 
 	var bits = byte.toString(2);
 	var missingZeros = 8 - bits.length;
