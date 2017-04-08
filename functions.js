@@ -137,10 +137,11 @@ function init() {
 		getCode('systemFile', 'decryptCode');
 	}, false);
 	decryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		decryptFiles(
+		processFiles(
 			'encryptedImg',
 			'decryptCode',
 			'blob',
+			true,
 			!! parseInt(getRadioButtonValue('checkFakeHeader', '0')),
 			'headerLen',
 			'signature',
@@ -162,16 +163,18 @@ document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
  * @param {string} fileUrlElId - Element-Id of the File(s)-Picker
  * @param {string} decryptCodeElId - Element-Id of the Decryption-Code Input Field
  * @param {string} outputElId - Output-Element-Id
+ * @param {boolean} decrypt - Decrypt (true decrypts false encrypts)
  * @param {boolean} verifyHeader - Verify Header
  * @param {string} headerLenElId - Element-Id of the Header-Length
  * @param {string} signatureElId - Element-Id of the Signature
  * @param {string} versionElId - Element-Id of the Version
  * @param {string} remainElId - Element-Id of the Remain
  */
-function decryptFiles(
+function processFiles(
 	fileUrlElId,
 	decryptCodeElId,
 	outputElId,
+	decrypt,
 	verifyHeader,
 	headerLenElId,
 	signatureElId,
@@ -186,6 +189,10 @@ function decryptFiles(
 	var signature = null;
 	var version = null;
 	var remain = null;
+
+	// On encryption verify-header is req
+	if(! decrypt)
+		verifyHeader = true;
 
 	if(verifyHeader) {
 		var headerLenEl = document.getElementById(headerLenElId);
@@ -276,14 +283,26 @@ function decryptFiles(
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
 
-		decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
-			// Output Decrypted files
-			if(exception !== null)
-				outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
-			else {
-				rpgFile.convertExtension(true);
-				outputEl.appendChild(rpgFile.createOutPut(null));
-			}
-		});
+		if(decrypt) {
+			decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
+				// Output Decrypted file
+				if(exception !== null)
+					outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
+				else {
+					rpgFile.convertExtension(true);
+					outputEl.appendChild(rpgFile.createOutPut(null));
+				}
+			});
+		} else {
+			decrypter.encryptFile(rpgFile, function(rpgFile, exception) {
+				// Output Encrypted file
+				if(exception !== null)
+					outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
+				else {
+					rpgFile.convertExtension(false);
+					outputEl.appendChild(rpgFile.createOutPut(null));
+				}
+			});
+		}
 	}
 }
