@@ -50,6 +50,37 @@ RPGFile.prototype.save = function() {
 };
 
 /**
+ * Converts the current extension to an other extension
+ *
+ * @param {boolean} toNormal - Converts the current extension to a normal extension
+ */
+RPGFile.prototype.convertExtension = function(toNormal) {
+	if(toNormal) {
+		switch(this.extension.toLocaleLowerCase()) {
+			case 'rpgmvp':
+				this.extension = 'png';
+				break;
+			case 'rpgmvm':
+				this.extension = 'm4a';
+				break;
+			case 'rpgmvo':
+				this.extension = 'ogg';
+		}
+	} else {
+		switch(this.extension.toLocaleLowerCase()) {
+			case 'png':
+				this.extension = 'rpgmvp';
+				break;
+			case 'm4a':
+				this.extension = 'rpgmvm';
+				break;
+			case 'ogg':
+				this.extension = 'rpgmvo';
+		}
+	}
+};
+
+/**
  * Creates a BLOB-URL from a object
  *
  * @param {ArrayBuffer|Object} object - Object
