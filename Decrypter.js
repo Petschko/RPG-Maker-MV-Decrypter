@@ -67,17 +67,6 @@ function Decrypter(encryptionKey) {
 	};
 
 	/**
-	 * Removes the header from the ArrayObject by specifying its length
-	 *
-	 * @param {ArrayBuffer} arrayBuffer - ArrayBuffer Object
-	 * @param {int} length - length of the header
-	 * @returns {ArrayBuffer} - ArrayBuffer Object without header
-	 */
-	Decrypter.prototype.removeFakeHeader = function(arrayBuffer, length) {
-		return arrayBuffer.slice(length, arrayBuffer.byteLength);
-	};
-
-	/**
 	 * Do something with a RPGFile
 	 *
 	 * @param {RPGFile} rpgFile - RPGFile Object
@@ -88,17 +77,28 @@ function Decrypter(encryptionKey) {
 		var reader = new FileReader();
 		var that = this;
 
-		reader.addEventListener('load', function() {
+		reader[window.addEventListener ? 'addEventListener' : 'attachEvent']
+		(window.addEventListener ? 'load' : 'onload', function() {
 			switch(modType) {
 				case 'encrypt':
-					rpgFile.fileUrl = RPGFile.createBlobUrl(that.encrypt(this.result));
+					try {
+						rpgFile.fileUrl = RPGFile.createBlobUrl(that.encrypt(this.result));
+					} catch(e) {
+						callback(rpgFile, e);
+						return;
+					}
 					break;
 				case 'decrypt':
 				default:
-					rpgFile.fileUrl = RPGFile.createBlobUrl(that.decrypt(this.result));
+					try {
+						rpgFile.fileUrl = RPGFile.createBlobUrl(that.decrypt(this.result));
+					} catch(e) {
+						callback(rpgFile, e);
+						return;
+					}
 			}
 
-			callback(rpgFile);
+			callback(rpgFile, null);
 		}, false);
 
 		reader.readAsArrayBuffer(rpgFile.file);
@@ -108,7 +108,7 @@ function Decrypter(encryptionKey) {
 	 * Decrypts a RPG-Make-File-ArrayBuffer & may check the header if turned on
 	 *
 	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer of the File
-	 * @returns {ArrayBuffer} - Decrypted Array-Buffer of the File without the Fake-Header
+	 * @returns {ArrayBuffer|ErrorException} - Decrypted Array-Buffer of the File without the Fake-Header
 	 */
 	Decrypter.prototype.decrypt = function(arrayBuffer) {
 		if(! arrayBuffer)
@@ -146,7 +146,7 @@ function Decrypter(encryptionKey) {
 	 * todo implement
 	 *
 	 * @param {ArrayBuffer} arrayBuffer
-	 * @returns {*}
+	 * @returns {ArrayBuffer}
 	 */
 	Decrypter.prototype.encrypt = function(arrayBuffer) {
 		return arrayBuffer;
