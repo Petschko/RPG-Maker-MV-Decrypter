@@ -34,7 +34,7 @@ function RPGFile(file, blobUrl) {
 		}
 
 		this.extension = this.fullName.substr(pointPos + 1);
-		this.name = this.fullName.substr(0, pointPos - 1);
+		this.name = this.fullName.substr(0, pointPos);
 	};
 	this.splitFileName();
 }
@@ -42,35 +42,48 @@ function RPGFile(file, blobUrl) {
 /**
  * Creates the Output for the File
  *
+ * @param {string|null} faultMessage - Error-Message or null if all is ok
  * @returns {Element} - Output-Element
  */
-RPGFile.prototype.createOutPut = function() {
+RPGFile.prototype.createOutPut = function(faultMessage) {
 	var element = document.createElement('div');
 	var fileNameEl = document.createElement('span');
-	var viewLink = document.createElement('a');
-	var saveFunction = document.createElement('a');
 
 	element.className = 'fileInfo';
 	fileNameEl.innerHTML = this.name + '.' + this.extension;
 
-	// Set all to view the link
-	viewLink.innerHTML = 'View';
-	viewLink.title = 'View ' + this.name + '.' + this.extension + ' in your Browser';
-	viewLink.href = this.fileUrl;
-	viewLink.target = '_blank';
+	if(! faultMessage) {
+		var viewLink = document.createElement('a');
+		var saveFunction = document.createElement('a');
 
-	// Set all to save file
-	saveFunction.innerHTML = 'Save';
-	saveFunction.className = 'save';
-	saveFunction.title = 'Save ' + this.name + '.' + this.extension + ' on your Computer';
-	saveFunction.href = this.fileUrl;
-	saveFunction.download = this.name + '.' + this.extension;
-	saveFunction.target = '_blank';
+		// Set all to view the link
+		viewLink.innerHTML = 'View';
+		viewLink.title = 'View ' + this.name + '.' + this.extension + ' in your Browser';
+		viewLink.href = this.fileUrl;
+		viewLink.target = '_blank';
+
+		// Set all to save file
+		saveFunction.innerHTML = 'Save';
+		saveFunction.className = 'save';
+		saveFunction.title = 'Save ' + this.name + '.' + this.extension + ' on your Computer';
+		saveFunction.href = this.fileUrl;
+		saveFunction.download = this.name + '.' + this.extension;
+		saveFunction.target = '_blank';
+	} else {
+		var errorEl = document.createElement('p');
+		errorEl.innerHTML = faultMessage;
+
+		// Add Error-CSS-Class
+		element.className = addCssClass(element.className, 'errorFile');
+	}
 
 	// Mix all together^^
 	element.appendChild(fileNameEl);
-	element.appendChild(viewLink);
-	element.appendChild(saveFunction);
+	if(! faultMessage) {
+		element.appendChild(viewLink);
+		element.appendChild(saveFunction);
+	} else
+		element.appendChild(errorEl);
 
 	return element;
 };
