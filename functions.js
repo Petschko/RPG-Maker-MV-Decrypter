@@ -215,12 +215,21 @@ function decryptFiles(
 		// todo handle details
 	}
 
+	var hasErrors = 0;
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
-		decrypter.decryptFile(rpgFile, function(rpgFile) {
+		decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
 			// Output Decrypted files
-			rpgFile.convertExtension(true);
-			outputEl.appendChild(rpgFile.createOutPut());
+			if(exception !== null) {
+				hasErrors++;
+				outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
+			} else {
+				rpgFile.convertExtension(true);
+				outputEl.appendChild(rpgFile.createOutPut(null));
+			}
 		});
 	}
+
+	if(hasErrors > 0)
+		alert(hasErrors + ' Files had Error... Please read more details in the File-List!');
 }
