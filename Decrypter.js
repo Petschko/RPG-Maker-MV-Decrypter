@@ -24,7 +24,6 @@ function Decrypter(encryptionKey) {
 	this.version = null;
 	this.remain = null;
 
-	// Private Functions
 	/**
 	 * Splits the Encryption-Code into an Array
 	 *
@@ -79,6 +78,8 @@ function Decrypter(encryptionKey) {
 
 		reader[window.addEventListener ? 'addEventListener' : 'attachEvent']
 		(window.addEventListener ? 'load' : 'onload', function() {
+			console.log('Try to ' + modType + ' the File "' + rpgFile.name + '.' + rpgFile.extension + '...');
+
 			switch(modType) {
 				case 'encrypt':
 					try {
@@ -108,13 +109,12 @@ function Decrypter(encryptionKey) {
 	 * Decrypts a RPG-Make-File-ArrayBuffer & may check the header if turned on
 	 *
 	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer of the File
-	 * @returns {ArrayBuffer|ErrorException} - Decrypted Array-Buffer of the File without the Fake-Header
+	 * @returns {ArrayBuffer} - Decrypted Array-Buffer of the File without the Fake-Header
 	 */
 	Decrypter.prototype.decrypt = function(arrayBuffer) {
 		if(! arrayBuffer)
 			throw new ErrorException('File is empty or can\'t be read by your Browser...', 1);
 
-		var i;
 		if(! this.ignoreFakeHeader) {
 			var header = new Uint8Array(arrayBuffer, 0, this.getHeaderLen());
 			if(! this.verifyFakeHeader(header))
@@ -129,28 +129,63 @@ function Decrypter(encryptionKey) {
 		arrayBuffer = arrayBuffer.slice(this.getHeaderLen(), arrayBuffer.byteLength);
 
 		// Decrypt File beginning
+		arrayBuffer = this.xOrBytes(arrayBuffer);
+
+		return arrayBuffer;
+	};
+
+	/**
+	 * (Re)-Encrypt a RPG-Make-File-ArrayBuffer
+	 *
+	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer of the File
+	 * @returns {ArrayBuffer} - Encrypted Array-Buffer with the Fake-Header
+	 */
+	Decrypter.prototype.encrypt = function(arrayBuffer) {
+		if(! arrayBuffer)
+			throw new ErrorException('File is empty or can\'t be read by your Browser...', 1);
+
+		// Encrypt the File beginning
+		arrayBuffer = this.xOrBytes(arrayBuffer);
+
+		// Create Header
+		var fakeHeader = this.buildFakeHeader();
+
+		// Add Fake-Header in Front then the File
+		var tmpInt8Array = new Uint8Array(arrayBuffer.byteLength + this.getHeaderLen());
+		tmpInt8Array.set(fakeHeader, 0);
+		tmpInt8Array.set(new Uint8Array(arrayBuffer), this.getHeaderLen());
+
+		// Check if header is valid
+		var header = new Uint8Array(tmpInt8Array.buffer, 0, this.getHeaderLen());
+		if(! this.verifyFakeHeader(header))
+			throw new ErrorException(
+				'Fake-Header don\'t matches the Template-Fake-Header... Please report this Bug',
+				3
+			);
+
+		return tmpInt8Array.buffer;
+	};
+
+	/**
+	 * XOR x Bytes (x = header-length-bytes)
+	 *
+	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer where bytes should be XORed
+	 * @returns {ArrayBuffer} - Array-Buffer with XORed Bytes
+	 */
+	Decrypter.prototype.xOrBytes = function(arrayBuffer) {
 		var view = new DataView(arrayBuffer);
+
 		if(arrayBuffer) {
 			var byteArray = new Uint8Array(arrayBuffer);
-			for (i = 0; i < this.getHeaderLen(); i++) {
-				// XOR-Bytes
+
+			for(var i = 0; i < this.getHeaderLen(); i++) {
 				byteArray[i] = byteArray[i] ^ parseInt(this.encryptionCodeArray[i], 16);
 				view.setUint8(i, byteArray[i]);
 			}
 		}
 
 		return arrayBuffer;
-	};
-
-	/**
-	 * todo implement
-	 *
-	 * @param {ArrayBuffer} arrayBuffer
-	 * @returns {ArrayBuffer}
-	 */
-	Decrypter.prototype.encrypt = function(arrayBuffer) {
-		return arrayBuffer;
-	};
+	}
 }
 // Class constants
 Decrypter.prototype.defaultHeaderLen = 16;
