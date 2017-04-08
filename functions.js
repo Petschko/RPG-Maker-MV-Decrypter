@@ -140,6 +140,7 @@ function init() {
 		decryptFiles(
 			'encryptedImg',
 			'decryptCode',
+			'blob',
 			!! parseInt(getRadioButtonValue('checkFakeHeader', '0')),
 			'headerLen',
 			'signature',
@@ -160,6 +161,7 @@ document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
  *
  * @param {string} fileUrlElId - Element-Id of the File(s)-Picker
  * @param {string} decryptCodeElId - Element-Id of the Decryption-Code Input Field
+ * @param {string} outputElId - Output-Element-Id
  * @param {boolean} verifyHeader - Verify Header
  * @param {string} headerLenElId - Element-Id of the Header-Length
  * @param {string} signatureElId - Element-Id of the Signature
@@ -169,12 +171,14 @@ document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
 function decryptFiles(
 	fileUrlElId,
 	decryptCodeElId,
+	outputElId,
 	verifyHeader,
 	headerLenElId,
 	signatureElId,
 	versionElId,
 	remainElId
 ) {
+	var outputEl = document.getElementById(outputElId);
 	var fileUrlEl = document.getElementById(fileUrlElId);
 	var encryptCodeEl = document.getElementById(decryptCodeElId);
 	var encryptionCode = encryptCodeEl.value;
@@ -208,32 +212,15 @@ function decryptFiles(
 	var decrypter = new Decrypter(encryptionCode);
 	decrypter.ignoreFakeHeader = ! verifyHeader;
 	if(verifyHeader) {
-
+		// todo handle details
 	}
 
-	// --------------------------------
-	// Set Code
-	Decrypter.plainDecryptionCode = encryptionCode;
-
-	// Process every File
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
-		var reader = new FileReader();
-		console.log('Try to decrypt the File "' + fileUrlEl.files[i].name + '" with Decryption-Code "' + encryptionCode + '"...');
-
-		/**
-		 * Decrypt the File if its loaded
-		 */
-		reader.addEventListener("load", function() {
-			var fileUrl = Decrypter.createBlobUrl(this.result);
-			console.log('File read and loaded into "' + fileUrl + '".');
-
-			// Decrypt Image
-			Decrypter.decrypt(fileUrl);
-			console.log('File decrypted with the given Key - Wrong keys will not give the expected output!');
-		}, false);
-
-		// Read File
-		console.log('Try to read the File...');
-		reader.readAsArrayBuffer(fileUrlEl.files[i]);
+		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
+		decrypter.decryptFile(rpgFile, function(rpgFile) {
+			// Output Decrypted files
+			rpgFile.convertExtension(true);
+			outputEl.appendChild(rpgFile.createOutPut());
+		});
 	}
 }

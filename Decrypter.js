@@ -134,11 +134,7 @@ function Decrypter(encryptionKey) {
 			var byteArray = new Uint8Array(arrayBuffer);
 			for (i = 0; i < this.getHeaderLen(); i++) {
 				// XOR-Bytes
-				var tmp = byteArray[i]; // todo remove
 				byteArray[i] = byteArray[i] ^ parseInt(this.encryptionCodeArray[i], 16);
-				console.log('XOR: Byte ' + (i + 1) +
-					' -> (FileByte) ' + tmp + ' ^ (KeyByte) ' + parseInt(this.encryptionCodeArray[i], 16) +
-					' => ' + byteArray[i]); // todo remove line
 				view.setUint8(i, byteArray[i]);
 			}
 		}
