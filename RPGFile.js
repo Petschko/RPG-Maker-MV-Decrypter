@@ -40,13 +40,39 @@ function RPGFile(file, blobUrl) {
 }
 
 /**
- * Saves the File
+ * Creates the Output for the File
+ *
+ * @returns {Element} - Output-Element
  */
-RPGFile.prototype.save = function() {
-	if(this.fileUrl === null)
-		return;
+RPGFile.prototype.createOutPut = function() {
+	var element = document.createElement('div');
+	var fileNameEl = document.createElement('span');
+	var viewLink = document.createElement('a');
+	var saveFunction = document.createElement('a');
 
-	//todo
+	element.className = 'fileInfo';
+	fileNameEl.innerHTML = this.name + '.' + this.extension;
+
+	// Set all to view the link
+	viewLink.innerHTML = 'View';
+	viewLink.title = 'View ' + this.name + '.' + this.extension + ' in your Browser';
+	viewLink.href = this.fileUrl;
+	viewLink.target = '_blank';
+
+	// Set all to save file
+	saveFunction.innerHTML = 'Save';
+	saveFunction.className = 'save';
+	saveFunction.title = 'Save ' + this.name + '.' + this.extension + ' on your Computer';
+	saveFunction.href = this.fileUrl;
+	saveFunction.download = this.name + '.' + this.extension;
+	saveFunction.target = '_blank';
+
+	// Mix all together^^
+	element.appendChild(fileNameEl);
+	element.appendChild(viewLink);
+	element.appendChild(saveFunction);
+
+	return element;
 };
 
 /**
