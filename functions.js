@@ -280,6 +280,7 @@ function processFiles(
 		}
 	}
 
+	// Process all Files
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
 
