@@ -273,16 +273,14 @@ function decryptFiles(
 		}
 	}
 
-	var hasErrors = 0;
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
 
 		decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
 			// Output Decrypted files
-			if(exception !== null) {
-				hasErrors++;
+			if(exception !== null)
 				outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
-			} else {
+			else {
 				rpgFile.convertExtension(true);
 				outputEl.appendChild(rpgFile.createOutPut(null));
 			}
