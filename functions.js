@@ -188,21 +188,44 @@ function decryptFiles(
 	var remain = null;
 
 	if(verifyHeader) {
-		headerLen = document.getElementById(headerLenElId);
-		signature = document.getElementById(signatureElId);
-		version = document.getElementById(versionElId);
-		remain = document.getElementById(remainElId);
+		var headerLenEl = document.getElementById(headerLenElId);
+		var signatureEl = document.getElementById(signatureElId);
+		var versionEl = document.getElementById(versionElId);
+		var remainEl = document.getElementById(remainElId);
+
+		if(headerLenEl)
+			headerLen = headerLenEl.value;
+		if(signatureEl)
+			signature = signatureEl.value;
+		if(versionEl)
+			version = versionEl.value;
+		if(remainEl)
+			remain = remainEl.value;
 	}
 
 	// Check if all required stuff is given
 	if(! encryptionCode) {
-		alert('Specify the Decryption-Code!');
+		alert('Specify the En/Decryption-Code!');
 		encryptCodeEl.className = removeValidationCssClasses(encryptCodeEl.className);
 		encryptCodeEl.className = addCssClass(encryptCodeEl.className, 'invalid');
 
 		return;
 	}
 
+	// Check if code just contain HEX-Chars
+	if(! Decrypter.checkHexChars(encryptionCode)) {
+		alert('En/Decryption-Code can just contain HEX-Chars (0-9 & A-F or a-f)!');
+		encryptCodeEl.className = removeValidationCssClasses(encryptCodeEl.className);
+		encryptCodeEl.className = addCssClass(encryptCodeEl.className, 'invalid');
+
+		return;
+	}
+
+	// Set valid encryption class
+	encryptCodeEl.className = removeValidationCssClasses(encryptCodeEl.className);
+	encryptCodeEl.className = addCssClass(encryptCodeEl.className, 'valid');
+
+	// Check if at least 1 File is given
 	if(fileUrlEl.files.length < 1) {
 		alert('Specify at least 1 File to decrypt...');
 
@@ -212,12 +235,48 @@ function decryptFiles(
 	var decrypter = new Decrypter(encryptionCode);
 	decrypter.ignoreFakeHeader = ! verifyHeader;
 	if(verifyHeader) {
-		// todo handle details
+		// Handle Header details
+		headerLenEl.className = removeValidationCssClasses(headerLenEl.className);
+		if(! isNaN(headerLen) && Math.floor(headerLen) > 0)
+			decrypter.headerLen = Math.floor(headerLen);
+		else if(headerLen) {
+			headerLenEl.className = addCssClass(headerLenEl.className, 'invalid');
+			alert('Info: Header-Length must be a positive round Number! (Using default now: ' +
+				decrypter.defaultHeaderLen + ')');
+		}
+
+		signatureEl.className = removeValidationCssClasses(signatureEl.className);
+		if(Decrypter.checkHexChars(signature))
+			decrypter.signature = signature;
+		else if(signature) {
+			signatureEl.className = addCssClass(signatureEl.className, 'invalid');
+			alert('Info: Header-Signature can just contain HEX-Chars (0-9 & A-F or a-f)! (Using default now: ' +
+				decrypter.defaultSignature + ')');
+		}
+
+		versionEl.className = removeValidationCssClasses(versionEl.className);
+		if(Decrypter.checkHexChars(version))
+			decrypter.version = version;
+		else if(version) {
+			versionEl.className = addCssClass(versionEl.className, 'invalid');
+			alert('Info: Header-Version can just contain HEX-Chars (0-9 & A-F or a-f)! (Using default now: ' +
+				decrypter.defaultVersion + ')');
+		}
+
+		remainEl.className = removeValidationCssClasses(remainEl.className);
+		if(Decrypter.checkHexChars(remain))
+			decrypter.remain = remain;
+		else if(remain) {
+			remainEl.className = addCssClass(remainEl.className, 'invalid');
+			alert('Info: Header-Remain can just contain HEX-Chars (0-9 & A-F or a-f)! (Using default now: ' +
+				decrypter.defaultRemain + ')');
+		}
 	}
 
 	var hasErrors = 0;
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
+
 		decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
 			// Output Decrypted files
 			if(exception !== null) {
@@ -229,7 +288,4 @@ function decryptFiles(
 			}
 		});
 	}
-
-	if(hasErrors > 0)
-		alert(hasErrors + ' Files had Error... Please read more details in the File-List!');
 }
