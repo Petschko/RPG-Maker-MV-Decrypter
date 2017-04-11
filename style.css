@@ -31,10 +31,8 @@ body {
 	background-color: #FFABAB;
 }
 
-.fileList > span {
-	border: 1px solid #000;
-	color: blue;
-	cursor: pointer;
+.fileList > button {
+	margin-bottom: 10px;
 }
 
 .fileInfo {
