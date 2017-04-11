@@ -17,22 +17,20 @@
 		</noscript>
 		<div>
 			<div class="info">
-				<h2>Information:</h2>
+				<strong>Information:</strong>
 				<p>
 					I've <a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter/releases/tag/v0.1.3-alpha" title="See the Alpha on Github" target="_blank">released an Alpha-Version</a> of my Project "<a href="https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter" title="Visit the Project on Github" target="_blank">Java-RPG-Maker-MV-Decrypter</a>", which works with whole Directories and save/renames Files by itself...<br>
 					May you try it out, it also have a GUI. If you just want to decrypt single-Files, I recommend this Version here <i>(Bec you don't need to download it)</i>. But for whole Directories you should try the Java-Version of the Decrypter! =)
-				</p>
-				<hr>
-				<p>
-					This Project here will not get much updates from me, but you can improve the Code by your own: <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter" title="Get the Code on Github (And may clone the Project)" target="_blank">Get the Code on Github.com</a>! - I'm tired of Webdev, so I don't wanna make much Webdev-Stuff in the future >.<<br>
-					Petschko
 				</p>
 			</div>
 			<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
 			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption.</p>
 			<h2>How to use?</h2>
+			<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" target="_blank">reporting bugs</a>!</p>
 			<ol>
-				<li>Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script</li>
+				<li>
+					Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script
+				</li>
 				<li>
 					Get the Decrypt-Code
 					<ul>
@@ -41,42 +39,55 @@
 				</li>
 				<li>Select the File(s) to decrypt - <i>Multi-Select-Files are possible!</i></li>
 				<li>Hit the Decrypt-Button</li>
-				<li>You can access your decrypted files if you click on the link(s)</li>
 				<li>
-					You can save them by right clicking and using your Browsers "save" option - Note that you have to add the file extension!!
-					<ul>
-						<li>Images as .png</li>
-						<li>Audio-Files as .ogg or .m4a</li>
-					</ul>
+					You can access your decrypted Files, if you click on "View", next to the Filename.
+				</li>
+				<li>
+					<span class="red">New:</span> You can save them now by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
 				</li>
 			</ol>
 		</div>
 
 		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
 		<hr>
-		<h2>File-Info</h2>
-		<br>
-		Verify Fake-Header?
-		<label><input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes</label>
-		<label><input type="radio" name="checkFakeHeader" value="0">No (Ignore it)</label>
-		<br>
-		<label>
-			System(.json) <i>(For Decryption-Code)</i>:<br>
-			<input type="file" name="system.json" id="systemFile">
-		</label>
-		<button id="detectButton">Detect</button>
-		<br>
-		<label>
-			En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
-		</label>
-		<br>
-		<label>En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label>
-		<br>
-		<button id="decrypt">Decrypt</button>
-		<hr>
-		<div class="fileList">
-			<span onclick="document.getElementById('blob').innerHTML = '';">Clear File-List</span><br><br>
-			<p id="blob"></p>
+		<div class="wrapper">
+			<div class="left">
+				<h2>File-Info</h2>
+				<div class="fileInfoArea">
+					<div>Verify Fake-Header?</div>
+					<div>
+						<label>
+							<input type="radio" name="checkFakeHeader" value="1" disabled="disabled"><span class="grey"><s>Yes</s> (todo)</span>
+						</label>
+						<label>
+							<input type="radio" name="checkFakeHeader" value="0" checked="checked">No (Ignore it)
+						</label>
+					</div>
+					<div>
+						<label>
+							System(.json) <i>(For Decryption-Code)</i>:<br>
+							<input type="file" name="system.json" id="systemFile">
+						</label>
+						<button id="detectButton">Detect</button>
+					</div>
+					<div>
+						<label>
+							En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
+						</label>
+					</div>
+					<div>
+						<label>
+							En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required>
+						</label>
+					</div>
+					<button id="decrypt">Decrypt</button>
+				</div>
+			</div>
+			<div class="fileList right">
+				<h2>File-List</h2>
+				<button type="button" onclick="document.getElementById('blob').innerHTML = '';">Clear File-List</button>
+				<div id="blob"></div>
+			</div>
 		</div>
 
 		<!-- Add Scripts -->

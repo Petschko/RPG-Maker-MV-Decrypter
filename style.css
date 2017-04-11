@@ -5,11 +5,25 @@
  * Time: 22:18
  */
 
+/* Global-Reset */
+html, body {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	margin: 20px 40px;
+}
+
 .info {
 	border: 1px solid #000;
-	background-color: #FFF285;
+	background-color: #FFF5D3;
 	padding: 15px 20px;
 	display: none;
+}
+
+.fileInfoArea > div {
+	margin: 10px 0;
 }
 
 #decryptCode {
@@ -23,6 +37,15 @@
 	cursor: pointer;
 }
 
+.fileInfo {
+	margin: 5px 0;
+}
+
+.fileInfo > span,
+.fileInfo > a {
+	padding-right: 5px;
+}
+
 noscript {
 	background-color: #FFABAB;
 }
@@ -32,9 +55,40 @@ noscript {
 }
 
 .invalid {
-	background-color: #FF0000 !important;
+	background-color: #F00 !important;
 }
 
 .manualChange {
 	background-color: #FFE6AB !important;
+}
+
+.red {
+	color: #F00;
+}
+
+.grey {
+	color: #C9C9C9;
+}
+
+.left, .right {
+	display: inline-block;
+	width: 50%;
+}
+
+.right {
+	float: right;
+}
+
+@media all and (max-width: 800px) {
+	.left,
+	.right {
+		display: block;
+		width: 100%;
+	}
+
+	.right {
+		float: none;
+		border-top: solid 2px #707070;
+		margin-top: 20px;
+	}
 }
