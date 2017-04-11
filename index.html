@@ -54,7 +54,12 @@
 
 		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
 		<hr>
-		<h2>Decrypt File-Info</h2>
+		<h2>File-Info</h2>
+		<br>
+		Verify Fake-Header?
+		<label><input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes</label>
+		<label><input type="radio" name="checkFakeHeader" value="0">No (Ignore it)</label>
+		<br>
 		<label>
 			System(.json) <i>(For Decryption-Code)</i>:<br>
 			<input type="file" name="system.json" id="systemFile">
@@ -64,10 +69,6 @@
 		<label>
 			En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
 		</label>
-		<br>
-		Verify Fake-Header?
-		<label><input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes</label>
-		<label><input type="radio" name="checkFakeHeader" value="0">No (Ignore it)</label>
 		<br>
 		<label>En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required></label>
 		<br>
