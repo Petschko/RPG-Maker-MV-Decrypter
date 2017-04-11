@@ -88,12 +88,9 @@ noscript {
 }
 
 .left, .right {
+	vertical-align: top;
 	display: inline-block;
-	width: 50%;
-}
-
-.right {
-	float: right;
+	width: 45%;
 }
 
 @media all and (max-width: 800px) {
@@ -104,7 +101,6 @@ noscript {
 	}
 
 	.right {
-		float: none;
 		border-top: solid 2px #707070;
 		margin-top: 20px;
 	}
