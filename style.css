@@ -19,6 +19,10 @@ body {
 	border: 1px solid #000;
 	background-color: #FFF5D3;
 	padding: 15px 20px;
+}
+
+.info,
+.css_valid {
 	display: none;
 }
 
@@ -44,6 +48,12 @@ body {
 	padding-right: 5px;
 }
 
+img.valid_css {
+	border: 0;
+	width: 88px;
+	height:31px;
+}
+
 noscript {
 	background-color: #FFABAB;
 }
@@ -66,6 +76,15 @@ noscript {
 
 .grey {
 	color: #C9C9C9;
+}
+
+.center {
+	text-align: center;
+}
+
+.wrapper {
+	width: 100%;
+	margin-bottom: 40px;
 }
 
 .left, .right {
