@@ -88,6 +88,7 @@ noscript {
 }
 
 .left, .right {
+	text-align: left;
 	vertical-align: top;
 	display: inline-block;
 	width: 45%;
