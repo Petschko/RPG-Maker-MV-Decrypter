@@ -58,7 +58,7 @@ img.valid_css {
 }
 
 /* Backgrounds */
-noscript {
+noscript > div {
 	background-color: #FFABAB;
 	padding: 10px 20px;
 }

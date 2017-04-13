@@ -131,6 +131,7 @@ function init() {
 	var detectButton = document.getElementById('detectButton');
 	var inputCode = document.getElementById('decryptCode');
 	var decryptButton = document.getElementById('decrypt');
+	var encryptButton = document.getElementById('encrypt');
 
 	// Add Listener
 	detectButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
@@ -143,6 +144,19 @@ function init() {
 			'blob',
 			true,
 			!! parseInt(getRadioButtonValue('checkFakeHeader', '0')),
+			'headerLen',
+			'signature',
+			'version',
+			'remain'
+		);
+	}, false);
+	encryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		processFiles(
+			'encryptedImg',
+			'decryptCode',
+			'blob',
+			false,
+			true,
 			'headerLen',
 			'signature',
 			'version',

@@ -3,8 +3,8 @@
 	<head>
 		<!-- Head-Meta stuff -->
 		<meta name="author" content="Petschko" />
-		<meta name="description" content="Decrypt encrypted RPG-Maker-MV Files (.rpgmvp, .rpgmvm or .rpgmvo) here" />
-		<meta name="keywords" content="RPG-Maker-MV, RPG-Maker-Decrypter, rpg-maker, decrypt, decrypter, rpgmvp, rpgmvm, rpgmvo" />
+		<meta name="description" content="Decrypt or encrypt RPG-Maker-MV Files (.rpgmvp, .rpgmvm or .rpgmvo) here" />
+		<meta name="keywords" content="RPG-Maker-MV, RPG-Maker-Decrypter, rpg-maker, decrypt, decrypter, encrypt, encrypter, RPG-Maker-Encrypter, rpgmvp, rpgmvm, rpgmvo" />
 
 		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -13,7 +13,16 @@
 	</head>
 	<body>
 		<noscript>
-			Warning: This Script requires JavaScript. Please enable JavaScript or switch to an newer Browser.
+			<div>
+				<p>
+					<strong>Warning</strong>: This Script requires JavaScript. Please enable JavaScript or switch to an newer Browser.
+				</p>
+				<hr>
+				<p>
+					This Script En/Decrypt Files for you but the Decryption is not done by a Server, it's done by your Browser.<br>
+					If you don't trust this Script <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter" title="Check out the Source-Code" target="_blank">check out the Code on Github</a> <i>(or view it in your Browser)</i>. =)
+				</p>
+			</div>
 		</noscript>
 		<div>
 			<div class="info">
@@ -26,7 +35,7 @@
 			<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
 			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption.</p>
 			<h2>How to use?</h2>
-			<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" target="_blank">reporting bugs</a>!</p>
+			<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" title="Help me by reporting Bugs" target="_blank">reporting bugs</a>!</p>
 			<ol>
 				<li>
 					Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script
@@ -63,6 +72,22 @@
 							<input type="radio" name="checkFakeHeader" value="0" checked="checked">No (Ignore it)
 						</label>
 					</div>
+					<div id="headerInfo" class="hidden">
+						<h3>Header-Info</h3>
+						<label>
+							Header-Length <i>(In Bytes)</i>: <input type="text" name="headerLen" id="headerLen" value="16">
+						</label>
+						<label>
+							Header-Signature: <input type="text" name="signature" id="signature" value="5250474d56000000">
+						</label>
+						<label>
+							Header-Version: <input type="text" name="version" id="version" value="000301">
+						</label>
+						<label>
+							Header-Remain: <input type="text" name="remain" id="remain" value="0000000000">
+						</label>
+						<button type="button" id="resetHeader">Reset Header-Values to default</button>
+					</div>
 					<div>
 						<label>
 							System(.json) <i>(For Decryption-Code)</i>:<br>
@@ -80,7 +105,14 @@
 							En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required>
 						</label>
 					</div>
-					<button id="decrypt">Decrypt</button>
+					<button type="button" id="decrypt">
+						<img src="lock_broken.png" alt="(Broken Lock)">
+						<span>Decrypt</span>
+					</button>
+					<button type="button" id="encrypt">
+						<img src="lock.png" alt="(Lock)">
+						<span>(Re)-Encrypt</span>
+					</button>
 				</div>
 			</div>
 			<div class="fileList right">
