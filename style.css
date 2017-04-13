@@ -11,19 +11,15 @@ html, body {
 	margin: 0;
 }
 
+/* Spaces, sizes etc */
 body {
-	margin: 20px 40px;
+	padding: 20px 40px;
 }
 
 .info {
 	border: 1px solid #000;
 	background-color: #FFF5D3;
 	padding: 15px 20px;
-}
-
-.info,
-.css_valid {
-	display: none;
 }
 
 .fileInfoArea > div {
@@ -44,8 +40,9 @@ body {
 }
 
 .fileInfo > span,
-.fileInfo > a {
-	padding-right: 5px;
+.fileInfo > a,
+.fileInfo > s {
+	margin-right: 5px;
 }
 
 img.valid_css {
@@ -54,8 +51,16 @@ img.valid_css {
 	height:31px;
 }
 
+/* Hide some info's (not important on local use) */
+.info,
+.css_valid {
+	display: none;
+}
+
+/* Backgrounds */
 noscript {
 	background-color: #FFABAB;
+	padding: 10px 20px;
 }
 
 .valid {
@@ -70,6 +75,7 @@ noscript {
 	background-color: #FFE6AB !important;
 }
 
+/* Text-Colors align etc */
 .red {
 	color: #F00;
 }
@@ -82,6 +88,11 @@ noscript {
 	text-align: center;
 }
 
+.hidden {
+	display: none;
+}
+
+/* 2 Rows */
 .wrapper {
 	width: 100%;
 	margin-bottom: 40px;
@@ -94,6 +105,59 @@ noscript {
 	width: 45%;
 }
 
+/* Button-Image align fixes */
+button#decrypt,
+button#encrypt {
+	padding-left: 0;
+}
+
+button#decrypt > img,
+button#decrypt > span,
+button#encrypt > img,
+button#encrypt > span {
+	vertical-align: middle;
+}
+
+/* Help stuff (like tooltips etc) */
+.help {
+	color: #B713FF;
+	border-color: #B713FF !important;
+}
+.tooltip {
+	position: relative;
+	display: inline-block; /* Ensure inline-block */
+	border-bottom: 1px dotted #555;
+	cursor: help;
+}
+
+.tooltip .tooltipText {
+	position: absolute;
+	visibility: hidden;
+	display: block;
+
+	margin-top: 10px;
+	min-width: 200px;
+	background-color: #555;
+	color: #FFF;
+	text-align: center;
+	padding: 5px 7px;
+	border-radius: 6px;
+
+	/* Fade in tooltip */
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+.tooltipText.longText {
+	width: 400px;
+}
+
+.tooltip:hover .tooltipText {
+	visibility: visible;
+	opacity: 1;
+}
+
+/* Media-Queries */
 @media all and (max-width: 800px) {
 	.left,
 	.right {
