@@ -37,6 +37,15 @@ function RPGFile(file, blobUrl) {
 		this.name = this.fullName.substr(0, pointPos);
 	};
 	this.splitFileName();
+
+	/**
+	 * Shows if the current file has an Encrypted File-Extension
+	 *
+	 * @returns {boolean} - true if Encrypted File-Extension else false
+	 */
+	RPGFile.prototype.isEncryptedExt = function() {
+		return (this.extension === 'rpgmvp' || this.extension === 'rpgmvm' || this.extension === 'rpgmvo');
+	}
 }
 
 /**
@@ -53,14 +62,28 @@ RPGFile.prototype.createOutPut = function(faultMessage) {
 	fileNameEl.innerHTML = this.name + '.' + this.extension;
 
 	if(! faultMessage) {
-		var viewLink = document.createElement('a');
+		var viewLink;
+		if(this.isEncryptedExt())
+			viewLink = document.createElement('s');
+		else
+			viewLink = document.createElement('a');
+
 		var saveFunction = document.createElement('a');
 
 		// Set all to view the link
 		viewLink.innerHTML = 'View';
-		viewLink.title = 'View ' + this.name + '.' + this.extension + ' in your Browser';
-		viewLink.href = this.fileUrl;
-		viewLink.target = '_blank';
+		if(! this.isEncryptedExt()) {
+			viewLink.title = 'View ' + this.name + '.' + this.extension + ' in your Browser';
+			viewLink.href = this.fileUrl;
+			viewLink.target = '_blank';
+		} else {
+			var toolTipText = document.createElement('div');
+			toolTipText.className = 'tooltipText';
+			toolTipText.innerHTML = 'This File is encrypted and you can\'t view it in the Browser. ' +
+				'You can save it and put it in the game (Translated images for example).';
+			viewLink.className = 'grey encryptedFile tooltip';
+			viewLink.appendChild(toolTipText);
+		}
 
 		// Set all to save file
 		saveFunction.innerHTML = 'Save';
