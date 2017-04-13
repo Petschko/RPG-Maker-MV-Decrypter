@@ -76,7 +76,8 @@ noscript > div {
 }
 
 /* Text-Colors align etc */
-.red {
+.red,
+.errorFile {
 	color: #F00;
 }
 
@@ -86,6 +87,10 @@ noscript > div {
 
 .center {
 	text-align: center;
+}
+
+.text-left {
+	text-align: left;
 }
 
 .hidden {
@@ -134,6 +139,7 @@ button#encrypt > span {
 	position: absolute;
 	visibility: hidden;
 	display: block;
+	z-index: 1;
 
 	margin-top: 10px;
 	min-width: 200px;
@@ -150,6 +156,7 @@ button#encrypt > span {
 
 .tooltipText.longText {
 	width: 400px;
+	font-size: 14px;
 }
 
 .tooltip:hover .tooltipText {

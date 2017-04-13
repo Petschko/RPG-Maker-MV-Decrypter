@@ -63,13 +63,35 @@
 			<div class="left">
 				<h2>File-Info</h2>
 				<div class="fileInfoArea">
-					<div>Verify Fake-Header?</div>
+					<div>
+						Verify Fake-Header?
+						<div class="tooltip help">
+							(?)
+							<div class="tooltipText longText">
+								<p>This checks if the File-Header is correct (Start of the File).</p>
+								<p>The Header is just important for Encryption. (Decryption can ignore it)</p>
+								<hr>
+								<p class="text-left">In <strong>very rare</strong> cases some Games use different Header-Settings. You can find the correct-Header-Settings in:<br>
+									<span class="red">"Game-Directory"/www/js/rpg_core.js</span><br>
+									Search for "<strong>function Decrypter()</strong>", there you can find all values.</p>
+							</div>
+						</div>
+					</div>
 					<div>
 						<label>
-							<input type="radio" name="checkFakeHeader" value="1" disabled="disabled"><span class="grey"><s>Yes</s> (todo)</span>
+							<input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes
 						</label>
 						<label>
-							<input type="radio" name="checkFakeHeader" value="0" checked="checked">No (Ignore it)
+							<input type="radio" name="checkFakeHeader" value="0">No (Ignore it)
+							<span class="tooltip help">
+								(?)
+								<span class="tooltipText longText">
+									Ignores the File-Header<br>
+									<strong>Warning</strong>: Can cause invalid decrypted Files! (Its decrypts even if the File was not encrypted. After that, the new File is useless)<br>
+									<br>
+									Just use "No" if you are sure, that your File is Encrypted by the RPG-Maker!
+								</span>
+							</span>
 						</label>
 					</div>
 					<div id="headerInfo" class="hidden">
