@@ -93,8 +93,13 @@ RPGFile.prototype.createOutPut = function(faultMessage) {
 		saveFunction.download = this.name + '.' + this.extension;
 		saveFunction.target = '_blank';
 	} else {
-		var errorEl = document.createElement('p');
-		errorEl.innerHTML = faultMessage;
+		var errorEl = document.createElement('span');
+		var tooltipError = document.createElement('span');
+		errorEl.innerHTML = 'Error';
+		errorEl.className = 'tooltip';
+		tooltipError.innerHTML = faultMessage;
+		tooltipError.className = 'tooltipText longText';
+		errorEl.appendChild(tooltipError);
 
 		// Add Error-CSS-Class
 		element.className = addCssClass(element.className, 'errorFile');
