@@ -22,6 +22,7 @@ body {
 	padding: 15px 20px;
 }
 
+#headerInfo > div,
 .fileInfoArea > div {
 	margin: 10px 0;
 }
@@ -51,6 +52,23 @@ img.valid_css {
 	height:31px;
 }
 
+div#headerInfo {
+	min-width: 350px;
+	margin-top: 10px;
+	padding: 10px 15px;
+	display: inline-block;
+	border: 1px dotted #808080;
+}
+
+div#headerInfo > h3 {
+	margin-top: 0;
+}
+
+div#headerInfo input[type="text"] {
+	margin-left: 10px;
+	float: right;
+}
+
 /* Hide some info's (not important on local use) */
 .info,
 .css_valid {
@@ -76,6 +94,24 @@ noscript > div {
 }
 
 /* Text-Colors align etc */
+a,
+.link {
+	color: #2F00EE;
+	border-color: #2F00EE;
+}
+
+a:visited {
+	color: #551A8B;
+}
+
+a:active,
+a:focus,
+.link:active,
+.link:focus {
+	color: #E00;
+	border-color: #E00;
+}
+
 .red,
 .errorFile {
 	color: #F00;
@@ -94,7 +130,8 @@ noscript > div {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
+	visibility: hidden;
 }
 
 /* 2 Rows */
@@ -124,6 +161,16 @@ button#encrypt > span {
 }
 
 /* Help stuff (like tooltips etc) */
+.link {
+	cursor: pointer;
+	display: inline-block;
+}
+
+.link:active,
+.link:focus {
+	border: 1px dotted;
+}
+
 .help {
 	color: #B713FF;
 	border-color: #B713FF !important;
