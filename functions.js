@@ -166,8 +166,22 @@ function init() {
 	var decryptButton = document.getElementById('decrypt');
 	var encryptButton = document.getElementById('encrypt');
 	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
+	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
+	var headerAreaEl = document.getElementById('headerValuesEditArea');
+
+	// Pre-Hide on other values
+	if(! parseInt(getRadioButtonValue('checkFakeHeader', '1')))
+		headerAreaEl.className = addCssClass(headerAreaEl.className, 'hidden');
 
 	// Add Listener
+	headerRadioButtons[0][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		// Yes Button
+		headerAreaEl.className = removeCssClass(headerAreaEl.className, 'hidden');
+	}, false);
+	headerRadioButtons[1][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		// No Button
+		headerAreaEl.className = addCssClass(headerAreaEl.className, 'hidden');
+	}, false);
 	spoilerHeader[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		spoiler('spoilerHeaderInfoText', 'Header-Values', 'headerInfo');
 	}, false);
