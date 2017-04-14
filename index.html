@@ -94,21 +94,32 @@
 							</span>
 						</label>
 					</div>
-					<div id="headerInfo" class="hidden">
-						<h3>Header-Info</h3>
-						<label>
-							Header-Length <i>(In Bytes)</i>: <input type="text" name="headerLen" id="headerLen" value="16">
-						</label>
-						<label>
-							Header-Signature: <input type="text" name="signature" id="signature" value="5250474d56000000">
-						</label>
-						<label>
-							Header-Version: <input type="text" name="version" id="version" value="000301">
-						</label>
-						<label>
-							Header-Remain: <input type="text" name="remain" id="remain" value="0000000000">
-						</label>
-						<button type="button" id="resetHeader">Reset Header-Values to default</button>
+					<div id="headerValuesEditArea">
+						<div id="spoilerHeaderInfoText">Header-Values (Show)</div>
+						<div id="headerInfo" class="hidden">
+							<h3>Header-Info</h3>
+							<div>
+								<label>
+									Header-Length <i>(In Bytes)</i>: <input type="text" name="headerLen" id="headerLen" value="16">
+								</label>
+							</div>
+							<div>
+								<label>
+									Header-Signature: <input type="text" name="signature" id="signature" value="5250474d56000000">
+								</label>
+							</div>
+							<div>
+								<label>
+									Header-Version: <input type="text" name="version" id="version" value="000301">
+								</label>
+							</div>
+							<div>
+								<label>
+									Header-Remain: <input type="text" name="remain" id="remain" value="0000000000">
+								</label>
+							</div>
+							<button type="button" id="resetHeader">Reset Header-Values to default</button>
+						</div>
 					</div>
 					<div>
 						<label>

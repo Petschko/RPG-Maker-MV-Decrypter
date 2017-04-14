@@ -76,6 +76,19 @@ function addCssClass(elementClasses, addClass) {
 }
 
 /**
+ * Check if a the searched Class is within this class-string
+ *
+ * @param {string} elementClasses - Element CSS-Classes
+ * @param {string} searchClass - Class to check
+ * @returns {boolean} - true if the class exist else false
+ */
+function hasCssClass(elementClasses, searchClass) {
+	var classes = elementClasses.split(' ');
+
+	return (classes.indexOf(searchClass) !== -1);
+}
+
+/**
  * Get the Value of a Radio-Button-Group
  *
  * @param {string} radioButtonGroupName - Radio-Button-Group-Name
@@ -123,6 +136,26 @@ function manualChange(elementId) {
 }
 
 /**
+ * Shows/Hides a Spoiler-Element
+ *
+ * @param {string} spoilerTextElId - Element-Id of the Spoiler-Text
+ * @param {string} spoilerText - Text of the Spoiler-Text-Element (without show/hide)
+ * @param {string} spoilerElId - Spoiler-Element-Id
+ */
+function spoiler(spoilerTextElId, spoilerText, spoilerElId) {
+	var spoilerTextEl = document.getElementById(spoilerTextElId);
+	var spoilerEl = document.getElementById(spoilerElId);
+
+	if(hasCssClass(spoilerEl.className, 'hidden')) {
+		spoilerEl.className = removeCssClass(spoilerEl.className, 'hidden');
+		spoilerTextEl.innerHTML = spoilerText + ' (Hide)';
+	} else {
+		spoilerEl.className = addCssClass(spoilerEl.className, 'hidden');
+		spoilerTextEl.innerHTML = spoilerText + ' (Show)';
+	}
+}
+
+/**
  * Adds all Action-Listener
  */
 function init() {
@@ -132,8 +165,12 @@ function init() {
 	var inputCode = document.getElementById('decryptCode');
 	var decryptButton = document.getElementById('decrypt');
 	var encryptButton = document.getElementById('encrypt');
+	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
 
 	// Add Listener
+	spoilerHeader[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		spoiler('spoilerHeaderInfoText', 'Header-Values', 'headerInfo');
+	}, false);
 	detectButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		getCode('systemFile', 'decryptCode');
 	}, false);
