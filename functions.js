@@ -168,10 +168,12 @@ function init() {
 	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
 	var headerAreaEl = document.getElementById('headerValuesEditArea');
+	var headerResetButton = document.getElementById('resetHeader');
 
-	// Pre-Hide on other values
+	// Prepare stuff
 	if(! parseInt(getRadioButtonValue('checkFakeHeader', '1')))
 		headerAreaEl.className = addCssClass(headerAreaEl.className, 'hidden');
+	setHeaderDefaultValues(false);
 
 	// Add Listener
 	headerRadioButtons[0][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
@@ -181,6 +183,9 @@ function init() {
 	headerRadioButtons[1][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		// No Button
 		headerAreaEl.className = addCssClass(headerAreaEl.className, 'hidden');
+	}, false);
+	headerResetButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		setHeaderDefaultValues(true);
 	}, false);
 	spoilerHeader[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		spoiler('spoilerHeaderInfoText', 'Header-Values', 'headerInfo');
@@ -221,6 +226,37 @@ function init() {
 
 document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
 	window.addEventListener ? 'load' : 'onload', init(), false);
+
+/**
+ * Set all Values to default within the Header-Values-Area
+ *
+ * @param {boolean} confirmDialog - Ask before reset
+ */
+function setHeaderDefaultValues(confirmDialog) {
+	if(confirmDialog) {
+		if(! confirm('Are you sure to reset the Header-Values to default?'))
+			return;
+	}
+
+	// Get all Elements
+	var headerLenEl = document.getElementById('headerLen');
+	var headerSigEl = document.getElementById('signature');
+	var headerVerEl = document.getElementById('version');
+	var headerRemainEl = document.getElementById('remain');
+
+	// Get a dummy Decrypter Class
+	var decrypter = new Decrypter('000000');
+
+	// Set Values
+	headerLenEl.value = decrypter.defaultHeaderLen;
+	headerLenEl.placeholder = decrypter.defaultHeaderLen;
+	headerSigEl.value = decrypter.defaultSignature;
+	headerSigEl.placeholder = decrypter.defaultSignature;
+	headerVerEl.value = decrypter.defaultVersion;
+	headerVerEl.placeholder = decrypter.defaultVersion;
+	headerRemainEl.value = decrypter.defaultRemain;
+	headerRemainEl.placeholder = decrypter.defaultRemain;
+}
 
 /**
  * Decrypt a bunch of MV-Encrypted-Files
