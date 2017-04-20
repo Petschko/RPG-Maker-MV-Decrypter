@@ -294,8 +294,9 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
  * @returns {boolean} - true if string is valid else false
  */
 Decrypter.checkHexChars = function(string) {
-	//todo
-	return true;
+	var regex = new RegExp(/^[A-Fa-f0-9]+$/);
+
+	return regex.test(string);
 };
 
 /**
