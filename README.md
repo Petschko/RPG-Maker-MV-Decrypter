@@ -52,5 +52,5 @@ This is very easy:
 
 ## Contact
 
-- E-Mail me if you have questions (no bug reporting please): peter-91@hotmail.de
+- E-Mail me if you have questions (no bug reporting please): peter@petschko.org
 - Please report Bugs here on github.com use the "Issue"-Section on this Project
