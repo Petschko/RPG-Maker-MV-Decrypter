@@ -258,7 +258,12 @@
 			</div>
 			<div class="fileList right">
 				<h2>File-List</h2>
-				<button type="button" onclick="document.getElementById('blob').innerHTML = '';">Clear File-List</button>
+				<button type="button" id="zipSave" disabled>
+					Save all as ZIP-File
+				</button>
+				<button type="button" id="clearFileList" disabled>
+					Clear File-List
+				</button>
 				<div id="blob"></div>
 			</div>
 		</div>

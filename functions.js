@@ -170,6 +170,8 @@ function init() {
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
 	var headerAreaEl = document.getElementById('headerValuesEditArea');
 	var headerResetButton = document.getElementById('resetHeader');
+	var zipSaveButton = document.getElementById('zipSave');
+	var clearFileListButton = document.getElementById('clearFileList');
 
 	// Prepare stuff
 	if(! parseInt(getRadioButtonValue('checkFakeHeader', '1')))
@@ -225,6 +227,13 @@ function init() {
 	}, false);
 	inputCode[addMethod](window.addEventListener ? 'change' : 'onchange', function() {
 		manualChange('decryptCode');
+	}, false);
+	zipSaveButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		saveZip();
+	}, false);
+	clearFileListButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		clearFileList('blob', 'zipSave');
+		this.disabled = 'disabled';
 	}, false);
 }
 
@@ -386,6 +395,7 @@ function processFiles(
 	}
 
 	// Process all Files
+	var buttonsEnabled = false; // Just trigger that event one time this loop
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
 
@@ -397,6 +407,11 @@ function processFiles(
 				else {
 					rpgFile.convertExtension(true);
 					outputEl.appendChild(rpgFile.createOutPut(null));
+
+					if(! buttonsEnabled) {
+						enableFileButtons('clearFileList', 'zipSave');
+						buttonsEnabled = true;
+					}
 				}
 			});
 		} else {
@@ -407,8 +422,54 @@ function processFiles(
 				else {
 					rpgFile.convertExtension(false);
 					outputEl.appendChild(rpgFile.createOutPut(null));
+
+					if(! buttonsEnabled) {
+						enableFileButtons('clearFileList', 'zipSave');
+						buttonsEnabled = true;
+					}
 				}
 			});
 		}
 	}
+}
+
+/**
+ * Clears the File-List & disables the ZIP-Save-Button
+ *
+ * @param {string} fileListId - Id of the File-List
+ * @param {string} zipSaveButtonId - Id of the ZIP-Save Button
+ */
+function clearFileList(fileListId, zipSaveButtonId) {
+	var fileListEl = document.getElementById(fileListId);
+	var zipSaveButtonEl = document.getElementById(zipSaveButtonId);
+
+	if(! fileListEl || ! zipSaveButtonEl)
+		return;
+
+	fileListEl.innerHTML = '';
+	zipSaveButtonEl.disabled = 'disabled';
+}
+
+/**
+ * ReEnables the Buttons for the File-List
+ *
+ * @param {string} clearFileListButtonId - Id of the Clear-File-List Button
+ * @param {string} zipSaveButtonId - Id of the ZIP-Save Button
+ */
+function enableFileButtons(clearFileListButtonId, zipSaveButtonId) {
+	var clearFileListButtonEl = document.getElementById(clearFileListButtonId);
+	var zipSaveButtonEl = document.getElementById(zipSaveButtonId);
+
+	if(! clearFileListButtonEl || ! zipSaveButtonEl)
+		return;
+
+	clearFileListButtonEl.disabled = '';
+	zipSaveButtonEl.disabled = '';
+}
+
+/**
+ * todo doc
+ */
+function saveZip() {
+	// todo
 }
