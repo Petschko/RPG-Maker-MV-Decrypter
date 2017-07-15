@@ -103,6 +103,11 @@ Here you go:
     Make sure that you copy the values (which have similar names to the fields in the Header-Info Form - I showed you them in my example above)
     - Try to encrypt the File(s) again
 
+## Credits
+
+- [Petschko](https://github.com/Petschko) _(Me xD)_ - For creating this Project
+- [Stuk](https://github.com/Stuk) - For the ZIP-Library ([jszip @ Github](https://github.com/Stuk/jszip))
+
 ## Contact
 
 - E-Mail me if you have questions (no bug reporting please): peter@petschko.org
