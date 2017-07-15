@@ -5,6 +5,9 @@
  * Time: 23:05
  */
 
+// Globals
+var zip;
+
 /**
  * Try to Reads the Encryption-Code and insert it to the given input element
  *
@@ -160,6 +163,7 @@ function spoiler(spoilerTextElId, spoilerText, spoilerElId) {
  */
 function init() {
 	var addMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+
 	// Get Elements
 	var detectButton = document.getElementById('detectButton');
 	var inputCode = document.getElementById('decryptCode');
@@ -235,6 +239,8 @@ function init() {
 		clearFileList('blob', 'zipSave');
 		this.disabled = 'disabled';
 	}, false);
+
+	zip = new ZIP();
 }
 
 document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
@@ -407,6 +413,7 @@ function processFiles(
 				else {
 					rpgFile.convertExtension(true);
 					outputEl.appendChild(rpgFile.createOutPut(null));
+					zip.addFile(rpgFile);
 
 					if(! buttonsEnabled) {
 						enableFileButtons('clearFileList', 'zipSave');
@@ -422,6 +429,7 @@ function processFiles(
 				else {
 					rpgFile.convertExtension(false);
 					outputEl.appendChild(rpgFile.createOutPut(null));
+					zip.addFile(rpgFile);
 
 					if(! buttonsEnabled) {
 						enableFileButtons('clearFileList', 'zipSave');
@@ -448,6 +456,9 @@ function clearFileList(fileListId, zipSaveButtonId) {
 
 	fileListEl.innerHTML = '';
 	zipSaveButtonEl.disabled = 'disabled';
+
+	// Creates a new ZIP Object
+	zip = new ZIP();
 }
 
 /**
@@ -468,8 +479,8 @@ function enableFileButtons(clearFileListButtonId, zipSaveButtonId) {
 }
 
 /**
- * todo doc
+ * Saves the current Files as ZIP
  */
 function saveZip() {
-	// todo
+	zip.save();
 }
