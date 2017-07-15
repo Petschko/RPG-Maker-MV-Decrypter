@@ -21,6 +21,7 @@ function RPGFile(file, blobUrl) {
 	this.name = null;
 	this.extension = null;
 	this.fileUrl = blobUrl;
+	this.content = null;
 
 	/**
 	 * Splits the FullName into name & file ext
@@ -150,10 +151,9 @@ RPGFile.prototype.convertExtension = function(toNormal) {
 /**
  * Creates a BLOB-URL from a object
  *
- * @param {ArrayBuffer|Object} object - Object
  * @returns {String} - BLOB-URL of the array buffer
  */
-RPGFile.createBlobUrl = function(object) {
-	var blob = new Blob([object]);
-	return window.URL.createObjectURL(blob);
+RPGFile.prototype.createBlobUrl = function() {
+	var blob = new Blob([this.content]);
+	this.fileUrl = window.URL.createObjectURL(blob);
 };

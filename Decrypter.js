@@ -83,7 +83,8 @@ function Decrypter(encryptionKey) {
 			switch(modType) {
 				case 'encrypt':
 					try {
-						rpgFile.fileUrl = RPGFile.createBlobUrl(that.encrypt(this.result));
+						rpgFile.content = that.encrypt(this.result);
+						rpgFile.createBlobUrl()
 					} catch(e) {
 						callback(rpgFile, e);
 						return;
@@ -92,7 +93,8 @@ function Decrypter(encryptionKey) {
 				case 'decrypt':
 				default:
 					try {
-						rpgFile.fileUrl = RPGFile.createBlobUrl(that.decrypt(this.result));
+						rpgFile.content = that.decrypt(this.result);
+						rpgFile.createBlobUrl();
 					} catch(e) {
 						callback(rpgFile, e);
 						return;
