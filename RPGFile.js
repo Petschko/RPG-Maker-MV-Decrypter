@@ -149,9 +149,7 @@ RPGFile.prototype.convertExtension = function(toNormal) {
 };
 
 /**
- * Creates a BLOB-URL from a object
- *
- * @returns {String} - BLOB-URL of the array buffer
+ * Creates the BLOB-URL for this File
  */
 RPGFile.prototype.createBlobUrl = function() {
 	var blob = new Blob([this.content]);
