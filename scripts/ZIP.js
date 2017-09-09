@@ -15,6 +15,18 @@ function ZIP() {
 }
 
 /**
+ * Removes all references from the ZIP-Object
+ */
+ZIP.prototype.dispose = function() {
+	for(var i = 0; i < this.files.length; i++) {
+		this.files[i].dispose();
+	}
+
+	// Remove all Files from the List
+	this.files = [];
+};
+
+/**
  * Adds a new File to the ZIP-File
  *
  * @param {RPGFile} rpgFile - RPG-File to add

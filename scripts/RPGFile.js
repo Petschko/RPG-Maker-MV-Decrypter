@@ -20,6 +20,7 @@ function RPGFile(file, blobUrl) {
 	this.fullName = this.file.name;
 	this.name = null;
 	this.extension = null;
+	this.blob = null;
 	this.fileUrl = blobUrl;
 	this.content = null;
 
@@ -48,6 +49,24 @@ function RPGFile(file, blobUrl) {
 		return (this.extension === 'rpgmvp' || this.extension === 'rpgmvm' || this.extension === 'rpgmvo');
 	}
 }
+
+/**
+ * Disposes a RPG-File
+ */
+RPGFile.prototype.dispose = function() {
+	if(this.fileUrl) {
+		window.URL.revokeObjectURL(this.fileUrl);
+		this.fileUrl = null;
+	}
+	if(this.blob)
+		this.blob = null;
+
+	this.file = null;
+	this.fullName = null;
+	this.name = null;
+	this.extension = null;
+	this.content = null;
+};
 
 /**
  * Creates the Output for the File
@@ -152,6 +171,6 @@ RPGFile.prototype.convertExtension = function(toNormal) {
  * Creates the BLOB-URL for this File
  */
 RPGFile.prototype.createBlobUrl = function() {
-	var blob = new Blob([this.content]);
-	this.fileUrl = window.URL.createObjectURL(blob);
+	this.blob = new Blob([this.content]);
+	this.fileUrl = window.URL.createObjectURL(this.blob);
 };

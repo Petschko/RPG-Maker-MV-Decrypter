@@ -457,8 +457,8 @@ function clearFileList(fileListId, zipSaveButtonId) {
 	fileListEl.innerHTML = '';
 	zipSaveButtonEl.disabled = 'disabled';
 
-	// Creates a new ZIP Object
-	zip = new ZIP();
+	// Dispose old ZIP Object (Clear Memory)
+	zip.dispose();
 }
 
 /**
