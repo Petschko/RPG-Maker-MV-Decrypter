@@ -54,10 +54,11 @@ ZIP.prototype.save = function() {
 	}
 
 	// Download ZIP
-	if(addedFiles > 0)
-		jsZip.generateAsync({type:"base64"}).then(function (base64) {
-			location.href="data:application/zip;base64," + base64;
+	if(addedFiles > 0) {
+		jsZip.generateAsync({type: 'blob'}).then(function(blob) {
+			saveAs(blob, 'RPG-Files.zip');
+			blob = null;
 		});
-	else
+	} else
 		alert('Can\'t offer ZIP-Download. ZIP would be empty...');
 };
