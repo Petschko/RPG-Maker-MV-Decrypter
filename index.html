@@ -264,9 +264,21 @@
 				<button type="button" id="zipSave" disabled>
 					Save all as ZIP-File
 				</button>
+				<div class="tooltip help">
+					(i)
+					<div class="tooltipText">
+						There is a Size-Limitation deppends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+					</div>
+				</div>
 				<button type="button" id="clearFileList" disabled>
 					Clear File-List
 				</button>
+				<div class="tooltip help">
+					(?)
+					<div class="tooltipText">
+						Remove all Files from the List below
+					</div>
+				</div>
 				<div id="blob"></div>
 			</div>
 		</div>
@@ -290,6 +302,7 @@
 		</footer>
 
 		<!-- Add Scripts -->
+		<script src="libs/FileSaver.min.js"></script>
 		<script src="libs/jszip.min.js?ver=3.1.3"></script>
 		<script src="libs/lz-string.min.js"></script>
 		<script src="scripts/RPGFile.js?ver=1.0"></script>
