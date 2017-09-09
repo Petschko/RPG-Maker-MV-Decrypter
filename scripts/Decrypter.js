@@ -288,7 +288,7 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 				fileContent = JSON.parse('[' + lzUncompressed + ']');
 				key = fileContent[0].encryptionKey;
 			} catch(e) {
-				// Not found...
+				// Still no JSON-File...
 				key = null;
 			}
 		}
