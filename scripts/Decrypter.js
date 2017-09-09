@@ -275,12 +275,22 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 
 	reader.addEventListener('load', function() {
 		var key;
+		var fileContent;
 
 		try {
-			var fileContent = JSON.parse('[' + this.result + ']');
+			fileContent = JSON.parse('[' + this.result + ']');
 			key = fileContent[0].encryptionKey;
 		} catch(e) {
-			key = null;
+			// Try if it is LZ-String compressed
+			var lzUncompressed = LZString.decompressFromBase64(this.result);
+
+			try {
+				fileContent = JSON.parse('[' + lzUncompressed + ']');
+				key = fileContent[0].encryptionKey;
+			} catch(e) {
+				// Not found...
+				key = null;
+			}
 		}
 
 		callback(key);
