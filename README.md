@@ -107,6 +107,7 @@ Here you go:
 
 - [Petschko](https://github.com/Petschko) _(Me xD)_ - For creating this Project
 - [Stuk](https://github.com/Stuk) - For the ZIP-Library ([jszip @ Github](https://github.com/Stuk/jszip))
+- [pieroxy](https://github.com/pieroxy) - For the LZ-String-Library ([lz-string @ Github](https://github.com/pieroxy/lz-string))
 
 ## Contact
 
