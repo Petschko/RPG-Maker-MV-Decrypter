@@ -273,7 +273,8 @@ Decrypter.prototype.encryptFile = function(rpgFile, callback) {
 Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 	var reader = new FileReader();
 
-	reader.addEventListener('load', function() {
+	reader[window.addEventListener ? 'addEventListener' : 'attachEvent']
+	(window.addEventListener ? 'load' : 'onload', function() {
 		var key;
 		var fileContent;
 
