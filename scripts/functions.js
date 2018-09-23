@@ -35,7 +35,11 @@ function getCode(systemFileElId, codeTextElId) {
 			codeTextEl.className = addCssClass(codeTextEl.className, 'valid');
 			alert('Key found^^! (' + key + ')');
 		} else
-			alert('Error: Encryption-Key not found - Make sure that you select the correct file!');
+			alert(
+				'Error: Encryption-Key not found - Make sure that you select the correct file!\n\n' +
+				'In rare cases the Key is hidden in this File: ./www/js/rpg_core(.js)\n\n' +
+				'Please try to select the rpg_core(.js) file and try again (if not already done)!'
+			);
 	});
 }
 

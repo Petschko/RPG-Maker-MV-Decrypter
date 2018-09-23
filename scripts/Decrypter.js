@@ -277,6 +277,7 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 	(window.addEventListener ? 'load' : 'onload', function() {
 		var key;
 		var fileContent;
+		var message = null;
 
 		try {
 			fileContent = JSON.parse('[' + this.result + ']');
@@ -294,10 +295,63 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 			}
 		}
 
+		// Try a search
+		if(key === null)
+			key = Decrypter.searchEncryptionCode(this.result, 'rpg_core', false);
+
 		callback(key);
 	}, false);
 
 	reader.readAsText(rpgFile.file);
+};
+
+/**
+ * Searches for the encryption-key in other places
+ *
+ * @param {string} fileContent - Content of the File, where to search
+ * @param {string} searchParam - What method should be used to search
+ * @param {boolean} lzString - Decompress LZ-String
+ * @returns {null|string} - null if the key was not found else the key
+ */
+Decrypter.searchEncryptionCode = function(fileContent, searchParam, lzString) {
+	var result = null;
+	fileContent = (lzString) ? LZString.decompressFromBase64(fileContent) : fileContent;
+
+	// Exit on empty File-Content (Usually caused if LZ-String-Decompress was not an LZ-String)
+	if(fileContent === null)
+		return null;
+
+	switch(searchParam) {
+		case 'rpg_core':
+			var innerFunctionCodeMatches = null;
+			var lines = fileContent.split('\n');
+			for(var line = 0; line < lines.length; line++) {
+				var l = lines[line];
+				// Clean the line
+				l = l.trim();
+				l = l.replace(/[\r\n\t]/g, '');
+
+				innerFunctionCodeMatches = l.match(/^(.*)this\._encryptionKey ?= ?"(.*)"(.*);(.*)?$/);
+
+				if(innerFunctionCodeMatches !== null)
+					break;
+			}
+
+			if(innerFunctionCodeMatches && innerFunctionCodeMatches.length > 2)
+				result = innerFunctionCodeMatches[2];
+
+			// Verify result
+			if(! result || typeof result === 'undefined')
+				result = null;
+
+			// Also try a LZ-String search
+			if(result === null && ! lzString)
+				result = Decrypter.searchEncryptionCode(fileContent, searchParam, true);
+
+			return result;
+		default:
+			return null;
+	}
 };
 
 /**
