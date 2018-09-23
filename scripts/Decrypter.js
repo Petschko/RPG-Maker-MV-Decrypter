@@ -277,7 +277,6 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 	(window.addEventListener ? 'load' : 'onload', function() {
 		var key;
 		var fileContent;
-		var message = null;
 
 		try {
 			fileContent = JSON.parse('[' + this.result + ']');
