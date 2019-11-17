@@ -35,10 +35,14 @@ function getCode(systemFileElId, codeTextElId) {
 			codeTextEl.className = addCssClass(codeTextEl.className, 'valid');
 			alert('Key found^^! (' + key + ')');
 		} else
-			alert(
+			window.prompt(
 				'Error: Encryption-Key not found - Make sure that you select the correct file!\n\n' +
-				'In rare cases the Key is hidden in this File: ./www/js/rpg_core(.js)\n\n' +
-				'Please try to select the rpg_core(.js) file and try again (if not already done)!'
+				'In rare cases the Key is hidden/obfuscated in the game. Try these steps:\n' +
+				'1. Open the Link below and copy the code\n' +
+				'2. Paste the Code at the last line in this File: ./www/js/rpg_core(.js)\n' +
+				'3. Save the file\n' +
+				'4. Run the game and copy the Code\n\n',
+				'https://pastebin.com/nCrzCpzD'
 			);
 	});
 }
