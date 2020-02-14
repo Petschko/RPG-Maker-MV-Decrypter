@@ -13,7 +13,16 @@
 		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>RPG-Maker-MV Decrypter by Petschko</title>
+
+		<!-- MISC -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Styles Scripts etc -->
 		<link rel="stylesheet" href="styles/style.css?ver=1.2">
+		<!-- https://getbootstrap.com/docs/3.4/getting-started/ -->
+		<link rel="stylesheet" href="styles/bootstrap.min.css">
+		<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+		<!--<script src="libs/bootstrap-without-jquery.min.js"></script>-->
 	</head>
 	<body>
 		<noscript>
@@ -40,8 +49,31 @@
 				<img src="img/projectIcon.png" alt="Project Icon (Chest with a key)" title="Un or Re-Lock RPG-Maker MV-Files">
 				<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
 			</div>
-			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes)</p>
-			<div>
+
+			<!-- Nav bar -->
+			<ul class="nav nav-tabs">
+				<li class="nav-link active">
+					<a href="#home"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Home</a>
+				</li>
+				<!--<li class="nav-link">
+					<a href="#gallery"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Restore-Images</a>
+				</li>
+				<li class="nav-link">
+					<a href="#endecrypt"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> En- & Decrypt</a>
+				</li>-->
+				<li class="nav-link">
+					<a href="#browser-support"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Browser Support</a>
+				</li>
+				<li class="nav-link">
+					<a href="#howTo"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> How to use</a>
+				</li>
+			</ul>
+			<!-- Nav bar end -->
+
+			<div id="home" class="content-container">
+				<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes)</p>
+			</div>
+			<div id="browser-support" class="content-container">
 				<h2 class="inline-heading" id="browserSupport">Browser-Support</h2> <div id="browserSpoilerText" class="link">(Show)</div>
 				<div id="browserSupportArea" class="hidden">
 					<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" title="Help me by reporting Bugs" target="_blank">reporting bugs</a>!</p>
@@ -94,32 +126,34 @@
 					</ul>
 				</div>
 			</div>
-			<h2 class="inline-heading">How to use?</h2> <div id="howToSpoilerText" class="link">(Show)</div>
-			<div id="howToArea" class="hidden">
-				<ol>
-					<li>
-						Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script<br>
-						<i>If you want to ENCRYPT Files, they usually have a File-Extension like "png" or something else =)</i>
-					</li>
-					<li>
-						Get the En/Decrypt-Code.<br>
-						<span class="red">New:</span> PNG-Files (Images) don't need the Decryption-Code, <b>except</b> you want to re-encrypt them
-						<ul>
-							<li>Upload the System.json File from the Game and let detect the Code automatic. (Click on "Detect", after selecting the System.json)</li>
-						</ul>
-					</li>
-					<li>Select the File(s) to de/encrypt - <i>Multi-Select-Files are possible!</i></li>
-					<li>Hit the Decrypt or Encrypt-Button</li>
-					<li>
-						You can preview your decrypted Files, if you click on "View", next to the Filename. <i>(Of course you can't preview encrypted Files)</i>
-					</li>
-					<li>
-						You can save them now, by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
-					</li>
-					<li>
-						You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
-					</li>
-				</ol>
+			<div id="howTo" class="content-container">
+				<h2 class="inline-heading">How to use?</h2> <div id="howToSpoilerText" class="link">(Show)</div>
+				<div id="howToArea" class="hidden">
+					<ol>
+						<li>
+							Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script<br>
+							<i>If you want to ENCRYPT Files, they usually have a File-Extension like "png" or something else =)</i>
+						</li>
+						<li>
+							Get the En/Decrypt-Code.<br>
+							<span class="red">New:</span> PNG-Files (Images) don't need the Decryption-Code, <b>except</b> you want to re-encrypt them
+							<ul>
+								<li>Upload the System.json File from the Game and let detect the Code automatic. (Click on "Detect", after selecting the System.json)</li>
+							</ul>
+						</li>
+						<li>Select the File(s) to de/encrypt - <i>Multi-Select-Files are possible!</i></li>
+						<li>Hit the Decrypt or Encrypt-Button</li>
+						<li>
+							You can preview your decrypted Files, if you click on "View", next to the Filename. <i>(Of course you can't preview encrypted Files)</i>
+						</li>
+						<li>
+							You can save them now, by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
+						</li>
+						<li>
+							You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
+						</li>
+					</ol>
+				</div>
 			</div>
 		</div>
 
@@ -270,7 +304,7 @@
 			</div>
 			<div class="fileList right">
 				<h2>File-List</h2>
-				<button type="button" id="zipSave" disabled>
+				<button class="btn btn-primary" type="button" id="zipSave" disabled>
 					Save all as ZIP-File
 				</button>
 				<div class="tooltip help">
@@ -279,7 +313,7 @@
 						There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
 					</div>
 				</div>
-				<button type="button" id="clearFileList" disabled>
+				<button class="btn btn-default" type="button" id="clearFileList" disabled>
 					Clear File-List
 				</button>
 				<div class="tooltip help">

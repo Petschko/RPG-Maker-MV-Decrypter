@@ -7,6 +7,7 @@
 
 // Globals
 var zip;
+var eventAddMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
 
 /**
  * Try to Reads the Encryption-Code and insert it to the given input element
@@ -253,6 +254,7 @@ function init() {
 	}, false);
 
 	zip = new ZIP();
+	findMenus();
 }
 
 document.body[window.addEventListener ? 'addEventListener' : 'attachEvent'](
@@ -495,4 +497,167 @@ function enableFileButtons(clearFileListButtonId, zipSaveButtonId) {
  */
 function saveZip() {
 	zip.save();
+}
+
+/**
+ * Returns the correct function for the action of an Event-Listener
+ *
+ * @param {string} action
+ * @returns {string}
+ */
+function on(action) {
+	return window.addEventListener ? action : 'on' + action;
+}
+
+/**
+ * Adds a Event-Listener cross-browser
+ *
+ * @param {Element|Node|HTMLElement} element
+ * @param {string} action
+ * @param {function} callable
+ */
+function addEventListener(element, action, callable) {
+	element[eventAddMethod](on(action), callable);
+}
+
+// Menu Actions
+/**
+ * Searches Menus and adds functions on it
+ */
+function findMenus() {
+	var menuElements = document.getElementsByClassName('nav-tabs');
+
+	if(! menuElements)
+		return;
+
+	for(var i = 0; i < menuElements.length; i++)
+		new Menu(menuElements[i]);
+}
+
+/**
+ * Creates a new interactive menu
+ *
+ * @param {Element|Node|HTMLElement} menuElement - Menu-List-Element
+ * @constructor - Menu
+ */
+function Menu(menuElement) {
+	this.menuItems = menuElement.getElementsByClassName('nav-link');
+	this.activeIndex = -1;
+	this.displayElementIds = [];
+
+	/**
+	 * Updates the Active index
+	 */
+	this.findActiveIndex = function() {
+		for(var i = 0; i < this.menuItems.length; i++) {
+			if(hasCssClass(this.menuItems[i].className, 'active')) {
+				this.activeIndex = i;
+
+				return
+			}
+		}
+
+		this.activeIndex = -1;
+	};
+
+	/**
+	 * Gets the Display Id of an element
+	 *
+	 * @param menuItem - Menu-Item
+	 * @returns {string} - Display ID
+	 */
+	this.getIdDisplayId = function(menuItem) {
+		var anchor = menuItem.getElementsByTagName('a');
+
+		return anchor[0].href.split('#')[1];
+	};
+
+	/**
+	 * Removes click ability from the links (To avoid scrolling)
+	 */
+	this.preventDefaultLink = function() {
+		for(var i = 0; i < this.menuItems.length; i++) {
+			var anchor = this.menuItems[i].getElementsByTagName('a')[0];
+
+			addEventListener(anchor, 'click', function(e) {
+				e.preventDefault();
+			});
+		}
+	};
+
+	/**
+	 * Hides a container with that index
+	 *
+	 * @param {number} index - Index to hide
+	 */
+	this.hideContainer = function(index) {
+		var container = document.getElementById(this.displayElementIds[index]);
+
+		if(! container)
+			return;
+
+		container.className = addCssClass(container.className, 'hidden');
+	};
+
+	/**
+	 * Shows a container with that index
+	 *
+	 * @param {number} index - Index to show
+	 */
+	this.showContainer = function(index) {
+		var container = document.getElementById(this.displayElementIds[index]);
+
+		if(! container)
+			return;
+
+		container.className = removeCssClass(container.className, 'hidden');
+	};
+
+	/**
+	 * Updates the Menu and container to the index
+	 *
+	 * @param {number} index - New active index
+	 */
+	this.updateMenuTo = function(index) {
+		this.activeIndex = index;
+
+		for(var i = 0; i < this.menuItems.length; i++) {
+			if(i === index) {
+				this.menuItems[i].className = addCssClass(this.menuItems[i].className, 'active');
+				this.showContainer(i);
+			} else {
+				this.menuItems[i].className = removeCssClass(this.menuItems[i].className, 'active');
+				this.hideContainer(i);
+			}
+		}
+	};
+
+	/**
+	 * Inits the Menu
+	 */
+	this.init = function() {
+		this.findActiveIndex();
+		for(var i = 0; i < this.menuItems.length; i++) {
+			this.displayElementIds.push(this.getIdDisplayId(this.menuItems[i]));
+
+			// Add Listener
+			addEventListener(this.menuItems[i], 'click', function(that, updateIndex) {
+				return function(e) {
+					that.updateMenuTo(updateIndex);
+				}
+			}(this, i));
+
+			if(this.activeIndex !== i)
+				this.hideContainer(i);
+		}
+
+		if(this.activeIndex === -1)
+			this.updateMenuTo(0);
+		else
+			this.updateMenuTo(this.activeIndex);
+		this.preventDefaultLink();
+	};
+
+	// Init
+	this.init();
 }
