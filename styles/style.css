@@ -16,6 +16,11 @@ body {
 	padding: 20px 40px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	margin-top: .5em;
+	margin-bottom: .5em;
+}
+
 .info {
 	border: 1px solid #000;
 	background-color: #FFF5D3;
@@ -66,7 +71,12 @@ div#headerInfo > h3 {
 	display: inline-block;
 }
 
-h2#browserSupport {
+h1.inline-heading,
+h2.inline-heading,
+h3.inline-heading,
+h4.inline-heading,
+h5.inline-heading,
+h6.inline-heading {
 	display: inline-block;
 	margin-bottom: 0;
 	margin-right: 5px;
@@ -79,6 +89,10 @@ div#headerInfo > div.tooltip {
 div#headerInfo input[type="text"] {
 	margin-left: 10px;
 	float: right;
+}
+
+#howToArea li {
+	margin-bottom: 10px;
 }
 
 /* Hide some info's (not important on local use) */

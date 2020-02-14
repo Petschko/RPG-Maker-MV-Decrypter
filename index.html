@@ -13,7 +13,7 @@
 		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>RPG-Maker-MV Decrypter by Petschko</title>
-		<link rel="stylesheet" href="style.css?ver=1.1">
+		<link rel="stylesheet" href="styles/style.css?ver=1.2">
 	</head>
 	<body>
 		<noscript>
@@ -42,83 +42,89 @@
 			</div>
 			<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes)</p>
 			<div>
-				<h2 id="browserSupport">Browser-Support</h2> <div id="browserSpoilerText" class="link">(Show)</div>
-				<ul id="browserSupportArea" class="hidden">
-					<li>
-						Internet-Explorer <span class="red">(Unusable)</span>
-						<span class="tooltip help">
-						(Details)
-						<span class="tooltipText">
-							<span class="red">Download Files</span><br>
-							<span class="red">View Files</span><br>
-							<span class="yellow">En/Decrypt</span><br>
-							<span class="grey">ZIP-Download</span> - <i>Unknown</i>
-						</span>
-					</span>
-					</li>
-					<li>
-						Edge <span class="yellow">(Partial usable)</span>
-						<span class="tooltip help">
-						(Details)
-						<span class="tooltipText longText">
-							<span class="yellow">Download Files</span> - <i>Wrong-Extension (But File is valid)</i><br>
-							<span class="red">View Files</span><br>
-							<span class="green">En/Decrypt</span><br>
-							<span class="grey">ZIP-Download</span> - <i>Unknown</i>
-						</span>
-					</span>
-					</li>
-					<li>
-						Google-Chrome <span class="green">(Almost complete usable)</span>
-						<span class="tooltip help">
-						(Details)
-						<span class="tooltipText longText">
-							<span class="green">Download Files</span><br>
-							<span class="yellow">View Files</span> - <i>Displays many characters...</i><br>
-							<span class="green">En/Decrypt</span><br>
-							<span class="grey">ZIP-Download</span> - <i>Unknown</i>
-						</span>
-					</span>
-					</li>
-					<li>
-						Firefox <span class="green">(Usable)</span>
-					</li>
-					<li>
-						Safari <span class="grey">(Unknown)</span>
-					</li>
-					<li>
-						Opera <span class="green">(Usable)</span>
-					</li>
-				</ul>
-			</div>
-			<h2>How to use?</h2>
-			<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" title="Help me by reporting Bugs" target="_blank">reporting bugs</a>!</p>
-			<ol>
-				<li>
-					Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script<br>
-					<i>If you want to ENCRYPT Files, they usually have a File-Extension like "png" or something else =)</i>
-				</li>
-				<li>
-					Get the En/Decrypt-Code
+				<h2 class="inline-heading" id="browserSupport">Browser-Support</h2> <div id="browserSpoilerText" class="link">(Show)</div>
+				<div id="browserSupportArea" class="hidden">
+					<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" title="Help me by reporting Bugs" target="_blank">reporting bugs</a>!</p>
 					<ul>
-						<li>Upload the System.json File from the Game and lets detect the Code automatic</li>
+						<li>
+							Internet-Explorer <span class="red">(Unusable)</span>
+							<span class="tooltip help">
+							(Details)
+							<span class="tooltipText">
+								<span class="red">Download Files</span><br>
+								<span class="red">View Files</span><br>
+								<span class="yellow">En/Decrypt</span><br>
+								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
+							</span>
+						</span>
+						</li>
+						<li>
+							Edge <span class="yellow">(Partial usable)</span>
+							<span class="tooltip help">
+							(Details)
+							<span class="tooltipText longText">
+								<span class="yellow">Download Files</span> - <i>Wrong-Extension (But File is valid)</i><br>
+								<span class="red">View Files</span><br>
+								<span class="green">En/Decrypt</span><br>
+								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
+							</span>
+						</span>
+						</li>
+						<li>
+							Google-Chrome <span class="green">(Almost complete usable)</span>
+							<span class="tooltip help">
+							(Details)
+							<span class="tooltipText longText">
+								<span class="green">Download Files</span><br>
+								<span class="yellow">View Files</span> - <i>Displays many characters...</i><br>
+								<span class="green">En/Decrypt</span><br>
+								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
+							</span>
+						</span>
+						</li>
+						<li>
+							Firefox <span class="green">(Usable)</span>
+						</li>
+						<li>
+							Safari <span class="grey">(Unknown)</span>
+						</li>
+						<li>
+							Opera <span class="green">(Usable)</span>
+						</li>
 					</ul>
-				</li>
-				<li>Select the File(s) to de/encrypt - <i>Multi-Select-Files are possible!</i></li>
-				<li>Hit the Decrypt or Encrypt-Button</li>
-				<li>
-					You can preview your decrypted Files, if you click on "View", next to the Filename. <i>(Of course you can't preview encrypted Files)</i>
-				</li>
-				<li>
-					You can save them now, by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
-				</li>
-				<li>
-					<span class="red">New:</span> You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
-				</li>
-			</ol>
+				</div>
+			</div>
+			<h2 class="inline-heading">How to use?</h2> <div id="howToSpoilerText" class="link">(Show)</div>
+			<div id="howToArea" class="hidden">
+				<ol>
+					<li>
+						Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script<br>
+						<i>If you want to ENCRYPT Files, they usually have a File-Extension like "png" or something else =)</i>
+					</li>
+					<li>
+						Get the En/Decrypt-Code.<br>
+						<span class="red">New:</span> PNG-Files (Images) don't need the Decryption-Code, <b>except</b> you want to re-encrypt them
+						<ul>
+							<li>Upload the System.json File from the Game and let detect the Code automatic. (Click on "Detect", after selecting the System.json)</li>
+						</ul>
+					</li>
+					<li>Select the File(s) to de/encrypt - <i>Multi-Select-Files are possible!</i></li>
+					<li>Hit the Decrypt or Encrypt-Button</li>
+					<li>
+						You can preview your decrypted Files, if you click on "View", next to the Filename. <i>(Of course you can't preview encrypted Files)</i>
+					</li>
+					<li>
+						You can save them now, by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
+					</li>
+					<li>
+						You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
+					</li>
+				</ol>
+			</div>
 		</div>
 
 		<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
+		<p><span class="red">New:</span> PNG-Files (Images) don't need the Decryption-Code, <b>except</b> you want to re-encrypt them</p>
 		<hr>
 		<div class="wrapper center">
 			<div class="left">
