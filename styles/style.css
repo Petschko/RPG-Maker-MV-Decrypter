@@ -13,7 +13,14 @@ html, body {
 
 /* Spaces, sizes etc */
 body {
-	padding: 20px 40px;
+	padding: 0 40px;
+}
+
+footer {
+	margin-top: 1em;
+	padding-top: 1em;
+	margin-bottom: 2em;
+	border-top: #EBEBEB solid 1px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,10 +28,35 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: .5em;
 }
 
+input[type="file"] {
+	cursor: pointer;
+}
+
+input[type="radio"]{
+	margin-right: 5px;
+}
+
 .info {
 	border: 1px solid #000;
 	background-color: #FFF5D3;
 	padding: 15px 20px;
+}
+
+.title {
+	margin-bottom: 2em;
+}
+
+.title h1 {
+	margin-top: .25em;
+}
+
+img.logo {
+	max-width: 64px;
+}
+
+.content-container {
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 #headerInfo > div,
@@ -78,12 +110,14 @@ h4.inline-heading,
 h5.inline-heading,
 h6.inline-heading {
 	display: inline-block;
-	margin-bottom: 0;
-	margin-right: 5px;
 }
 
 div#headerInfo > div.tooltip {
 	margin-top: 0;
+}
+
+div#headerInfo label {
+	display: block;
 }
 
 div#headerInfo input[type="text"] {
@@ -212,7 +246,10 @@ button#encrypt > span {
 	color: #B713FF;
 	border-color: #B713FF !important;
 }
-.tooltip {
+
+.tooltip.help {
+	opacity: 1;
+	z-index: auto;
 	position: relative;
 	display: inline-block; /* Ensure inline-block */
 	border-bottom: 1px dotted #555;
@@ -223,7 +260,6 @@ button#encrypt > span {
 	position: absolute;
 	visibility: hidden;
 	display: block;
-	z-index: 1;
 
 	margin-top: 10px;
 	min-width: 200px;
@@ -246,6 +282,7 @@ button#encrypt > span {
 .tooltip:hover .tooltipText {
 	visibility: visible;
 	opacity: 1;
+	z-index: 999;
 }
 
 .tooltipText p {

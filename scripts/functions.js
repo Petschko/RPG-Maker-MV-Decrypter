@@ -177,8 +177,6 @@ function init() {
 	var inputCode = document.getElementById('decryptCode');
 	var decryptButton = document.getElementById('decrypt');
 	var encryptButton = document.getElementById('encrypt');
-	var spoilerBrowserSup = document.getElementById('browserSpoilerText');
-	var spoilerHowTo = document.getElementById('howToSpoilerText');
 	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
 	var headerAreaEl = document.getElementById('headerValuesEditArea');
@@ -202,12 +200,6 @@ function init() {
 	}, false);
 	headerResetButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		setHeaderDefaultValues(true);
-	}, false);
-	spoilerBrowserSup[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		spoiler('browserSpoilerText', '', 'browserSupportArea');
-	}, false);
-	spoilerHowTo[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		spoiler('howToSpoilerText', '', 'howToArea');
 	}, false);
 	spoilerHeader[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		spoiler('spoilerHeaderInfoText', 'Header-Values', 'headerInfo');
