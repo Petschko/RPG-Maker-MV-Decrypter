@@ -19,6 +19,13 @@
 		return window.location.hash.substr(1);
 	}
 
+	function addSilentAnchor(anchor) {
+		if(history.replaceState)
+			history.replaceState(null, '', '#' + anchor);
+		else
+			window.location.hash = '#' + anchor; // Fallback
+	}
+
 	/**
 	 * Removes a CSS-Class
 	 *
@@ -133,6 +140,9 @@
 			this.activeIndex = -1;
 		};
 
+		/**
+		 * Finds the active Menu-Item when a anchor is given
+		 */
 		this.findActiveIndexFromAnchor = function() {
 			var anchor = getAnchorFromUrl();
 
@@ -143,6 +153,8 @@
 					return;
 				}
 			}
+
+			this.activeIndex = -1;
 		};
 
 		/**
@@ -165,7 +177,11 @@
 				var anchor = this.menuItems[i].getElementsByTagName('a')[0];
 
 				addEventListener(anchor, 'click', function(e) {
+					if(this.href.indexOf('#') === -1)
+						return;
+
 					e.preventDefault();
+					addSilentAnchor(this.href.split('#')[1]);
 				});
 			}
 		};
@@ -221,9 +237,12 @@
 		 * Inits the Menu
 		 */
 		this.init = function() {
+			// Check if an anchor is given
 			if(getAnchorFromUrl())
 				this.findActiveIndexFromAnchor();
-			else
+
+			// If nothing is found or given still search normal
+			if(this.activeIndex === -1)
 				this.findActiveIndex();
 
 			for(var i = 0; i < this.menuItems.length; i++) {
