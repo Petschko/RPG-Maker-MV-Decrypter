@@ -1,5 +1,5 @@
 {
-  "name": "@petschko/rpg_maker_mv_decrypter",
+  "name": "rpg-maker-mv-decrypter",
   "version": "2.0.0",
   "description": "You can decrypt RPG-Maker-MV Resource Files (.rpgmvp, .rpgmvm or .rpgmvo) with this project",
   "keywords": ["rpgmvp", "rpgmvm", "rpgmvo", "restore", "decrypt", "encrypt", "rpgmaker", "rpg maker", "mv", "tool", "offline"],
@@ -21,6 +21,7 @@
   "dependencies": {
     "file-saver": ">=1.3.2",
     "lz-string":  ">=1.4.4",
-    "jszip": ">=3.1.3"
+    "jszip": ">=3.1.3",
+    "bootstrap-without-jquery": "0.6.1"
   }
 }
