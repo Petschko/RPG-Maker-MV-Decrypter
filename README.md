@@ -27,7 +27,7 @@ You can save them for Private-Use only. If the origin Licence allow use you can 
 
 This is very easy:
 
-- Download/Clone the Project OR direct use [it on my site](http://petschko.org/tools/mv_decrypter/)
+- Download/Clone the Project OR direct use [it on my site](https://petschko.org/tools/mv_decrypter/)
 - Extract/Put it where ever you want
 - Done :)
 
@@ -48,7 +48,7 @@ You want to see the Source-Files? Here you go:
     - ".rpgmvm" (m4a-Files)
     - ".rpgmvo" (ogg-Files)
   - If the Files doesn't have this Extensions the Creator used an other Encryption/Pack-Tool. If that's the case you can't use this script for this Project.
-- Get the Encryption-Key
+- Get the Encryption-Key (This step isn't needed for Images)
   - Select with the first File-Picker the "System.json"-File which contains the "raw"-Encryption-Key
     - The File is located in `%PROJECT_DIRECTORY%/www/data/System(.json)`
   - Click on the Detect-Button - If it finds the Key, it will automatically insert it for you within the next Input-Field
@@ -56,7 +56,7 @@ You want to see the Source-Files? Here you go:
 - Click on the Decrypt-Button
   - **IF** you get an invalid Header Warning, turn off the Header Check. Just select "No" under `Verify Fake-Header?` and try again!
 - The Decrypted-File(s) are shown in a File-List, next to or below _(on tiny screens)_ the De/Encrypt-Button. You can open them and/or save them (or just view/listen)
-  - Some Plugins like [UBlockOrigin](https://github.com/gorhill/uBlock) may block previewing the File. Disable it or explicit say `Open in new Tab`
+  - Some Browser-Plugins like [UBlockOrigin](https://github.com/gorhill/uBlock) may block previewing the File. Disable it or explicit say `Open in new Tab`
 
 #### Encryption
 You want turn back an Image into the Game _(If you have translated text or fixed something on an Image)_?
@@ -108,7 +108,9 @@ Here you go:
 - [Petschko](https://github.com/Petschko) _(Me xD)_ - For creating this Project
 - [Stuk](https://github.com/Stuk) - For the ZIP-Library ([jszip @ Github](https://github.com/Stuk/jszip))
 - [pieroxy](https://github.com/pieroxy) - For the LZ-String-Library ([lz-string @ Github](https://github.com/pieroxy/lz-string))
-- [eligrey](https://github.com/eligrey) - For the FileSaver.js-Library ([FileSaver.js @ Github](https://github.com/eligrey/FileSaver.js)) 
+- [eligrey](https://github.com/eligrey) - For the FileSaver.js-Library ([FileSaver.js @ Github](https://github.com/eligrey/FileSaver.js))
+- [Bootstrap](https://getbootstrap.com/docs/3.4/getting-started/) - For a bit more user-Friendly Interface
+- **Anonymous** - For the tip with the No-Key-"decryption" for PNGs *(This user want to remain anonymous, but this belongs to them)*
 
 ## Contact
 
