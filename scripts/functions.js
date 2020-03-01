@@ -181,8 +181,8 @@ function init() {
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
 	var headerAreaEl = document.getElementById('headerValuesEditArea');
 	var headerResetButton = document.getElementById('resetHeader');
-	var zipSaveButton = document.getElementById('zipSave');
-	var clearFileListButton = document.getElementById('clearFileList');
+	var zipSaveButtons = document.getElementsByClassName('zipSave');
+	var clearFileListButtons = document.getElementsByClassName('clearFileList');
 
 	// Prepare stuff
 	if(! parseInt(getRadioButtonValue('checkFakeHeader', '1')))
@@ -211,7 +211,7 @@ function init() {
 		processFiles(
 			'encryptedFiles',
 			'decryptCode',
-			'blob',
+			'blob-list',
 			true,
 			!! parseInt(getRadioButtonValue('checkFakeHeader', '0')),
 			'headerLen',
@@ -224,7 +224,7 @@ function init() {
 		processFiles(
 			'encryptedFiles',
 			'decryptCode',
-			'blob',
+			'blob-list',
 			false,
 			true,
 			'headerLen',
@@ -236,14 +236,19 @@ function init() {
 	inputCode[addMethod](window.addEventListener ? 'change' : 'onchange', function() {
 		manualChange('decryptCode');
 	}, false);
-	zipSaveButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		saveZip();
-	}, false);
-	clearFileListButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		clearFileList('blob', 'zipSave');
-		this.disabled = 'disabled';
-	}, false);
 
+	// File-List Listener
+	var i;
+	for(i = 0; i < zipSaveButtons.length; i++) {
+		zipSaveButtons[i][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+			saveZip();
+		}, false);
+	}
+	for(i = 0; i < clearFileListButtons.length; i++) {
+		clearFileListButtons[i][addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+			clearFileList('blob-list', 'zipSave', 'clearFileList');
+		}, false);
+	}
 	zip = new ZIP();
 }
 
@@ -286,7 +291,7 @@ function setHeaderDefaultValues(confirmDialog) {
  *
  * @param {string} fileUrlElId - Element-Id of the File(s)-Picker
  * @param {string} decryptCodeElId - Element-Id of the Decryption-Code Input Field
- * @param {string} outputElId - Output-Element-Id
+ * @param {string} outputElClass - Output-Element-Class
  * @param {boolean} decrypt - Decrypt (true decrypts false encrypts)
  * @param {boolean} verifyHeader - Verify Header
  * @param {string} headerLenElId - Element-Id of the Header-Length
@@ -297,7 +302,7 @@ function setHeaderDefaultValues(confirmDialog) {
 function processFiles(
 	fileUrlElId,
 	decryptCodeElId,
-	outputElId,
+	outputElClass,
 	decrypt,
 	verifyHeader,
 	headerLenElId,
@@ -305,7 +310,7 @@ function processFiles(
 	versionElId,
 	remainElId
 ) {
-	var outputEl = document.getElementById(outputElId);
+	var outputEls = document.getElementsByClassName(outputElClass);
 	var fileUrlEl = document.getElementById(fileUrlElId);
 	var encryptCodeEl = document.getElementById(decryptCodeElId);
 	var encryptionCode = encryptCodeEl.value;
@@ -412,33 +417,37 @@ function processFiles(
 		if(decrypt) {
 			decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
 				// Output Decrypted file
-				if(exception !== null)
-					outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
-				else {
-					rpgFile.convertExtension(true);
-					outputEl.appendChild(rpgFile.createOutPut(null));
-					zip.addFile(rpgFile);
-
-					if(! buttonsEnabled) {
-						enableFileButtons('clearFileList', 'zipSave');
-						buttonsEnabled = true;
+				for(var n = 0; n < outputEls.length; n++) {
+					if(exception !== null)
+						outputEls[n].appendChild(rpgFile.createOutPut(exception.toString()));
+					else {
+						rpgFile.convertExtension(true);
+						outputEls[n].appendChild(rpgFile.createOutPut(null));
+						zip.addFile(rpgFile);
 					}
+				}
+
+				if(! buttonsEnabled && exception === null) {
+					enableFileButtons('clearFileList', 'zipSave');
+					buttonsEnabled = true;
 				}
 			});
 		} else {
 			decrypter.encryptFile(rpgFile, function(rpgFile, exception) {
 				// Output Encrypted file
-				if(exception !== null)
-					outputEl.appendChild(rpgFile.createOutPut(exception.toString()));
-				else {
-					rpgFile.convertExtension(false);
-					outputEl.appendChild(rpgFile.createOutPut(null));
-					zip.addFile(rpgFile);
-
-					if(! buttonsEnabled) {
-						enableFileButtons('clearFileList', 'zipSave');
-						buttonsEnabled = true;
+				for(var n = 0; n < outputEls.length; n++) {
+					if(exception !== null)
+						outputEls[n].appendChild(rpgFile.createOutPut(exception.toString()));
+					else {
+						rpgFile.convertExtension(false);
+						outputEls[n].appendChild(rpgFile.createOutPut(null));
+						zip.addFile(rpgFile);
 					}
+				}
+
+				if(! buttonsEnabled && exception === null) {
+					enableFileButtons('clearFileList', 'zipSave');
+					buttonsEnabled = true;
 				}
 			});
 		}
@@ -448,18 +457,24 @@ function processFiles(
 /**
  * Clears the File-List & disables the ZIP-Save-Button
  *
- * @param {string} fileListId - Id of the File-List
- * @param {string} zipSaveButtonId - Id of the ZIP-Save Button
+ * @param {string} fileListClass - Class-Name of the File-List
+ * @param {string} zipSaveButtonClass - Class-Name of the ZIP-Save Button
+ * @param {string} clearFileListButtonClass - Class-Name of the Clear-File-List Button
  */
-function clearFileList(fileListId, zipSaveButtonId) {
-	var fileListEl = document.getElementById(fileListId);
-	var zipSaveButtonEl = document.getElementById(zipSaveButtonId);
+function clearFileList(fileListClass, zipSaveButtonClass, clearFileListButtonClass) {
+	var fileListEls = document.getElementsByClassName(fileListClass);
+	var zipSaveButtonEls = document.getElementsByClassName(zipSaveButtonClass);
+	var clearFileListButtonEls = document.getElementsByClassName(clearFileListButtonClass);
 
-	if(! fileListEl || ! zipSaveButtonEl)
-		return;
+	var i;
+	for(i = 0; i < fileListEls.length; i++)
+		fileListEls[i].innerHTML = '';
 
-	fileListEl.innerHTML = '';
-	zipSaveButtonEl.disabled = 'disabled';
+	for(i = 0; i < zipSaveButtonEls.length; i++)
+		zipSaveButtonEls[i].disabled = 'disabled';
+
+	for(i = 0; i < clearFileListButtonEls.length; i++)
+		clearFileListButtonEls[i].disabled = 'disabled';
 
 	// Dispose old ZIP Object (Clear Memory)
 	zip.dispose();
@@ -468,18 +483,19 @@ function clearFileList(fileListId, zipSaveButtonId) {
 /**
  * ReEnables the Buttons for the File-List
  *
- * @param {string} clearFileListButtonId - Id of the Clear-File-List Button
- * @param {string} zipSaveButtonId - Id of the ZIP-Save Button
+ * @param {string} clearFileListButtonClass - Class-Name of the Clear-File-List Button
+ * @param {string} zipSaveButtonClass - Class-Name of the ZIP-Save Button
  */
-function enableFileButtons(clearFileListButtonId, zipSaveButtonId) {
-	var clearFileListButtonEl = document.getElementById(clearFileListButtonId);
-	var zipSaveButtonEl = document.getElementById(zipSaveButtonId);
+function enableFileButtons(clearFileListButtonClass, zipSaveButtonClass) {
+	var clearFileListButtonEls = document.getElementsByClassName(clearFileListButtonClass);
+	var zipSaveButtonEls = document.getElementsByClassName(zipSaveButtonClass);
 
-	if(! clearFileListButtonEl || ! zipSaveButtonEl)
-		return;
+	var i;
+	for(i = 0; i < clearFileListButtonEls.length; i++)
+		clearFileListButtonEls[i].disabled = '';
 
-	clearFileListButtonEl.disabled = '';
-	zipSaveButtonEl.disabled = '';
+	for(i = 0; i < zipSaveButtonEls.length; i++)
+		zipSaveButtonEls[i].disabled = '';
 }
 
 /**
