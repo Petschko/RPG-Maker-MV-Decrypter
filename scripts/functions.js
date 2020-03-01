@@ -209,7 +209,7 @@ function init() {
 	}, false);
 	decryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		processFiles(
-			'encryptedImg',
+			'encryptedFiles',
 			'decryptCode',
 			'blob',
 			true,
@@ -222,7 +222,7 @@ function init() {
 	}, false);
 	encryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		processFiles(
-			'encryptedImg',
+			'encryptedFiles',
 			'decryptCode',
 			'blob',
 			false,

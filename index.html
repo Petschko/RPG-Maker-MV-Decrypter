@@ -78,6 +78,7 @@
 			</div>
 
 			<div id="en-decrypt" class="content-container">
+				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker Games.</p>
 				<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
 				<p><span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
 				<hr>
@@ -193,15 +194,21 @@
 											Header-Remain: <input type="text" name="remain" id="remain">
 										</label>
 									</div>
-									<button class="btn btn-danger" type="button" id="resetHeader">Reset Header-Values to default</button>
+									<button class="btn btn-danger" type="button" id="resetHeader">
+										<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+										<span>Reset Header-Values to default</span>
+									</button>
 								</div>
 							</div>
 							<div>
 								<label>
 									System(.json) <i>(For Decryption-Code)</i>:<br>
-									<input type="file" name="system.json" id="systemFile">
+									<input type="file" accept=".json,.txt,.js" name="system.json" id="systemFile">
 								</label>
-								<button class="btn btn-default" type="button" id="detectButton">Detect</button>
+								<button class="btn btn-default" type="button" id="detectButton">
+									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+									<span>Detect</span>
+								</button>
 							</div>
 							<div>
 								<label>
@@ -210,7 +217,7 @@
 							</div>
 							<div>
 								<label>
-									En/Decrypt-File(s): <input type="file" name="encryptedImg" id="encryptedImg" multiple required>
+									En/Decrypt-File(s): <input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo" name="encryptedFiles" id="encryptedFiles" multiple required>
 								</label>
 							</div>
 							<button class="btn btn-success" type="button" id="decrypt">
@@ -226,7 +233,8 @@
 					<div class="fileList right">
 						<h2>File-List</h2>
 						<button class="btn btn-primary" type="button" id="zipSave" disabled>
-							Save all as ZIP-File
+							<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+							<span>Save all as ZIP-File</span>
 						</button>
 						<div class="tooltip help">
 							(i)
@@ -235,7 +243,8 @@
 							</div>
 						</div>
 						<button class="btn btn-default" type="button" id="clearFileList" disabled>
-							Clear File-List
+							<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+							<span>Clear File-List</span>
 						</button>
 						<div class="tooltip help">
 							(?)
@@ -249,7 +258,53 @@
 			</div>
 
 			<div id="restore-images" class="content-container">
-				blah
+				<p>In this area you can Restore PNG-Files (Images - "<b>.rpgmvp</b>-Files") from RPG-Maker Games without the Decryption-Key.</p>
+				<hr>
+				<div class="wrapper center">
+					<div class="left">
+						<div class="fileInfoArea">
+							<h2>Select RPGMVP Files</h2>
+
+							<div>
+								<label>
+									Select File/s to restore:
+									<input type="file" accept=".rpgmvp" name="encryptedImg" multiple required>
+								</label>
+							</div>
+
+							<div>
+								<button type="button" class="btn btn-success">
+									<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+									<span>Restore Original Images</span>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="fileList right">
+						<h2>File-List</h2>
+						<button class="btn btn-primary" type="button" id="zipSaveImages" disabled>
+							<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+							<span>Save all as ZIP-File</span>
+						</button>
+						<div class="tooltip help">
+							(i)
+							<div class="tooltipText">
+								There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+							</div>
+						</div>
+						<button class="btn btn-default" type="button" id="clearFileListImages" disabled>
+							<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+							<span>Clear File-List</span>
+						</button>
+						<div class="tooltip help">
+							(?)
+							<div class="tooltipText">
+								Remove all Files from the List below
+							</div>
+						</div>
+						<div id="blobImages"></div>
+					</div>
+				</div>
 			</div>
 
 			<div id="browser-support" class="content-container">
