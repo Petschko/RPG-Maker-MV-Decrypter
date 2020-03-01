@@ -9,6 +9,7 @@
 	'use strict';
 
 	var eventAddMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+	var menus = [];
 
 	/**
 	 * Returns the current anchor from the URL
@@ -19,6 +20,11 @@
 		return window.location.hash.substr(1);
 	}
 
+	/**
+	 * Adds a silent anchor to avoid scrolling
+	 *
+	 * @param {string} anchor - Anchor
+	 */
 	function addSilentAnchor(anchor) {
 		if(history.replaceState)
 			history.replaceState(null, '', '#' + anchor);
@@ -102,6 +108,31 @@
 
 	// Menu Actions
 	/**
+	 * Updates all menus when clicking on anchor link
+	 */
+	function updateMenuFromHref() {
+		var menuHref = document.getElementsByClassName('menu-link');
+
+		if(! menuHref)
+			return;
+
+		for(var i = 0; i < menuHref.length; i++) {
+			addEventListener(menuHref[i], 'click', function(e) {
+				if(this.href.indexOf('#') === -1)
+					return;
+
+				// e.preventDefault();
+				var anchor = this.href.split('#')[1];
+
+				// Handle all menus
+				for(var n = 0; n < menus.length; n++) {
+					menus[n].updateFromAnchor(anchor);
+				}
+			});
+		}
+	}
+
+	/**
 	 * Searches Menus and adds functions on it
 	 */
 	function findMenus() {
@@ -111,7 +142,10 @@
 			return;
 
 		for(var i = 0; i < menuElements.length; i++)
-			new Menu(menuElements[i]);
+			menus.push(new Menu(menuElements[i]));
+
+		// Add external menu functions
+		updateMenuFromHref();
 	}
 
 	/**
@@ -155,6 +189,28 @@
 			}
 
 			this.activeIndex = -1;
+		};
+
+		/**
+		 * Updates the menu with the given anchor if found
+		 *
+		 * @param {string} anchor - Anchor
+		 * @returns {boolean} - Was found and updated
+		 */
+		this.updateFromAnchor = function(anchor) {
+			var found = false;
+
+			for(var i = 0; i < this.menuItems.length; i++) {
+				if(this.getIdDisplayId(this.menuItems[i]) === anchor) {
+					this.activeIndex = i;
+					this.updateMenuTo(this.activeIndex);
+					found = true;
+
+					break;
+				}
+			}
+
+			return found;
 		};
 
 		/**
