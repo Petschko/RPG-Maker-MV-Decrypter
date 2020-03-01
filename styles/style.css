@@ -17,7 +17,7 @@ body {
 }
 
 footer {
-	margin-top: 1em;
+	margin-top: 2em;
 	padding-top: 1em;
 	margin-bottom: 2em;
 	border-top: #EBEBEB solid 1px;
@@ -34,6 +34,10 @@ input[type="file"] {
 
 input[type="radio"]{
 	margin-right: 5px;
+}
+
+label {
+	font-weight: normal;
 }
 
 .info {
@@ -125,7 +129,7 @@ div#headerInfo input[type="text"] {
 	float: right;
 }
 
-#howToArea li {
+#howTo li {
 	margin-bottom: 10px;
 }
 
