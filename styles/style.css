@@ -176,6 +176,10 @@ a:focus,
 	border-color: #E00;
 }
 
+a.btn {
+	color: #FFF;
+}
+
 .red,
 .errorFile {
 	color: #F00;
