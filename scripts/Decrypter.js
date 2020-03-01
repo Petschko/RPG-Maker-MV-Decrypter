@@ -8,7 +8,7 @@
 /**
  * Creates a new instance of the Decrypter Object
  *
- * @param {string} encryptionKey - Encryption-Key
+ * @param {string|null} encryptionKey - Encryption-Key
  * @constructor - Decrypter
  */
 function Decrypter(encryptionKey) {
@@ -24,12 +24,18 @@ function Decrypter(encryptionKey) {
 	this.version = null;
 	this.remain = null;
 
+	// Setup how long the PNG-Header is
+	this.pngHeaderLen = null;
+
 	/**
 	 * Splits the Encryption-Code into an Array
 	 *
 	 * @returns {Array} - Encryption-Array
 	 */
 	Decrypter.prototype.splitEncryptionCode = function() {
+		if(! this.encryptCode)
+			return [];
+
 		return this.encryptCode.split(/(.{2})/).filter(Boolean);
 	};
 	this.encryptionCodeArray = this.splitEncryptionCode();
@@ -66,6 +72,27 @@ function Decrypter(encryptionKey) {
 	};
 
 	/**
+	 * Get the normal starting PNG-Header
+	 *
+	 * @param {int} headerLen - Header Length
+	 * @returns {Uint8Array} - Original starting PNG-Header
+	 */
+	Decrypter.prototype.getNormalPNGHeader = function(headerLen) {
+		var headerToRestore = '89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52'.split(' ');
+
+		// Header can't be longer than restore string
+		if(headerLen > headerToRestore.length)
+			headerLen = headerToRestore.length;
+
+		var restoredHeader = new Uint8Array(headerLen);
+
+		for(var i = 0; i < headerLen; i++)
+			restoredHeader[i] = parseInt('0x' + headerToRestore[i], 16);
+
+		return restoredHeader;
+	};
+
+	/**
 	 * Do something with a RPGFile
 	 *
 	 * @param {RPGFile} rpgFile - RPGFile Object
@@ -81,6 +108,15 @@ function Decrypter(encryptionKey) {
 			console.log('Try to ' + modType + ' the File "' + rpgFile.name + '.' + rpgFile.extension + '...');
 
 			switch(modType) {
+				case 'restore':
+					try {
+						rpgFile.content = that.restorePngHeader(this.result);
+						rpgFile.createBlobUrl();
+					} catch(e) {
+						callback(rpgFile, e);
+						return;
+					}
+					break;
 				case 'encrypt':
 					try {
 						rpgFile.content = that.encrypt(this.result);
@@ -105,6 +141,33 @@ function Decrypter(encryptionKey) {
 		}, false);
 
 		reader.readAsArrayBuffer(rpgFile.file);
+	};
+
+	/**
+	 * Restores the header of an encrypted PNG-File without the key
+	 *
+	 * @param {ArrayBuffer} arrayBuffer - Array-Buffer of the File
+	 * @returns {ArrayBuffer} - Array-Buffer of the restored File
+	 */
+	Decrypter.prototype.restorePngHeader = function(arrayBuffer) {
+		if(! arrayBuffer)
+			throw new ErrorException('File is empty or can\'t be read by your Browser...', 1);
+
+		var headerLen = (this.pngHeaderLen === null) ? this.getHeaderLen() : this.pngHeaderLen;
+		var pngStartHeader = this.getNormalPNGHeader(headerLen);
+
+		// Make sure that to long header values get the correct one
+		headerLen = pngStartHeader.length;
+
+		// Remove Fake-Header and encrypted Bytes
+		arrayBuffer = arrayBuffer.slice(headerLen * 2, arrayBuffer.byteLength);
+
+		// Merge the file-content with the header
+		var tmpInt8Arr = new Uint8Array(arrayBuffer.byteLength + headerLen);
+		tmpInt8Arr.set(pngStartHeader, 0);
+		tmpInt8Arr.set(new Uint8Array(arrayBuffer), headerLen);
+
+		return tmpInt8Arr.buffer;
 	};
 
 	/**
@@ -245,6 +308,16 @@ Decrypter.prototype.getRemain = function() {
 };
 
 /**
+ * Restores a RPGMVP-File without key
+ *
+ * @param {RPGFile} rpgFile - RPGFile to Decrypt
+ * @param {function} callback - Function if operation is done
+ */
+Decrypter.prototype.restoreHeader = function(rpgFile, callback) {
+	this.modifyFile(rpgFile, 'restore', callback);
+};
+
+/**
  * Decrypts a RPGFile
  *
  * @param {RPGFile} rpgFile - RPGFile to Decrypt
@@ -317,7 +390,7 @@ Decrypter.searchEncryptionCode = function(fileContent, searchParam, lzString) {
 	fileContent = (lzString) ? LZString.decompressFromBase64(fileContent) : fileContent;
 
 	// Exit on empty File-Content (Usually caused if LZ-String-Decompress was not an LZ-String)
-	if(fileContent === null)
+	if(! fileContent)
 		return null;
 
 	switch(searchParam) {

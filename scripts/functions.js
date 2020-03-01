@@ -177,6 +177,7 @@ function init() {
 	var inputCode = document.getElementById('decryptCode');
 	var decryptButton = document.getElementById('decrypt');
 	var encryptButton = document.getElementById('encrypt');
+	var restoreButton = document.getElementById('restoreEncryptedImages');
 	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
 	var headerAreaEl = document.getElementById('headerValuesEditArea');
@@ -236,6 +237,9 @@ function init() {
 	inputCode[addMethod](window.addEventListener ? 'change' : 'onchange', function() {
 		manualChange('decryptCode');
 	}, false);
+	restoreButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		processRestoreFiles('encryptedImg', 'blob-list');
+	}, false);
 
 	// File-List Listener
 	var i;
@@ -284,6 +288,51 @@ function setHeaderDefaultValues(confirmDialog) {
 	headerVerEl.placeholder = decrypter.defaultVersion;
 	headerRemainEl.value = decrypter.defaultRemain;
 	headerRemainEl.placeholder = decrypter.defaultRemain;
+}
+
+/**
+ * Restores images from MV-Encrypted-Files
+ *
+ * @param {string} fileUrlElId - Element-Id of the File(s)-Picker
+ * @param {string} outputElClass - Output-Element-Class
+ */
+function processRestoreFiles(fileUrlElId, outputElClass) {
+	var outputEls = document.getElementsByClassName(outputElClass);
+	var fileUrlEl = document.getElementById(fileUrlElId);
+
+	// Check if at least 1 File is given
+	if(fileUrlEl.files.length < 1) {
+		alert('Specify at least 1 File to restore...');
+
+		return;
+	}
+
+	var decrypter = new Decrypter(null);
+	decrypter.headerLen = 16;
+
+	// Process all Files
+	var buttonsEnabled = false; // Just trigger that event one time this loop
+	for(var i = 0; i < fileUrlEl.files.length; i++) {
+		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
+
+		decrypter.restoreHeader(rpgFile, function(rpgFile, exception) {
+			// Output Decrypted file
+			for(var n = 0; n < outputEls.length; n++) {
+				if(exception !== null)
+					outputEls[n].appendChild(rpgFile.createOutPut(exception.toString()));
+				else {
+					rpgFile.convertExtension(true);
+					outputEls[n].appendChild(rpgFile.createOutPut(null));
+					zip.addFile(rpgFile);
+				}
+			}
+
+			if(! buttonsEnabled && exception === null) {
+				enableFileButtons('clearFileList', 'zipSave');
+				buttonsEnabled = true;
+			}
+		});
+	}
 }
 
 /**
