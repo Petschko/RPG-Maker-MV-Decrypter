@@ -23,6 +23,7 @@ function RPGFile(file, blobUrl) {
 	this.blob = null;
 	this.fileUrl = blobUrl;
 	this.content = null;
+	this.rpgMakerMz = false;
 
 	/**
 	 * Splits the FullName into name & file ext
@@ -46,7 +47,14 @@ function RPGFile(file, blobUrl) {
 	 * @returns {boolean} - true if Encrypted File-Extension else false
 	 */
 	RPGFile.prototype.isEncryptedExt = function() {
-		return (this.extension === 'rpgmvp' || this.extension === 'rpgmvm' || this.extension === 'rpgmvo');
+		return (
+			this.extension === 'rpgmvp' ||
+			this.extension === 'rpgmvm' ||
+			this.extension === 'rpgmvo' ||
+			this.extension === 'png_' ||
+			this.extension === 'ogg_' ||
+			this.extension === 'm4a_'
+		);
 	}
 }
 
@@ -145,24 +153,27 @@ RPGFile.prototype.convertExtension = function(toNormal) {
 	if(toNormal) {
 		switch(this.extension.toLocaleLowerCase()) {
 			case 'rpgmvp':
+			case 'png_':
 				this.extension = 'png';
 				break;
 			case 'rpgmvm':
+			case 'm4a_':
 				this.extension = 'm4a';
 				break;
 			case 'rpgmvo':
+			case 'ogg_':
 				this.extension = 'ogg';
 		}
 	} else {
 		switch(this.extension.toLocaleLowerCase()) {
 			case 'png':
-				this.extension = 'rpgmvp';
+				this.extension = this.rpgMakerMz ? 'png_' : 'rpgmvp';
 				break;
 			case 'm4a':
-				this.extension = 'rpgmvm';
+				this.extension = this.rpgMakerMz ? 'm4a_' : 'rpgmvm';
 				break;
 			case 'ogg':
-				this.extension = 'rpgmvo';
+				this.extension = this.rpgMakerMz ? 'ogg_' : 'rpgmvo';
 		}
 	}
 };

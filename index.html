@@ -3,8 +3,8 @@
 	<head>
 		<!-- Head-Meta stuff -->
 		<meta name="author" content="Petschko" />
-		<meta name="description" content="Decrypt or encrypt RPG-Maker-MV Files (.rpgmvp, .rpgmvm or .rpgmvo) here" />
-		<meta name="keywords" content="RPG-Maker-MV, RPG-Maker-Decrypter, rpg-maker, decrypt, decrypter, encrypt, encrypter, RPG-Maker-Encrypter, rpgmvp, rpgmvm, rpgmvo" />
+		<meta name="description" content="Decrypt or encrypt RPG-Maker-MV & MZ Files (.rpgmvp, .rpgmvm or .rpgmvo, .png_, .ogg_, .m4a_) here" />
+		<meta name="keywords" content="RPG-Maker-MV, RPG-Maker-Decrypter, rpg-maker, decrypt, decrypter, encrypt, encrypter, RPG-Maker-Encrypter, rpgmvp, rpgmvm, rpgmvo, RPG-Maker-MZ" />
 
 		<!-- Fav Icons -->
 		<link rel="shortcut icon" href="favicon.ico">
@@ -12,7 +12,7 @@
 
 		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>RPG-Maker-MV Decrypter by Petschko</title>
+		<title>RPG-Maker-MV & MZ Decrypter by Petschko</title>
 
 		<!-- MISC -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -46,7 +46,7 @@
 			</div>
 			<div class="center title">
 				<img class="logo" src="img/projectIcon.png" alt="Project Icon (Chest with a key)" title="Un or Re-Lock RPG-Maker MV-Files">
-				<h1>Petschkos RPG-Maker MV-File Decrypter</h1>
+				<h1>Petschkos RPG-Maker MV & MZ-File Decrypter</h1>
 			</div>
 
 			<!-- Nav bar -->
@@ -73,7 +73,7 @@
 			<!-- Nav bar end -->
 
 			<div id="home" class="content-container">
-				<p>Welcome to the RPG-Maker MV-File Decrypter you can easily decrypt Files from any RPG-MV Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes).</p>
+				<p>Welcome to the RPG-Maker MV & MZ-File Decrypter you can easily decrypt Files from any RPG-MV/RPG-MZ Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes).</p>
 				<p>Make sure that you don't use this tool to steal paid assets, if you want to take a look on images (which is okay for private use by law), feel free to do, but don't steal them please.</p>
 
 				<div class="center">
@@ -88,10 +88,16 @@
 			</div>
 
 			<div id="en-decrypt" class="content-container">
-				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker Games.</p>
-				<p>You can get the Decrypt-Code from the File: "Game-Directory"/www/data/System(.json) and get the Key without the "" or upload the System file here.</p>
-				<p><span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
-				<hr>
+				<p><span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
+				<hr />
+				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker MV & MZ Games.</p>
+				<p>You can get the Decrypt-Code from the File:</p>
+				<ul>
+					<li><b>RPG-Maker MV</b>: "Game-Directory"/www/data/System(.json)</li>
+					<li><b>RPG-Maker MZ</b>: "Game-Directory"/data/System(.json)</li>
+				</ul>
+				<p>Click "Detect" after you selected the System(.json) File. If you know the Key you can also just enter it in the text-box.</p>
+				<hr />
 				<div class="wrapper center">
 					<div class="left">
 						<h2>File-Info</h2>
@@ -213,7 +219,7 @@
 							<div>
 								<label>
 									System(.json) <i>(For Decryption-Code)</i>:<br>
-									<input type="file" accept=".json,.txt,.js" name="system.json" id="systemFile">
+									<input type="file" accept=".json,.txt,.js,.rpgmvp,.png_" name="system.json" id="systemFile">
 								</label>
 								<button class="btn btn-default" type="button" id="detectButton">
 									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
@@ -227,7 +233,8 @@
 							</div>
 							<div>
 								<label>
-									En/Decrypt-File(s): <input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo" name="encryptedFiles" id="encryptedFiles" multiple required>
+									En/Decrypt-File(s):
+									<input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo,.png_,.ogg_,.m4a_" name="encryptedFiles" id="encryptedFiles" multiple required>
 								</label>
 							</div>
 							<button class="btn btn-success" type="button" id="decrypt">
@@ -268,7 +275,7 @@
 			</div>
 
 			<div id="restore-images" class="content-container">
-				<p>In this area you can Restore PNG-Files (Images - "<b>.rpgmvp</b>-Files") from RPG-Maker Games without the Decryption-Key.</p>
+				<p>In this area you can Restore PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") from RPG-Maker Games without the Decryption-Key.</p>
 				<hr>
 				<div class="wrapper center">
 					<div class="left">
@@ -278,7 +285,7 @@
 							<div>
 								<label>
 									Select File/s to restore:
-									<input id="encryptedImg" type="file" accept=".rpgmvp" name="encryptedImg" multiple required>
+									<input id="encryptedImg" type="file" accept=".rpgmvp,.png_" name="encryptedImg" multiple required>
 								</label>
 							</div>
 
@@ -382,14 +389,15 @@
 				<h2>How to use?</h2>
 				<ol>
 					<li>
-						Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>" or "<strong>.rpgmvo</strong>" - If they have this extension(s) you can use this script<br>
+						Check if the encrypted Files have the File-Extension "<strong>.rpgmvp</strong>", "<strong>.rpgmvm</strong>", "<strong>.rpgmvo</strong>", "<strong>.png_</strong>", "<strong>.ogg_</strong>" or "<strong>.m4a_</strong>" - If they have this extension(s) you can use this script<br>
 						<i>If you want to ENCRYPT Files, they usually have a File-Extension like "png" or something else =)</i>
 					</li>
 					<li>
 						Get the En/Decrypt-Code.<br>
-						<span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.
+						<span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.
 						<ul>
 							<li>Upload the System.json File from the Game and let detect the Code automatic. (Click on "Detect", after selecting the System.json)</li>
+							<li>If the Detection don't work further instructions pop up.</li>
 						</ul>
 					</li>
 					<li>Select the File(s) to de/encrypt - <i>Multi-Select-Files are possible!</i></li>
@@ -399,9 +407,11 @@
 					</li>
 					<li>
 						You can save them now, by clicking on "Save". (The Script will keep the File-Name and change the Extension for you!) =)
-					</li>
-					<li>
-						You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
+						<ul>
+							<li>
+								You can also save all of the Files in the File-List as ZIP by clicking "Save all as ZIP-File"!
+							</li>
+						</ul>
 					</li>
 				</ol>
 			</div>
@@ -429,7 +439,7 @@
 		<script src="libs/FileSaver.min.js"></script>
 		<script src="libs/jszip.min.js?ver=3.1.3"></script>
 		<script src="libs/lz-string.min.js"></script>
-		<script src="scripts/RPGFile.js?ver=1.1"></script>
+		<script src="scripts/RPGFile.js?ver=1.2"></script>
 		<script src="scripts/ErrorException.js?ver=1.0"></script>
 		<script src="scripts/Decrypter.js?ver=1.4.0"></script>
 		<script src="scripts/ZIP.js?ver=0.3"></script>
