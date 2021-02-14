@@ -1,8 +1,8 @@
-# Petschko's RPG-Maker-MV File-Decrypter
+# Petschko's RPG-Maker-MV & MZ File-Decrypter
 
 ## What's that?
 
-This Project is used to Decrypt (and Re-Encrypt) RPG-Maker-MV-Resource-Files that are encrypted with the Build-In-Encryption of the RPG-Maker.
+This Project is used to Decrypt (and Re-Encrypt) RPG-Maker-MV-Resource-Files (MZ-Files as well) and that are encrypted with the Build-In-Encryption of the RPG-Maker.
 
 This Project is mostly used for Single-File decryption. >.< Please try out the [Java-Decrypter](https://github.com/Petschko/Java-RPG-Maker-MV-Decrypter) if you want decrypt huge amounts of Files (or more Projects)
 
@@ -47,10 +47,15 @@ You want to see the Source-Files? Here you go:
     - ".rpgmvp" (PNG-Files)
     - ".rpgmvm" (m4a-Files)
     - ".rpgmvo" (ogg-Files)
+    - ".png_" (PNG-Files)
+    - ".m4a_" (m4a-Files)
+    - ".ogg_" (ogg-Files)
   - If the Files doesn't have this Extensions the Creator used an other Encryption/Pack-Tool. If that's the case you can't use this script for this Project.
 - Get the Encryption-Key (This step isn't needed for Images)
   - Select with the first File-Picker the "System.json"-File which contains the "raw"-Encryption-Key
-    - The File is located in `%PROJECT_DIRECTORY%/www/data/System(.json)`
+    - The File is located in `%PROJECT_DIRECTORY%/www/data/System(.json)` for RPG-Maker MV
+    - The File is located in `%PROJECT_DIRECTORY%/data/System(.json)` for RPG-Maker MZ
+    - You can also use an Encrypted Image-File from the Project (`.rpgmvp` / `.png_`) to detect the Key
   - Click on the Detect-Button - If it finds the Key, it will automatically insert it for you within the next Input-Field
 - Select the Encrypted Audio/Image-Files to decrypt
 - Click on the Decrypt-Button
@@ -69,12 +74,14 @@ Here you go:
 - If you have the Files in these Format you can go on, else turn them into the correct Format. (You should know how or [how to Google](http://www.giyf.com/))
 - Like with decryption we need the Encryption-Key to encrypt your files correctly back for the Game
   - Select with the first File-Picker the "System.json"-File which contains the "raw"-Encryption-Key
-    - The File is located in `%PROJECT_DIRECTORY%/www/data/System(.json)`
+    - The File is located in `%PROJECT_DIRECTORY%/www/data/System(.json)` for RPG-Maker MV
+    - The File is located in `%PROJECT_DIRECTORY%/data/System(.json)` for RPG-Maker MZ
+    - You can also use an Encrypted Image-File from the Project (`.rpgmvp` / `.png_`) to detect the Key
   - Click on the Detect-Button - If it finds the Key, it will automatically insert it for you within the next Input-Field
 - Make sure that `Verify Fake-Header?` is enabled (on YES). If not select it.
   - This checks if the Game can read this File
 - Select the File(s) you want Encrypt
-- Click on the (Re)-Encrypt-Button
+- Click on the (Re)-Encrypt-Button (Of the RPG-Maker which is used)
   - **IF** you get an Error please check if you did all steps right before! Also check if the Header-Values are on default:
     - Click on `Header-Values (Show)`
     - Click on `Reset Header-Values to default` and click `OK` in the Confirmation box
@@ -84,6 +91,7 @@ Here you go:
 - Start the Game and check if the File is been displayed
   - **If the File is not displayed**: (This is very rare ~1/100 Games - Usually you get an Header-Error while you Decrypt Files from these Games them with the default Header-Values, that's an strong indicator that this Game has different Header-Values)
     - You have to set different Header-Values, for this you have to open this File: `%PROJECT_DIRECTORY%/www/js/rpg_core.js`
+      - For RPG-Maker-MZ the File is here: `%PROJECT_DIRECTORY%/js/rpg_core.js`
     - There you find the Decrypter-Class, its an insane long File so use the Search function (Strg/Ctrl + F) and search for this String: `function Decrypter()`
     - There are Values sort below, like this:
     ````js
