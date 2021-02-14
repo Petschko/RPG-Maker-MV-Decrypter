@@ -72,27 +72,6 @@ function Decrypter(encryptionKey) {
 	};
 
 	/**
-	 * Get the normal starting PNG-Header
-	 *
-	 * @param {int} headerLen - Header Length
-	 * @returns {Uint8Array} - Original starting PNG-Header
-	 */
-	Decrypter.prototype.getNormalPNGHeader = function(headerLen) {
-		var headerToRestore = '89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52'.split(' ');
-
-		// Header can't be longer than restore string
-		if(headerLen > headerToRestore.length)
-			headerLen = headerToRestore.length;
-
-		var restoredHeader = new Uint8Array(headerLen);
-
-		for(var i = 0; i < headerLen; i++)
-			restoredHeader[i] = parseInt('0x' + headerToRestore[i], 16);
-
-		return restoredHeader;
-	};
-
-	/**
 	 * Do something with a RPGFile
 	 *
 	 * @param {RPGFile} rpgFile - RPGFile Object
@@ -154,7 +133,7 @@ function Decrypter(encryptionKey) {
 			throw new ErrorException('File is empty or can\'t be read by your Browser...', 1);
 
 		var headerLen = (this.pngHeaderLen === null) ? this.getHeaderLen() : this.pngHeaderLen;
-		var pngStartHeader = this.getNormalPNGHeader(headerLen);
+		var pngStartHeader = Decrypter.getNormalPNGHeader(headerLen);
 
 		// Make sure that to long header values get the correct one
 		headerLen = pngStartHeader.length;
@@ -257,6 +236,7 @@ Decrypter.prototype.defaultHeaderLen = 16;
 Decrypter.prototype.defaultSignature = "5250474d56000000";
 Decrypter.prototype.defaultVersion = "000301";
 Decrypter.prototype.defaultRemain = "0000000000";
+Decrypter.pngHeaderBytes = '89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52';
 
 /**
  * Returns the Header Len
@@ -338,12 +318,34 @@ Decrypter.prototype.encryptFile = function(rpgFile, callback) {
 };
 
 /**
+ * Get the normal starting PNG-Header
+ *
+ * @param {int} headerLen - Header Length
+ * @returns {Uint8Array} - Original starting PNG-Header
+ */
+Decrypter.getNormalPNGHeader = function(headerLen) {
+	var headerToRestore = Decrypter.pngHeaderBytes.split(' ');
+
+	// Header can't be longer than restore string
+	if(headerLen > headerToRestore.length)
+		headerLen = headerToRestore.length;
+
+	var restoredHeader = new Uint8Array(headerLen);
+
+	for(var i = 0; i < headerLen; i++)
+		restoredHeader[i] = parseInt('0x' + headerToRestore[i], 16);
+
+	return restoredHeader;
+};
+
+/**
  * Detect the Encryption-Code from a RPGFile
  *
  * @param {RPGFile} rpgFile - RPGFile Object
+ * @param {int} headerLen - Header-Length
  * @param {function} callback - Function if operation is done
  */
-Decrypter.detectEncryptionCode = function(rpgFile, callback) {
+Decrypter.detectEncryptionCode = function(rpgFile, headerLen, callback) {
 	var reader = new FileReader();
 
 	reader[window.addEventListener ? 'addEventListener' : 'attachEvent']
@@ -351,12 +353,22 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 		var key;
 		var fileContent;
 
+		// Try to get the key from Image
+		if(rpgFile.isEncryptedImg()) {
+			key = Decrypter.getKeyFromPNG(headerLen, this.result); // todo replace header len
+			if(key !== null) {
+				callback(key);
+				return;
+			}
+		}
+
+		var fileContentAsText = new TextDecoder().decode(new Uint8Array(this.result));
 		try {
-			fileContent = JSON.parse('[' + this.result + ']');
+			fileContent = JSON.parse('[' + fileContentAsText + ']');
 			key = fileContent[0].encryptionKey;
 		} catch(e) {
 			// Try if it is LZ-String compressed
-			var lzUncompressed = LZString.decompressFromBase64(this.result);
+			var lzUncompressed = LZString.decompressFromBase64(fileContentAsText);
 
 			try {
 				fileContent = JSON.parse('[' + lzUncompressed + ']');
@@ -369,12 +381,43 @@ Decrypter.detectEncryptionCode = function(rpgFile, callback) {
 
 		// Try a search
 		if(key === null)
-			key = Decrypter.searchEncryptionCode(this.result, 'rpg_core', false);
+			key = Decrypter.searchEncryptionCode(fileContentAsText, 'rpg_core', false);
 
 		callback(key);
 	}, false);
 
-	reader.readAsText(rpgFile.file);
+	reader.readAsArrayBuffer(rpgFile.file);
+};
+
+/**
+ * Gets the Key from PNG File
+ *
+ * @param {int} headerLen - Header Length
+ * @param {ArrayBuffer} fileContent - File-Content which should be tried to get the key from
+ * @return {string|null} - Key or null of not found/valid
+ */
+Decrypter.getKeyFromPNG = function(headerLen, fileContent) {
+	if(! fileContent)
+		return null;
+
+	if(fileContent.byteLength < headerLen * 2)
+		return null;
+
+	var fileHeader = fileContent.slice(headerLen, headerLen * 2);
+	var fileHeaderU8 = new Uint8Array(fileHeader);
+	var maybeKeyBytes = new Uint8Array(headerLen);
+	var pngHeaderU8 = Decrypter.getNormalPNGHeader(headerLen);
+
+	// Get the potential Key
+	var i;
+	var tmpByte;
+	var output = '';
+	for(i = 0; i < headerLen; i++) {
+		maybeKeyBytes[i] = pngHeaderU8[i] ^ fileHeaderU8[i];
+		output += '' + Decrypter.byteToHex(maybeKeyBytes[i]);
+	}
+
+	return output;
 };
 
 /**
@@ -424,6 +467,16 @@ Decrypter.searchEncryptionCode = function(fileContent, searchParam, lzString) {
 		default:
 			return null;
 	}
+};
+
+/**
+ * Converts a Byte to a Hex string
+ *
+ * @param {int} byte - Byte Value
+ * @returns {string} - Hex Value
+ */
+Decrypter.byteToHex = function(byte) {
+	return ('0' + (byte & 0xFF).toString(16)).slice(-2);
 };
 
 /**

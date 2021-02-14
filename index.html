@@ -88,13 +88,14 @@
 			</div>
 
 			<div id="en-decrypt" class="content-container">
-				<p><span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
+				<p>PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
+				<p><span class="red">New:</span> You can now use Encrypted Images ("<b>.rpgmvp</b>" & "<b>.png_</b>"-Files) to detect the encryption Key as well! (Like when the Key can't be obtained via the System(.json))</p>
 				<hr />
 				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker MV & MZ Games.</p>
 				<p>You can get the Decrypt-Code from the File:</p>
 				<ul>
-					<li><b>RPG-Maker MV</b>: "Game-Directory"/www/data/System(.json)</li>
-					<li><b>RPG-Maker MZ</b>: "Game-Directory"/data/System(.json)</li>
+					<li><b>RPG-Maker MV</b>: "Game-Directory"/www/data/System(.json) or any Encrypted Image ("<b>.rpgmvp</b>"-File)</li>
+					<li><b>RPG-Maker MZ</b>: "Game-Directory"/data/System(.json)  or any Encrypted Image ("<b>.png_</b>"-File)</li>
 				</ul>
 				<p>Click "Detect" after you selected the System(.json) File. If you know the Key you can also just enter it in the text-box.</p>
 				<hr />
@@ -218,7 +219,7 @@
 							</div>
 							<div>
 								<label>
-									System(.json) <i>(For Decryption-Code)</i>:<br>
+									System(.json) or ".rpgmvp"/".png_" <i>(For Decryption-Code)</i>:<br>
 									<input type="file" accept=".json,.txt,.js,.rpgmvp,.png_" name="system.json" id="systemFile">
 								</label>
 								<button class="btn btn-default" type="button" id="detectButton">
@@ -241,9 +242,13 @@
 								<img src="img/lock_broken.png" alt="(Broken Lock)">
 								<span>Decrypt</span>
 							</button>
-							<button class="btn btn-success" type="button" id="encrypt">
+							<button class="btn btn-default" type="button" id="encrypt-mv">
 								<img src="img/lock.png" alt="(Lock)">
-								<span>(Re)-Encrypt</span>
+								<span>(Re)-Encrypt MV</span>
+							</button>
+							<button class="btn btn-default" type="button" id="encrypt-mz">
+								<img src="img/lock.png" alt="(Lock)">
+								<span>(Re)-Encrypt MZ</span>
 							</button>
 						</div>
 					</div>
@@ -439,11 +444,11 @@
 		<script src="libs/FileSaver.min.js"></script>
 		<script src="libs/jszip.min.js?ver=3.1.3"></script>
 		<script src="libs/lz-string.min.js"></script>
-		<script src="scripts/RPGFile.js?ver=1.2"></script>
+		<script src="scripts/RPGFile.js?ver=1.2.1"></script>
 		<script src="scripts/ErrorException.js?ver=1.0"></script>
-		<script src="scripts/Decrypter.js?ver=1.4.0"></script>
+		<script src="scripts/Decrypter.js?ver=2.0.0"></script>
 		<script src="scripts/ZIP.js?ver=0.3"></script>
-		<script src="scripts/functions.js?ver=2.0.0"></script>
+		<script src="scripts/functions.js?ver=2.0.1"></script>
 		<script src="scripts/menu.js?ver=1.1.0"></script>
 	</body>
 </html>

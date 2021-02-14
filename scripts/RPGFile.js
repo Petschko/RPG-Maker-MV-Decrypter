@@ -23,7 +23,6 @@ function RPGFile(file, blobUrl) {
 	this.blob = null;
 	this.fileUrl = blobUrl;
 	this.content = null;
-	this.rpgMakerMz = false;
 
 	/**
 	 * Splits the FullName into name & file ext
@@ -48,14 +47,23 @@ function RPGFile(file, blobUrl) {
 	 */
 	RPGFile.prototype.isEncryptedExt = function() {
 		return (
-			this.extension === 'rpgmvp' ||
-			this.extension === 'rpgmvm' ||
-			this.extension === 'rpgmvo' ||
-			this.extension === 'png_' ||
-			this.extension === 'ogg_' ||
-			this.extension === 'm4a_'
+			this.extension.toLowerCase() === 'rpgmvp' ||
+			this.extension.toLowerCase() === 'rpgmvm' ||
+			this.extension.toLowerCase() === 'rpgmvo' ||
+			this.extension.toLowerCase() === 'png_' ||
+			this.extension.toLowerCase() === 'ogg_' ||
+			this.extension.toLowerCase() === 'm4a_'
 		);
-	}
+	};
+
+	/**
+	 * Shows if the current file is an encrypted image
+	 *
+	 * @returns {boolean} - true if its an encrypted image
+	 */
+	RPGFile.prototype.isEncryptedImg = function() {
+		return (this.extension.toLowerCase() === 'rpgmvp' || this.extension.toLowerCase() === 'png_');
+	};
 }
 
 /**
@@ -185,3 +193,7 @@ RPGFile.prototype.createBlobUrl = function() {
 	this.blob = new Blob([this.content]);
 	this.fileUrl = window.URL.createObjectURL(this.blob);
 };
+
+RPGFile.prototype.rpgMakerMz = false;
+RPGFile.typeMV = 1;
+RPGFile.typeMZ = 2;

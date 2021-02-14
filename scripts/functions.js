@@ -13,19 +13,21 @@ var zip;
  *
  * @param {string} systemFileElId - File-Picker-Id for the System.json-File
  * @param {string} codeTextElId - Text-Input-Id for the Encryption-Key
+ * @param {string} headerLenId - Text-Input for the Header-Length
  */
-function getCode(systemFileElId, codeTextElId) {
+function getCode(systemFileElId, codeTextElId, headerLenId) {
 	var systemFileEl = document.getElementById(systemFileElId);
 	var codeTextEl = document.getElementById(codeTextElId);
+	var headerLen = document.getElementById(headerLenId);
 
 	if(systemFileEl.files.length < 1) {
 		alert('Please choose the System.json-File!');
 		return;
 	}
 
-	Decrypter.detectEncryptionCode(new RPGFile(systemFileEl.files[0], null), function(key) {
+	Decrypter.detectEncryptionCode(new RPGFile(systemFileEl.files[0], null), parseInt(headerLen.value), function(key) {
 		if(key === null) {
-			alert('Error: File-Content was invalid (Was not a JSON-File)');
+			alert('Error: File-Content was invalid (Was not a JSON-File or an Encrypted Image - .json/.rpgmvp/.png_)');
 			return;
 		}
 
@@ -37,6 +39,8 @@ function getCode(systemFileElId, codeTextElId) {
 		} else
 			window.prompt(
 				'Error: Encryption-Key not found - Make sure that you select the correct file!\n\n' +
+				'You can also use Encrypted-Images (.rpgmvp / .png_) to detect the Key!\n' +
+				'-------------------------------------\n' +
 				'In rare cases the Key is hidden/obfuscated in the game. Try these steps:\n' +
 				'1. Open the Link below and copy the code\n' +
 				'2. Paste the Code at the last line in this File: ./www/js/rpg_core(.js)\n' +
@@ -176,7 +180,8 @@ function init() {
 	var detectButton = document.getElementById('detectButton');
 	var inputCode = document.getElementById('decryptCode');
 	var decryptButton = document.getElementById('decrypt');
-	var encryptButton = document.getElementById('encrypt');
+	var encryptButtonMv = document.getElementById('encrypt-mv');
+	var encryptButtonMz = document.getElementById('encrypt-mz');
 	var restoreButton = document.getElementById('restoreEncryptedImages');
 	var spoilerHeader = document.getElementById('spoilerHeaderInfoText');
 	var headerRadioButtons = document.getElementsByName('checkFakeHeader');
@@ -206,7 +211,7 @@ function init() {
 		spoiler('spoilerHeaderInfoText', 'Header-Values', 'headerInfo');
 	}, false);
 	detectButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
-		getCode('systemFile', 'decryptCode');
+		getCode('systemFile', 'decryptCode', 'headerLen');
 	}, false);
 	decryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		processFiles(
@@ -218,10 +223,11 @@ function init() {
 			'headerLen',
 			'signature',
 			'version',
-			'remain'
+			'remain',
+			RPGFile.typeMV
 		);
 	}, false);
-	encryptButton[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+	encryptButtonMv[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
 		processFiles(
 			'encryptedFiles',
 			'decryptCode',
@@ -231,7 +237,22 @@ function init() {
 			'headerLen',
 			'signature',
 			'version',
-			'remain'
+			'remain',
+			RPGFile.typeMV
+		);
+	}, false);
+	encryptButtonMz[addMethod](window.addEventListener ? 'click' : 'onclick', function() {
+		processFiles(
+			'encryptedFiles',
+			'decryptCode',
+			'blob-list',
+			false,
+			true,
+			'headerLen',
+			'signature',
+			'version',
+			'remain',
+			RPGFile.typeMZ
 		);
 	}, false);
 	inputCode[addMethod](window.addEventListener ? 'change' : 'onchange', function() {
@@ -347,6 +368,7 @@ function processRestoreFiles(fileUrlElId, outputElClass) {
  * @param {string} signatureElId - Element-Id of the Signature
  * @param {string} versionElId - Element-Id of the Version
  * @param {string} remainElId - Element-Id of the Remain
+ * @param {int} rpgMakerType - Type of the RPG-Maker
  */
 function processFiles(
 	fileUrlElId,
@@ -357,7 +379,8 @@ function processFiles(
 	headerLenElId,
 	signatureElId,
 	versionElId,
-	remainElId
+	remainElId,
+	rpgMakerType
 ) {
 	var outputEls = document.getElementsByClassName(outputElClass);
 	var fileUrlEl = document.getElementById(fileUrlElId);
@@ -462,6 +485,7 @@ function processFiles(
 	var buttonsEnabled = false; // Just trigger that event one time this loop
 	for(var i = 0; i < fileUrlEl.files.length; i++) {
 		var rpgFile = new RPGFile(fileUrlEl.files[i], null);
+		rpgFile.rpgMakerMz = rpgMakerType === RPGFile.typeMZ;
 
 		if(decrypt) {
 			decrypter.decryptFile(rpgFile, function(rpgFile, exception) {
