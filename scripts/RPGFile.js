@@ -48,7 +48,6 @@ function RPGFile(file, blobUrl) {
 	RPGFile.prototype.isEncryptedExt = function() {
 		const extension = this.extension.toLowerCase();
 		const encryptedExts = ['rpgmvp', 'rpgmvm', 'rpgmvo', 'png_', 'ogg_', 'm4a_']; 
-	 	// better to create global array with encrypted exts list, maybe grouped by types, like "images", "mp4" etc.
 		
 		return encryptedExts.includes(extension);
 	};
