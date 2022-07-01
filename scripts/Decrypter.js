@@ -90,7 +90,7 @@ function Decrypter(encryptionKey) {
 				case 'restore':
 					try {
 						rpgFile.content = that.restorePngHeader(this.result);
-						rpgFile.createBlobUrl();
+						rpgFile.createBlobUrl(true);
 					} catch(e) {
 						callback(rpgFile, e);
 						return;
@@ -99,7 +99,7 @@ function Decrypter(encryptionKey) {
 				case 'encrypt':
 					try {
 						rpgFile.content = that.encrypt(this.result);
-						rpgFile.createBlobUrl()
+						rpgFile.createBlobUrl(false)
 					} catch(e) {
 						callback(rpgFile, e);
 						return;
@@ -109,7 +109,7 @@ function Decrypter(encryptionKey) {
 				default:
 					try {
 						rpgFile.content = that.decrypt(this.result);
-						rpgFile.createBlobUrl();
+						rpgFile.createBlobUrl(true);
 					} catch(e) {
 						callback(rpgFile, e);
 						return;

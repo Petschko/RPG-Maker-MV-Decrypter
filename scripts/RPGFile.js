@@ -188,10 +188,42 @@ RPGFile.prototype.convertExtension = function(toNormal) {
 
 /**
  * Creates the BLOB-URL for this File
+ *
+ * @param {boolean} toNormal - If the File is changed back to normal (used for the MIME-Type)
  */
-RPGFile.prototype.createBlobUrl = function() {
-	this.blob = new Blob([this.content]);
+RPGFile.prototype.createBlobUrl = function(toNormal) {
+	this.blob = new Blob([this.content], {type: this.getMimeType(toNormal)});
+	this.blob.type = this.getMimeType();
 	this.fileUrl = window.URL.createObjectURL(this.blob);
+};
+
+/**
+ * Return the MIME-Type of the File (Empty if not known)
+ *
+ * @param {boolean} toNormal -  If the File is changed back to normal
+ * @returns {string} - Mime-Type
+ */
+RPGFile.prototype.getMimeType = function(toNormal) {
+	if(toNormal) {
+		switch(this.extension.toLocaleLowerCase()) {
+			case 'png':
+			case 'rpgmvp':
+			case 'png_':
+				return 'image/png';
+			case 'm4a':
+			case 'rpgmvm':
+			case 'm4a_':
+				return 'audio/m4a';
+			case 'ogg':
+			case 'rpgmvo':
+			case 'ogg_':
+				return 'audio/ogg';
+			default:
+				return '';
+		}
+	}
+
+	return '';
 };
 
 RPGFile.prototype.rpgMakerMz = false;
