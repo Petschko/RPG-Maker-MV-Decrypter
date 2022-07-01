@@ -46,14 +46,10 @@ function RPGFile(file, blobUrl) {
 	 * @returns {boolean} - true if Encrypted File-Extension else false
 	 */
 	RPGFile.prototype.isEncryptedExt = function() {
-		return (
-			this.extension.toLowerCase() === 'rpgmvp' ||
-			this.extension.toLowerCase() === 'rpgmvm' ||
-			this.extension.toLowerCase() === 'rpgmvo' ||
-			this.extension.toLowerCase() === 'png_' ||
-			this.extension.toLowerCase() === 'ogg_' ||
-			this.extension.toLowerCase() === 'm4a_'
-		);
+		const extension = this.extension.toLowerCase();
+		const encryptedExts = ['rpgmvp', 'rpgmvm', 'rpgmvo', 'png_', 'ogg_', 'm4a_']; 
+		
+		return encryptedExts.includes(extension);
 	};
 
 	/**
