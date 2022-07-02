@@ -11,6 +11,22 @@ html, body {
 	margin: 0;
 }
 
+/* Remove bootstrap Styles */
+legend {
+	border: 0;
+	padding: 0 5px;
+	width: inherit;
+	font-size: inherit;
+	margin-bottom: 0;
+	color: grey;
+}
+
+fieldset {
+	border: 1px dotted grey;
+	padding: 5px 10px;
+	border-radius: 2px;
+}
+
 /* Spaces, sizes etc */
 body {
 	padding: 0 40px;
@@ -30,6 +46,11 @@ h1, h2, h3, h4, h5, h6 {
 
 input[type="file"] {
 	cursor: pointer;
+	max-width: 100%;
+}
+
+button {
+	max-width: 100%;
 }
 
 input[type="radio"]{
@@ -63,18 +84,44 @@ img.logo {
 	margin-bottom: 1em;
 }
 
-#headerInfo > div,
-.fileInfoArea > div {
+#headerInfo > div {
 	margin: 10px 0;
+}
+
+.fileInfoArea > fieldset {
+	margin-bottom: 10px;
 }
 
 #decryptCode {
 	width: 300px;
+	max-width: 100%;
 	background-color: #FFABAB;
 }
 
 .fileList > button {
 	margin-bottom: 10px;
+}
+
+#systemFile {
+	display: inline-block;
+	margin: auto;
+}
+
+.button-grid-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr;
+	grid-column-gap: 0;
+	grid-row-gap: 0;
+	margin: 10px 0;
+}
+
+.button-grid-wrapper .box1 {
+	display: flex;
+}
+
+.button-grid-wrapper .box2 {
+	text-align: right;
 }
 
 .fileInfo {
@@ -131,6 +178,10 @@ div#headerInfo input[type="text"] {
 
 #howTo li {
 	margin-bottom: 10px;
+}
+
+.bottom-space {
+	margin-bottom: 5px;
 }
 
 /* Hide some info's (not important on local use) */
@@ -298,7 +349,62 @@ button#encrypt > span {
 }
 
 /* Media-Queries */
+@media all and (min-width: 801px) and (max-width: 1080px) {
+	#home a.menu-link,
+	button#decrypt,
+	button#encrypt-mv,
+	button#encrypt-mz,
+	button.clearFileList {
+		display: inline-block;
+		margin-top: 5px;
+	}
+
+	.button-grid-wrapper,
+	.button-grid-wrapper .box1 {
+		display: block;
+	}
+
+	.button-grid-wrapper .box2 {
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.button-grid-wrapper .box2 button {
+		width: 100%;
+	}
+}
+
 @media all and (max-width: 800px) {
+	.nav-tabs {
+		padding-bottom: 10px;
+	}
+
+	.nav-tabs > li {
+		float: none;
+	}
+
+	.nav-tabs > li.active > a,
+	.nav-tabs > li.active > a:hover,
+	.nav-tabs > li.active > a:focus {
+		border-bottom-color: #ddd;
+		border-radius: 4px;
+	}
+
+	.nav-tabs > li > a:hover,
+	.nav-tabs > li > a:focus {
+		border-color:#eee;
+		border-radius: 4px;
+	}
+
+	#home a.menu-link,
+	button#decrypt,
+	button#encrypt-mv,
+	button#encrypt-mz,
+	button.clearFileList {
+		display: inline-block;
+		margin-top: 5px;
+	}
+
 	.left,
 	.right {
 		display: block;
@@ -308,5 +414,21 @@ button#encrypt > span {
 	.right {
 		border-top: solid 2px #707070;
 		margin-top: 20px;
+	}
+}
+
+@media all and (max-width: 600px) {
+	.button-grid-wrapper,
+	.button-grid-wrapper .box1 {
+		display: block;
+	}
+
+	.button-grid-wrapper .box2 {
+		margin-top: 8px;
+		text-align: center;
+	}
+
+	.button-grid-wrapper .box2 button {
+		width: 100%;
 	}
 }

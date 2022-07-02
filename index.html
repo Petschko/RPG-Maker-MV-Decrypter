@@ -4,7 +4,7 @@
 		<!-- Important Head content -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="canonical" href="./index.html">
-		<title>RPG-Maker-MV & MZ Decrypter by Petschko</title>
+		<title>RPG-Maker-MV &amp; MZ Decrypter by Petschko</title>
 
 		<!-- Head-Meta stuff -->
 		<meta name="author" content="Petschko" />
@@ -28,7 +28,7 @@
 		<noscript>
 			<div>
 				<p>
-					<strong>Warning</strong>: This Script requires JavaScript. Please enable JavaScript or switch to an newer Browser.
+					<strong>Warning</strong>: This Script requires JavaScript. Please enable JavaScript or switch to a newer Browser.
 				</p>
 				<hr>
 				<p>
@@ -47,7 +47,7 @@
 			</div>
 			<div class="center title">
 				<img class="logo" src="img/projectIcon.png" alt="Project Icon (Chest with a key)" title="Un or Re-Lock RPG-Maker MV-Files">
-				<h1>Petschkos RPG-Maker MV & MZ-File Decrypter</h1>
+				<h1>Petschkos RPG-Maker MV &amp; MZ-File Decrypter</h1>
 			</div>
 
 			<!-- Nav bar -->
@@ -56,7 +56,7 @@
 					<a href="#home"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Home</a>
 				</li>
 				<li class="nav-link">
-					<a href="#en-decrypt"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> En- & Decrypt</a>
+					<a href="#en-decrypt"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> En- &amp; Decrypt</a>
 				</li>
 				<li class="nav-link">
 					<a href="#restore-images"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Restore-Images (No-Key)</a>
@@ -74,8 +74,8 @@
 			<!-- Nav bar end -->
 
 			<div id="home" class="content-container">
-				<p>Welcome to the RPG-Maker MV & MZ-File Decrypter you can easily decrypt Files from any RPG-MV/RPG-MZ Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes).</p>
-				<p>Make sure that you don't use this tool to steal paid assets, if you want to take a look on images (which is okay for private use by law), feel free to do, but don't steal them please.</p>
+				<p>Welcome to the RPG-Maker MV &amp; MZ-File Decrypter you can easily decrypt Files from any RPG-MV/RPG-MZ Project that are encrypted with the Build-In encryption. You can also encrypt them back (Mainly used for translation purposes).</p>
+				<p>Make sure that you don't use this tool to steal assets, if you want to take a look on images (which is okay for private use by most laws), feel free to do, but don't steal them please.</p>
 
 				<div class="center">
 					<p>Please select what you want to do:</p>
@@ -89,10 +89,9 @@
 			</div>
 
 			<div id="en-decrypt" class="content-container">
-				<p>PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
-				<p><span class="red">New:</span> You can now use Encrypted Images ("<b>.rpgmvp</b>" & "<b>.png_</b>"-Files) to detect the encryption Key as well! (Like when the Key can't be obtained via the System(.json))</p>
+				<p>PNG-Files (Images - "<b>.rpgmvp</b> &amp; <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.</p>
 				<hr />
-				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker MV & MZ Games.</p>
+				<p>In this area you can De- and (Re-)Encrypt Files from RPG-Maker MV &amp; MZ Games.</p>
 				<p>You can get the Decrypt-Code from the File:</p>
 				<ul>
 					<li><b>RPG-Maker MV</b>: "Game-Directory"/www/data/System(.json) or any Encrypted Image ("<b>.rpgmvp</b>"-File)</li>
@@ -102,143 +101,160 @@
 				<hr />
 				<div class="wrapper center">
 					<div class="left">
-						<h2>File-Info</h2>
+						<h2>Select Files &amp; Infos</h2>
 						<div class="fileInfoArea">
-							<div>
-								Verify Fake-Header?
-								<div class="tooltip help">
-									(?)
-									<div class="tooltipText longText">
-										<p>This checks if the File-Header is correct (Start of the File).</p>
-										<p>The Header is just important for Encryption. (Decryption can ignore it)</p>
-										<hr>
-										<p class="text-left">In <strong>very rare</strong> cases some Games use different Header-Settings. You can find the correct-Header-Settings in:<br>
-											<span class="red">"Game-Directory"/www/js/rpg_core.js</span><br>
-											Search for "<strong>function Decrypter()</strong>", there you can find all values.</p>
+							<fieldset class="decryptCodeArea">
+								<legend>1. Decrypt-Code</legend>
+								<div>
+									<label for="systemFile">
+										Select a <b>System(.json)</b> or "<b>.rpgmvp</b>"/"<b>.png_</b>" and click Detect!<br>
+									</label>
+									<div class="button-grid-wrapper">
+										<div class="box1">
+											<input type="file" accept=".json,.txt,.js,.rpgmvp,.png_" name="system.json" id="systemFile">
+										</div>
+										<div class="box2">
+											<button class="btn btn-default" type="button" id="detectButton">
+												<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+												<span>Detect</span>
+											</button>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div>
-								<label>
-									<input type="radio" name="checkFakeHeader" value="1" checked="checked">Yes
-								</label>
-								<label>
-									<input type="radio" name="checkFakeHeader" value="0">No (Ignore it)
-									<span class="tooltip help">
-									(?)
-									<span class="tooltipText longText">
-										Ignores the File-Header<br>
-										<strong>Warning</strong>: Can cause invalid decrypted Files! (Its decrypts even if the File was not encrypted. After that, the new File is useless)<br>
-										<br>
-										Just use "No" if you are sure, that your File is Encrypted by the RPG-Maker!
-									</span>
-								</span>
-								</label>
-							</div>
-							<div id="headerValuesEditArea">
 								<div>
-									<div id="spoilerHeaderInfoText" class="link">Header-Values (Show)</div>
+									<label>
+										En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
+									</label>
 								</div>
-								<div id="headerInfo" class="hidden">
-									<h3>Header-Info</h3>
+							</fieldset>
+							<fieldset>
+								<legend>2. Select File(s)</legend>
+							<div>
+								<label for="encryptedFiles">
+									En/Decrypt-File(s):
+								</label>
+								<div class="bottom-space">
+									<input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo,.png_,.ogg_,.m4a_" name="encryptedFiles" id="encryptedFiles" multiple required>
+								</div>
+							</div>
+							</fieldset>
+							<fieldset class="advancedArea">
+								<legend>Advanced</legend>
+								<div class="bottom-space">
+									Verify Fake-Header?
 									<div class="tooltip help">
 										(?)
-										<div class="tooltipText">
-											Expert Settings! Usually you don't need to change anything here! (Just in VERY RARE cases)
+										<div class="tooltipText longText">
+											<p>This checks if the File-Header is correct (Start of the File).</p>
+											<p>The Header is just important for Encryption. (Decryption can ignore it)</p>
+											<hr>
+											<p class="text-left">In <strong>very rare</strong> cases some Games use different Header-Settings. You can find the correct-Header-Settings in:<br>
+												<span class="red">"Game-Directory"/www/js/rpg_core.js</span><br>
+												Search for "<strong>function Decrypter()</strong>", there you can find all values.</p>
 										</div>
 									</div>
-									<div>
-										When do I need to change these settings?<br>
-										<div class="tooltip help">
-											Decryption
-											<div class="tooltipText longText">
-												<p>
-													Usually you don't need the Header for decryption.<br>
-													<i>(It is just thrown away)</i>
-												</p>
-												<p>
-													It's just used to ensure, that your File is a RPG-Maker encrypted File^^
-												</p>
-												<hr>
-												<p class="text-left">
-													<span class="green">Summary</span>: You <b>CAN</b> decrypt any RPG-File without knowing the correct settings.<br>
-													Just turn it to "Don't verify" if it can't verify the Header for you =)<br>
-													Usually it works with the default settings.
-												</p>
-											</div>
-										</div>
-										|
-										<div class="tooltip help">
-											Encryption
-											<div class="tooltipText longText">
-												<p class="text-left">
-													If you want to turn a File back to the Game, you NEED the Header. The Game checks if the Header is correct.
-												</p>
-												<p class="text-left">
-													If the Header is not correct the Game can't display it...
-												</p>
-												<hr>
-												<p class="text-left">
-													<span class="green">Summary</span>: You <b>NEED</b> the correct Header. If the Header is wrong, the Game can't display it.<br>
-													Usually the default settings are working fine for 99 of 100 games.<br>
-													So please try first the default setting and if it doesn't work, then you can search for the correct Header-Settings.
-												</p>
-												<hr>
-												<p class="text-left">
-													You find them as described in 'Verify Fake-Header-Help':<br>
-													<span class="red">"Game-Directory"/www/js/rpg_core.js</span><br>
-													Search for "<strong><u>function Decrypter()</u></strong>", there you can find all values.
-												</p>
-											</div>
-										</div>
-									</div>
-									<div>
-										<label>
-											Header-Length <i>(In Bytes)</i>: <input type="text" name="headerLen" id="headerLen">
-										</label>
-									</div>
-									<div>
-										<label>
-											Header-Signature: <input type="text" name="signature" id="signature">
-										</label>
-									</div>
-									<div>
-										<label>
-											Header-Version: <input type="text" name="version" id="version">
-										</label>
-									</div>
-									<div>
-										<label>
-											Header-Remain: <input type="text" name="remain" id="remain">
-										</label>
-									</div>
-									<button class="btn btn-danger" type="button" id="resetHeader">
-										<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-										<span>Reset Header-Values to default</span>
-									</button>
 								</div>
-							</div>
-							<div>
-								<label>
-									System(.json) or ".rpgmvp"/".png_" <i>(For Decryption-Code)</i>:<br>
-									<input type="file" accept=".json,.txt,.js,.rpgmvp,.png_" name="system.json" id="systemFile">
-								</label>
-								<button class="btn btn-default" type="button" id="detectButton">
-									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-									<span>Detect</span>
-								</button>
-							</div>
-							<div>
-								<label>
-									En/Decrypt-Code: <input type="text" name="decryptCode" id="decryptCode" required>
-								</label>
-							</div>
-							<div>
-								<label>
-									En/Decrypt-File(s):
-									<input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo,.png_,.ogg_,.m4a_" name="encryptedFiles" id="encryptedFiles" multiple required>
-								</label>
-							</div>
+								<div>
+									<label style="margin-right: 5px;">
+										<input type="radio" name="checkFakeHeader" value="1">Yes
+									</label>
+									<label>
+										<input type="radio" name="checkFakeHeader" value="0" checked="checked">No (Ignore it)
+										<span class="tooltip help">
+										(?)
+										<span class="tooltipText longText">
+											Ignores the File-Header<br>
+											<strong>Warning</strong>: Can cause invalid decrypted Files! (Its decrypts even if the File was not encrypted. After that, the new File is useless)<br>
+											<br>
+											Just use "No" if you are sure, that your File is Encrypted by the RPG-Maker!
+										</span>
+									</span>
+									</label>
+								</div>
+								<div id="headerValuesEditArea">
+									<div>
+										<div id="spoilerHeaderInfoText" class="link">Header-Values (Show)</div>
+									</div>
+									<div id="headerInfo" class="hidden">
+										<h3>Header-Info</h3>
+										<div class="tooltip help">
+											(?)
+											<div class="tooltipText">
+												Expert Settings! Usually you don't need to change anything here! (Just in VERY RARE cases)
+											</div>
+										</div>
+										<div>
+											When do I need to change these settings?<br>
+											<div class="tooltip help">
+												Decryption
+												<div class="tooltipText longText">
+													<p>
+														Usually you don't need the Header for decryption.<br>
+														<i>(It is just thrown away)</i>
+													</p>
+													<p>
+														It's just used to ensure, that your File is a RPG-Maker encrypted File^^
+													</p>
+													<hr>
+													<p class="text-left">
+														<span class="green">Summary</span>: You <b>CAN</b> decrypt any RPG-File without knowing the correct settings.<br>
+														Just turn it to "Don't verify" if it can't verify the Header for you =)<br>
+														Usually it works with the default settings.
+													</p>
+												</div>
+											</div>
+											|
+											<div class="tooltip help">
+												Encryption
+												<div class="tooltipText longText">
+													<p class="text-left">
+														If you want to turn a File back to the Game, you NEED the Header. The Game checks if the Header is correct.
+													</p>
+													<p class="text-left">
+														If the Header is not correct the Game can't display it...
+													</p>
+													<hr>
+													<p class="text-left">
+														<span class="green">Summary</span>: You <b>NEED</b> the correct Header. If the Header is wrong, the Game can't display it.<br>
+														Usually the default settings are working fine for 99 of 100 games.<br>
+														So please try first the default setting and if it doesn't work, then you can search for the correct Header-Settings.
+													</p>
+													<hr>
+													<p class="text-left">
+														You find them as described in 'Verify Fake-Header-Help':<br>
+														<span class="red">"Game-Directory"/www/js/rpg_core.js</span><br>
+														Search for "<strong><u>function Decrypter()</u></strong>", there you can find all values.
+													</p>
+												</div>
+											</div>
+										</div>
+										<div>
+											<label>
+												Header-Length <i>(In Bytes)</i>: <input type="text" name="headerLen" id="headerLen">
+											</label>
+										</div>
+										<div>
+											<label>
+												Header-Signature: <input type="text" name="signature" id="signature">
+											</label>
+										</div>
+										<div>
+											<label>
+												Header-Version: <input type="text" name="version" id="version">
+											</label>
+										</div>
+										<div>
+											<label>
+												Header-Remain: <input type="text" name="remain" id="remain">
+											</label>
+										</div>
+										<button class="btn btn-danger" type="button" id="resetHeader">
+											<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+											<span>Reset Header-Values to default</span>
+										</button>
+									</div>
+								</div>
+							</fieldset>
 							<button class="btn btn-success" type="button" id="decrypt">
 								<img src="img/lock_broken.png" alt="(Broken Lock)">
 								<span>Decrypt</span>
@@ -255,45 +271,53 @@
 					</div>
 					<div class="fileList right">
 						<h2>File-List</h2>
-						<button class="btn btn-primary zipSave" type="button" disabled>
-							<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-							<span>Save all as ZIP-File</span>
-						</button>
-						<div class="tooltip help">
-							(i)
-							<div class="tooltipText">
-								There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+						<fieldset>
+							<legend>3. Download File(s)</legend>
+							<div class="bottom-space">
+								<button class="btn btn-primary zipSave" type="button" disabled>
+									<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+									<span>Save all as ZIP-File</span>
+								</button>
+								<div class="tooltip help">
+									(i)
+									<div class="tooltipText">
+										There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+									</div>
+								</div>
+								<button class="btn btn-default clearFileList" type="button" disabled>
+									<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+									<span>Clear File-List</span>
+								</button>
+								<div class="tooltip help">
+									(?)
+									<div class="tooltipText">
+										Remove all Files from the List below
+									</div>
+								</div>
 							</div>
-						</div>
-						<button class="btn btn-default clearFileList" type="button" disabled>
-							<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-							<span>Clear File-List</span>
-						</button>
-						<div class="tooltip help">
-							(?)
-							<div class="tooltipText">
-								Remove all Files from the List below
-							</div>
-						</div>
-						<div class="blob-list"></div>
+							<div class="blob-list bottom-space"></div>
+						</fieldset>
 					</div>
 				</div>
 			</div>
 
 			<div id="restore-images" class="content-container">
-				<p>In this area you can Restore PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") from RPG-Maker Games without the Decryption-Key.</p>
+				<p>In this area you can Restore PNG-Files (Images - "<b>.rpgmvp</b> &amp; <b>.png_</b>-Files") from RPG-Maker Games without the Decryption-Key.</p>
 				<hr>
 				<div class="wrapper center">
 					<div class="left">
 						<div class="fileInfoArea">
 							<h2>Select RPGMVP / PNG_ Files</h2>
 
-							<div>
-								<label>
+							<fieldset>
+								<legend>1. Select File(s)</legend>
+								<label for="encryptedImg">
 									Select File/s to restore:
-									<input id="encryptedImg" type="file" accept=".rpgmvp,.png_" name="encryptedImg" multiple required>
 								</label>
-							</div>
+								<div class="bottom-space">
+									<input id="encryptedImg" type="file" accept=".rpgmvp,.png_" name="encryptedImg" multiple required>
+								</div>
+							</fieldset>
 
 							<div>
 								<button type="button" class="btn btn-success" id="restoreEncryptedImages">
@@ -305,27 +329,30 @@
 					</div>
 					<div class="fileList right">
 						<h2>File-List</h2>
-						<button class="btn btn-primary zipSave" type="button" disabled>
-							<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-							<span>Save all as ZIP-File</span>
-						</button>
-						<div class="tooltip help">
-							(i)
-							<div class="tooltipText">
-								There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+						<fieldset>
+							<legend>2. Download File(s)</legend>
+							<button class="btn btn-primary zipSave" type="button" disabled>
+								<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+								<span>Save all as ZIP-File</span>
+							</button>
+							<div class="tooltip help">
+								(i)
+								<div class="tooltipText">
+									There is a Size-Limitation depends on your Memory and your Browser... To handle MANY Files (500+mb) better use the Java-Decrypter!
+								</div>
 							</div>
-						</div>
-						<button class="btn btn-default clearFileList" type="button" disabled>
-							<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-							<span>Clear File-List</span>
-						</button>
-						<div class="tooltip help">
-							(?)
-							<div class="tooltipText">
-								Remove all Files from the List below
+							<button class="btn btn-default clearFileList" type="button" disabled>
+								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+								<span>Clear File-List</span>
+							</button>
+							<div class="tooltip help">
+								(?)
+								<div class="tooltipText">
+									Remove all Files from the List below
+								</div>
 							</div>
-						</div>
-						<div class="blob-list"></div>
+							<div class="blob-list bottom-space"></div>
+						</fieldset>
 					</div>
 				</div>
 			</div>
@@ -335,7 +362,7 @@
 				<p><strong>First</strong>: Please note, that this Script is just tested and developed on Firefox. You can help me to make it run on all Browsers, by <a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues" title="Help me by reporting Bugs" target="_blank">reporting bugs</a>!</p>
 				<ul>
 					<li>
-						Internet-Explorer <span class="red">(Unusable)</span>
+						<s>Internet-Explorer <span class="red">(Unusable - Out of support)</span></s>
 						<span class="tooltip help">
 							(Details)
 							<span class="tooltipText">
@@ -347,43 +374,26 @@
 						</span>
 					</li>
 					<li>
-						Edge <span class="yellow">(Partial usable)</span>
-						<span class="tooltip help">
-							(Details)
-							<span class="tooltipText longText">
-								<span class="yellow">Download Files</span> - <i>Wrong-Extension (But File is valid)</i><br>
-								<span class="red">View Files</span><br>
-								<span class="green">En/Decrypt</span><br>
-								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
-							</span>
-						</span>
+						Edge <span class="green">(Usable)</span>
 					</li>
 					<li>
-						Google-Chrome <span class="green">(Almost complete usable)</span>
-						<span class="tooltip help">
-							(Details)
-							<span class="tooltipText longText">
-								<span class="green">Download Files</span><br>
-								<span class="yellow">View Files</span> - <i>Displays many characters...</i><br>
-								<span class="green">En/Decrypt</span><br>
-								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
-							</span>
-						</span>
+						Google-Chrome <span class="green">(Usable)</span>
 					</li>
 					<li>
 						Firefox <span class="green">(Usable)</span>
 					</li>
 					<li>
-						Safari <span class="green">(Almost complete usable)</span>
+						Safari <span class="green">(Almost complete usable - Testing required)</span>
 						<span class="tooltip help">
 							(Details)
 							<span class="tooltipText longText">
 								<span class="green">Download Files</span><br>
-								<span class="red">View Files</span><br>
+								<span class="grey">View Files</span> - <i>Unknown</i><br>
 								<span class="green">En/Decrypt</span><br>
 								<span class="grey">ZIP-Download</span> - <i>Unknown</i>
 							</span>
 						</span>
+						<a href="https://github.com/Petschko/RPG-Maker-MV-Decrypter/issues/11" target="_blank">Please share your test results here!</a>
 					</li>
 					<li>
 						Opera <span class="green">(Usable)</span>
@@ -400,7 +410,7 @@
 					</li>
 					<li>
 						Get the En/Decrypt-Code.<br>
-						<span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b> & <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.
+						<span class="red">New:</span> PNG-Files (Images - "<b>.rpgmvp</b> &amp; <b>.png_</b>-Files") don't need the Decryption-Code, <b>except</b> you want to re-encrypt them. <a href="#restore-images" class="menu-link">Please go here for restoring images without Key</a>.
 						<ul>
 							<li>Upload the System.json File from the Game and let detect the Code automatic. (Click on "Detect", after selecting the System.json)</li>
 							<li>If the Detection don't work further instructions pop up.</li>
