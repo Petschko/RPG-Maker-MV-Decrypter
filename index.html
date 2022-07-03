@@ -22,7 +22,7 @@
 		<!-- https://getbootstrap.com/docs/3.4/getting-started/ -->
 		<link rel="stylesheet" href="styles/bootstrap.min.css">
 		<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="styles/style.css?ver=1.2">
+		<link rel="stylesheet" href="styles/style.css?ver=2.0.1">
 	</head>
 	<body>
 		<noscript>
@@ -133,8 +133,8 @@
 								<label for="encryptedFiles">
 									En/Decrypt-File(s):
 								</label>
-								<div class="bottom-space">
-									<input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo,.png_,.ogg_,.m4a_" name="encryptedFiles" id="encryptedFiles" multiple required>
+								<div class="bottom-space drag-drop-file">
+									<input type="file" accept=".png,.ogg,.m4a,.rpgmvp,.rpgmvm,.rpgmvo,.png_,.ogg_,.m4a_" name="encryptedFiles" id="encryptedFiles" title="Drag and drop files here or select them" multiple required>
 								</div>
 							</div>
 							</fieldset>
@@ -314,8 +314,8 @@
 								<label for="encryptedImg">
 									Select File/s to restore:
 								</label>
-								<div class="bottom-space">
-									<input id="encryptedImg" type="file" accept=".rpgmvp,.png_" name="encryptedImg" multiple required>
+								<div class="bottom-space drag-drop-file">
+									<input id="encryptedImg" type="file" accept=".rpgmvp,.png_" name="encryptedImg" title="Drag and drop files here or select them" multiple required>
 								</div>
 							</fieldset>
 

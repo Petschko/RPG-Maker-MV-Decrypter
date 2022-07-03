@@ -348,6 +348,29 @@ button#encrypt > span {
 	margin: 0;
 }
 
+/* Drag & Drop Styles */
+.drag-drop-file {
+	position: relative;
+}
+
+.drag-drop-file input[type="file"] {
+	outline: 2px dashed #92b0b3;
+	outline-offset: -10px;
+	padding: 60px 0;
+	background-color: #efefef;
+	text-align: center;
+	width: 100%;
+}
+
+.drag-drop-file:before {
+	content: "(or) Drag and Drop files here.";
+	color: #92b0b3;
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translate(-50%);
+}
+
 /* Media-Queries */
 @media all and (min-width: 801px) and (max-width: 1080px) {
 	#home a.menu-link,
@@ -371,6 +394,11 @@ button#encrypt > span {
 
 	.button-grid-wrapper .box2 button {
 		width: 100%;
+	}
+
+	/* Drag & Drop Styles */
+	.drag-drop-file input[type="file"] {
+		padding-bottom: 90px;
 	}
 }
 
@@ -430,5 +458,10 @@ button#encrypt > span {
 
 	.button-grid-wrapper .box2 button {
 		width: 100%;
+	}
+
+	/* Drag & Drop Styles */
+	.drag-drop-file input[type="file"] {
+		padding-bottom: 90px;
 	}
 }
