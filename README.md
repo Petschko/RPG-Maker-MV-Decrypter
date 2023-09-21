@@ -1,3 +1,11 @@
+# IMPORTANT: Project MOVED to [Gitlab.com](https://gitlab.com/Petschko/RPG-Maker-MV-Decrypter) 
+
+Please look there for updates/Bug-Reports - This Github Repo will be Read-Only by now
+
+https://gitlab.com/Petschko/RPG-Maker-MV-Decrypter
+
+----
+
 # Petschko's RPG-Maker-MV & MZ File-Decrypter
 
 ## What's that?
